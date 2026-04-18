@@ -114,14 +114,10 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[90vh] min-h-[560px] flex flex-col items-center justify-center text-center overflow-hidden">
-        <Image
-          src="/hero.jpg"
-          alt="ジャングルスタジオ フォトスタジオ 神奈川県厚木市"
-          fill
-          priority
-          className="object-cover"
-        />
+      <section
+        className="relative h-[90vh] min-h-[560px] flex flex-col items-center justify-center text-center"
+        style={{ backgroundImage: 'url(/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}
+      >
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 px-4 flex flex-col items-center gap-6">
           <p className="text-white/80 tracking-[0.3em] text-sm font-light">JUNGLE STUDIO</p>
