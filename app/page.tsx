@@ -7,109 +7,6 @@ export const metadata: Metadata = {
   description: '神奈川県厚木市のフォトスタジオ「ジャングルスタジオ」。七五三・お宮参り・ニューボーンフォト・マタニティ・入園卒業など、お子様の大切な瞬間を最高の写真で残します。24時間オンライン予約受付中。',
 };
 
-const PLAN_CATEGORIES = [
-  {
-    id: 'base',
-    title: 'ハーフバースデー・バースデー・記念写真',
-    subtitle: '定番4プラン',
-    color: 'from-amber-50 to-stone-50',
-    plans: [
-      { name: 'エコノミープラン', price: '¥29,800', time: '約40分', costumes: '2着', studios: '2スタジオ', data: '100枚保証', bonus: '親子写真込み' },
-      { name: 'プレミアムプラン', price: '¥36,800', time: '約60分', costumes: '3着', studios: '3スタジオ', data: '150枚保証', bonus: '親子写真込み' },
-      { name: 'ビジネスプラン', price: '¥49,800', time: '約90分', costumes: '4着', studios: '4スタジオ', data: '200枚保証', bonus: '親子写真込み', extra: '特典：アルバム or アクリルスタンド' },
-      { name: 'ファーストプラン', price: '¥66,000', time: '約90分', costumes: '4着＋家族', studios: '選び放題', data: '200枚保証（即日納品）', bonus: '親子写真込み', extra: '特典：アルバム＆アクリルスタンド' },
-    ],
-  },
-  {
-    id: 'twin',
-    title: '兄弟・姉妹の専用プラン（主役2人）',
-    subtitle: 'ツインプラン',
-    color: 'from-rose-50 to-stone-50',
-    plans: [
-      { name: 'ツインエコノミープラン', price: '¥44,800', time: '約60分', costumes: '2着ずつ', studios: '2スタジオ', data: '合計120枚保証', bonus: '兄弟写真・親子写真込み' },
-      { name: 'ツインプレミアムプラン', price: '¥51,800', time: '約90分', costumes: '3着ずつ', studios: '3スタジオ', data: '合計170枚保証', bonus: '兄弟写真・親子写真込み' },
-      { name: 'ツインビジネスプラン', price: '¥64,800', time: '約120分', costumes: '4着ずつ', studios: '4スタジオ', data: '合計220枚保証', bonus: '兄弟写真・親子写真込み', extra: '特典：アルバム＆アクリルスタンド' },
-      { name: 'ツインファーストプラン', price: '¥92,000', time: '約120分', costumes: '4着ずつ＋数着', studios: '選び放題', data: '合計220枚保証（即日納品）', bonus: '兄弟写真・親子写真込み', extra: '特典：アルバム＆アクリルスタンド' },
-    ],
-  },
-  {
-    id: 'shichigosan',
-    title: '七五三',
-    subtitle: '七五三専用プラン',
-    color: 'from-purple-50 to-stone-50',
-    plans: [
-      { name: '七五三エコノミープラン', price: '¥24,800', time: '約30〜40分', costumes: '1着', studios: '2スタジオ', data: '50枚保証', bonus: '親子写真込み' },
-      { name: '七五三プレミアムプラン', price: '¥31,800', time: '約60分', costumes: '1着', studios: '3スタジオ', data: '75枚保証', bonus: '親子写真込み' },
-      { name: '七五三ビジネスプラン', price: '¥44,800', time: '約90分', costumes: '1着', studios: '4スタジオ', data: '100枚保証', bonus: '親子写真込み', extra: '特典：アルバム or アクリルスタンド' },
-      { name: '七五三ファーストプラン', price: '¥61,000', time: '約90分', costumes: '4着保証＋数着', studios: '選び放題', data: '150枚保証（翌日納品）', bonus: '親子写真込み', extra: '特典：アルバム＆アクリルスタンド' },
-    ],
-  },
-  {
-    id: 'nyuugaku',
-    title: '入園・卒園・入学・卒業',
-    subtitle: '入学卒業専用プラン',
-    color: 'from-blue-50 to-stone-50',
-    plans: [
-      { name: '入学・卒業エコノミープラン', price: '¥24,800', time: '約30〜40分', costumes: '1着', studios: '2スタジオ', data: '50枚保証', bonus: '親子写真込み' },
-      { name: '入学・卒業プレミアムプラン', price: '¥31,800', time: '約60分', costumes: '1着', studios: '3スタジオ', data: '75枚保証', bonus: '親子写真込み' },
-      { name: '入学・卒業ビジネスプラン', price: '¥44,800', time: '約90分', costumes: '1着', studios: '4スタジオ', data: '100枚保証', bonus: '親子写真込み', extra: '特典：アルバム or アクリルスタンド' },
-      { name: '入学・卒業ファーストプラン', price: '¥61,000', time: '約90分', costumes: '4着保証＋数着', studios: '選び放題', data: '150枚保証（翌日納品）', bonus: '親子写真込み', extra: '特典：アルバム＆アクリルスタンド' },
-    ],
-  },
-  {
-    id: 'newborn',
-    title: 'ニューボーンフォト・お宮参り',
-    subtitle: '生まれたての記念に',
-    color: 'from-green-50 to-stone-50',
-    plans: [
-      { name: 'ニューボーンフォト', price: '¥19,800〜', time: '約30〜40分', costumes: '1着', studios: '2スタジオ', data: '50枚保証', bonus: '親子写真込み' },
-      { name: 'お宮参り', price: '¥19,800〜', time: '約30〜40分', costumes: '1着', studios: '2スタジオ', data: '50枚保証', bonus: '親子写真込み' },
-    ],
-  },
-  {
-    id: 'maternity',
-    title: 'マタニティフォト',
-    subtitle: '妊娠中の美しい姿を永遠に',
-    color: 'from-pink-50 to-stone-50',
-    plans: [
-      { name: 'マタニティフォト', price: '¥15,000〜', time: '約30〜40分', costumes: '1着', studios: '2スタジオ', data: '50枚保証', bonus: '親子写真込み' },
-    ],
-  },
-];
-
-const COLUMNS = [
-  {
-    href: '/column/shichigosan',
-    title: '七五三フォト完全ガイド',
-    desc: '3歳・5歳・7歳のお祝いを最高の写真で残す方法',
-    img: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',
-  },
-  {
-    href: '/column/omiyamairi',
-    title: 'お宮参りの記念写真',
-    desc: '生後1ヶ月の大切なお祝いを家族の宝に',
-    img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=600&q=80',
-  },
-  {
-    href: '/column/newborn',
-    title: 'ニューボーンフォトとは',
-    desc: '生後2週間以内の奇跡の瞬間を写真に',
-    img: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=80',
-  },
-  {
-    href: '/column/maternity',
-    title: 'マタニティフォトの魅力',
-    desc: '妊娠中の輝く姿を一生の思い出に',
-    img: 'https://images.unsplash.com/photo-1519127051966-edeab5d5ab81?w=600&q=80',
-  },
-  {
-    href: '/column/nyuugaku',
-    title: '入園・入学・卒業記念写真',
-    desc: '成長の節目を美しいスタジオ写真で残す',
-    img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80',
-  },
-];
-
 export default function HomePage() {
   return (
     <>
@@ -145,37 +42,6 @@ export default function HomePage() {
           >
             【24時間対応】ご予約はこちら
           </a>
-        </div>
-      </section>
-
-      {/* Plan Menu Grid */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <p className="text-amber-700 tracking-widest text-xs mb-3">PLAN</p>
-            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'serif' }}>料金プラン</h2>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[
-              { href: '/column/shichigosan', label: '七五三', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80' },
-              { href: '/column/half-birthday', label: 'ハーフバースデー', price: '¥29,800〜', img: '/half-birthday.jpg' },
-              { href: '/column/omiyamairi', label: 'お宮参り', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80' },
-              { href: '/column/birthday', label: 'バースデー', price: '¥29,800〜', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
-              { href: '/column/nyuugaku', label: '入学・卒業', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
-              { href: '/column/maternity', label: 'マタニティフォト', price: '¥15,000〜', img: 'https://images.unsplash.com/photo-1519127051966-edeab5d5ab81?w=400&q=80' },
-              { href: '/column/newborn', label: 'ニューボーンフォト', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80' },
-            ].map((item) => (
-              <Link key={item.href} href={item.href} className="group block rounded-2xl overflow-hidden border border-stone-200 hover:shadow-xl transition-shadow duration-300">
-                <div className="relative h-40 overflow-hidden">
-                  <Image src={item.img} alt={item.label} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-4 bg-white">
-                  <p className="font-bold text-stone-800 text-sm mb-1">{item.label}</p>
-                  <p className="text-amber-700 font-bold text-sm">{item.price}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -215,92 +81,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Plans */}
-      <section id="plans" className="py-20 bg-stone-50">
+      {/* Plan Menu Grid */}
+      <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-amber-700 tracking-widest text-xs mb-4">PLAN &amp; PRICE</p>
-            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'serif' }}>
-              プラン・料金
-            </h2>
+          <div className="text-center mb-10">
+            <p className="text-amber-700 tracking-widest text-xs mb-3">PLAN</p>
+            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'serif' }}>料金プラン</h2>
           </div>
-
-          {PLAN_CATEGORIES.map((cat) => (
-            <div key={cat.id} className="mb-16">
-              <div className={`bg-gradient-to-r ${cat.color} rounded-2xl p-6 mb-6`}>
-                <p className="text-xs text-stone-400 tracking-widest mb-1">{cat.subtitle}</p>
-                <h3 className="text-xl font-bold text-stone-800" style={{ fontFamily: 'serif' }}>
-                  {cat.title}
-                </h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {cat.plans.map((plan) => (
-                  <div key={plan.name} className="plan-card rounded-xl p-5">
-                    <h4 className="font-bold text-stone-800 mb-1 text-sm">{plan.name}</h4>
-                    <p className="text-2xl font-bold text-amber-700 mb-3">{plan.price}</p>
-                    <ul className="text-xs text-stone-600 space-y-1.5">
-                      <li className="flex gap-2"><span className="text-amber-600">✓</span>{plan.time}</li>
-                      <li className="flex gap-2"><span className="text-amber-600">✓</span>衣装 {plan.costumes}</li>
-                      <li className="flex gap-2"><span className="text-amber-600">✓</span>{plan.studios}</li>
-                      <li className="flex gap-2"><span className="text-amber-600">✓</span>{plan.data}</li>
-                      <li className="flex gap-2"><span className="text-amber-600">✓</span>{plan.bonus}</li>
-                      {plan.extra && (
-                        <li className="flex gap-2 text-amber-700 font-medium">
-                          <span>★</span>{plan.extra}
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          <div className="text-center mt-8">
-            <a
-              href="https://studio-app-two.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-reserve inline-block px-10 py-4 rounded-full text-base"
-            >
-              【24時間対応】ご予約はこちら
-            </a>
-            <p className="text-xs text-stone-400 mt-3">延長料金：15分ごとに ¥3,300（税込）</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Column */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <p className="text-amber-700 tracking-widest text-xs mb-4">COLUMN</p>
-            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'serif' }}>
-              撮影メニューについて知る
-            </h2>
-            <p className="text-stone-500 text-sm mt-3">
-              各撮影メニューの特徴・準備方法・よくある質問をご紹介します
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COLUMNS.map((col) => (
-              <Link
-                key={col.href}
-                href={col.href}
-                className="group block rounded-2xl overflow-hidden border border-stone-200 hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={col.img}
-                    alt={col.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              { href: '/column/shichigosan', label: '七五三', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80' },
+              { href: '/column/half-birthday', label: 'ハーフバースデー', price: '¥29,800〜', img: '/half-birthday.jpg' },
+              { href: '/column/omiyamairi', label: 'お宮参り', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80' },
+              { href: '/column/birthday', label: 'バースデー', price: '¥29,800〜', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
+              { href: '/column/nyuugaku', label: '入学・卒業', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
+              { href: '/column/maternity', label: 'マタニティフォト', price: '¥15,000〜', img: 'https://images.unsplash.com/photo-1519127051966-edeab5d5ab81?w=400&q=80' },
+              { href: '/column/newborn', label: 'ニューボーンフォト', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80' },
+            ].map((item) => (
+              <Link key={item.href} href={item.href} className="group block rounded-2xl overflow-hidden border border-stone-200 hover:shadow-xl transition-shadow duration-300">
+                <div className="relative h-40 overflow-hidden">
+                  <Image src={item.img} alt={item.label} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="p-5">
-                  <h3 className="font-bold text-stone-800 mb-1 text-sm">{col.title}</h3>
-                  <p className="text-stone-500 text-xs leading-relaxed">{col.desc}</p>
-                  <p className="text-amber-700 text-xs mt-3 font-medium">詳しく読む →</p>
+                <div className="p-4 bg-white">
+                  <p className="font-bold text-stone-800 text-sm mb-1">{item.label}</p>
+                  <p className="text-amber-700 font-bold text-sm">{item.price}</p>
                 </div>
               </Link>
             ))}
