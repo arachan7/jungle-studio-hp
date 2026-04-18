@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gold: #c9a96e;
+  --dark: #1a1a1a;
+  --cream: #faf8f5;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--cream);
+  color: var(--dark);
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+}
+
+.btn-reserve {
+  background: linear-gradient(135deg, #c9a96e 0%, #e8c97a 50%, #c9a96e 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 20px rgba(201, 169, 110, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-reserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 169, 110, 0.55);
+}
+
+.plan-card {
+  background: #fff;
+  border: 1px solid #e8e0d5;
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #1a1a1a;
+  margin: 5px 0;
+  transition: all 0.3s ease;
 }
