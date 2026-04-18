@@ -18,23 +18,23 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-200">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="text-lg font-bold tracking-widest text-stone-800" style={{ fontFamily: 'serif' }}>
+      <div className="max-w-6xl mx-auto px-3 h-14 flex items-center justify-between gap-2">
+        <Link href="/" className="text-sm sm:text-lg font-bold tracking-widest text-stone-800 shrink-0" style={{ fontFamily: 'serif' }}>
           JUNGLE STUDIO
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <a
             href="https://studio-app-two.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-reserve hidden sm:inline-block px-5 py-2 rounded-full text-sm"
+            className="btn-reserve inline-block px-3 py-2 rounded-full text-xs sm:text-sm sm:px-5 whitespace-nowrap"
           >
             【24時間対応】予約はこちら
           </a>
 
           <button
-            className="hamburger p-2 flex flex-col justify-center"
+            className="hamburger p-2 flex flex-col justify-center shrink-0"
             onClick={() => setOpen(!open)}
             aria-label="メニューを開く"
           >
@@ -62,14 +62,6 @@ export default function Header() {
                 </li>
               ))}
             </ul>
-            <a
-              href="https://studio-app-two.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-reserve mt-6 block text-center px-6 py-3 rounded-full text-sm sm:hidden"
-            >
-              【24時間対応】予約はこちら
-            </a>
           </nav>
         </div>
       )}
