@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative h-[90vh] min-h-[560px] flex flex-col items-center justify-center text-center overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=1600&q=85"
+          src="/hero.jpg"
           alt="ジャングルスタジオ フォトスタジオ 神奈川県厚木市"
           fill
           priority
