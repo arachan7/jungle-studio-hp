@@ -132,9 +132,9 @@ export default function HomePage() {
             大切な瞬間を、<br />一生の宝物に。
           </h1>
           <p className="text-white/85 text-sm sm:text-base max-w-md leading-relaxed">
-            神奈川県厚木市のフォトスタジオ。七五三・お宮参り・ニューボーン・マタニティなど
-            <br className="hidden sm:block" />
-            お子様の成長を最高の写真で残します。
+            神奈川県厚木市旭町のフォトスタジオ。<br />
+            七五三・お宮参り・ニューボーンフォト・マタニティフォト<br />
+            などお子様の成長を唯一無二の写真で残します。
           </p>
           <a
             href="https://studio-app-two.vercel.app/"
