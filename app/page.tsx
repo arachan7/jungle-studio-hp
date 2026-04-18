@@ -170,11 +170,12 @@ export default function HomePage() {
             思い出をもっと身近に
           </h2>
           <p className="text-stone-300 leading-loose text-sm sm:text-base">
-            思い出をより身近にするため、価格設定から見直しました。<br />
-            手の届く価格で、撮影クオリティには一切妥協しません。<br />
-            データも豊富にお渡しし、「選ぶ」ではなく「残す」体験へ。<br />
+            思い出をより身近にするため、価格から見直しました。<br />
+            手の届く価格で、クオリティには一切妥協しません。<br />
+            データ枚数も豊富で、「選ぶ」ではなく「残す」形に。<br />
             七五三やバースデーなど、大切な一日をもっと気軽に。<br />
-            価格・クオリティ・満足度・体験、それら全てを叶える新しいフォトスタジオです。
+            <span className="text-amber-400 font-semibold">【価格・クオリティ・満足度・体験】</span><br />
+            それら全てを叶える新しいフォトスタジオです。
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
             {[
