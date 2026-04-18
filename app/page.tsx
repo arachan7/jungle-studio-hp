@@ -142,7 +142,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="btn-reserve px-8 py-4 rounded-full text-base mt-2"
           >
-            【24時間対応】予約はこちら
+            【24時間対応】ご予約はこちら
           </a>
         </div>
       </section>
@@ -240,7 +240,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="btn-reserve inline-block px-10 py-4 rounded-full text-base"
             >
-              【24時間対応】予約はこちら
+              【24時間対応】ご予約はこちら
             </a>
             <p className="text-xs text-stone-400 mt-3">延長料金：15分ごとに ¥3,300（税込）</p>
           </div>
@@ -367,7 +367,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="btn-reserve inline-block px-12 py-4 rounded-full text-base"
           >
-            【24時間対応】予約はこちら
+            【24時間対応】ご予約はこちら
           </a>
         </div>
       </section>

@@ -132,7 +132,7 @@ export default function NyuugakuColumn() {
       </div>
 
       <div className="mt-12 bg-stone-900 rounded-2xl p-8 text-center">
-        <p className="text-white font-bold mb-2" style={{ fontFamily: 'serif' }}>入園・卒業記念写真の予約はこちら</p>
+        <p className="text-white font-bold mb-2" style={{ fontFamily: 'serif' }}>入園・卒業記念写真のご予約はこちら</p>
         <p className="text-stone-400 text-xs mb-5">24時間オンライン予約受付 / 神奈川県厚木市</p>
         <a
           href="https://studio-app-two.vercel.app/"
@@ -140,7 +140,7 @@ export default function NyuugakuColumn() {
           rel="noopener noreferrer"
           className="btn-reserve inline-block px-8 py-3 rounded-full text-sm"
         >
-          【24時間対応】予約はこちら
+          【24時間対応】ご予約はこちら
         </a>
       </div>
     </article>

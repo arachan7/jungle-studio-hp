@@ -51,7 +51,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="btn-reserve px-6 py-2.5 rounded-full text-sm"
           >
-            【24時間対応】予約はこちら
+            【24時間対応】ご予約はこちら
           </a>
         </div>
       </div>
