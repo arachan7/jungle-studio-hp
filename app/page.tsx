@@ -177,19 +177,6 @@ export default function HomePage() {
             <span className="text-amber-400 font-semibold">【価格・クオリティ・満足度・体験】</span><br />
             それら全てを叶える新しいフォトスタジオです。
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
-            {[
-              { label: '価格', desc: '手の届く料金設定' },
-              { label: 'クオリティ', desc: 'プロ品質の撮影' },
-              { label: '満足度', desc: '豊富なデータ納品' },
-              { label: '体験', desc: '気軽で自由な撮影' },
-            ].map((item) => (
-              <div key={item.label} className="border border-stone-700 rounded-xl p-4">
-                <p className="text-amber-400 font-bold text-sm mb-1">{item.label}</p>
-                <p className="text-stone-400 text-xs">{item.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
