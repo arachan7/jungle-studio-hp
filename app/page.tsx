@@ -133,8 +133,9 @@ export default function HomePage() {
           </h1>
           <p className="text-white/85 text-sm sm:text-base max-w-md leading-relaxed">
             神奈川県厚木市旭町のフォトスタジオ。<br />
-            七五三・お宮参り・ニューボーンフォト・マタニティフォト<br />
-            などお子様の成長を唯一無二の写真で残します。
+            七五三・お宮参り・ニューボーンフォト<br />
+            マタニティフォト・入園・卒園・入学・卒業<br />
+            など、お子様の成長を唯一無二の写真で残します。
           </p>
           <a
             href="https://studio-app-two.vercel.app/"
