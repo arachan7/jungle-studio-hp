@@ -162,6 +162,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Charm */}
+      <section className="py-20 bg-stone-900 text-white">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <p className="text-amber-400 tracking-[0.4em] text-xs mb-4">CHARM</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8" style={{ fontFamily: 'serif' }}>
+            思い出をもっと身近に
+          </h2>
+          <p className="text-stone-300 leading-loose text-sm sm:text-base">
+            思い出をもっと身近にするため、価格設定そのものから見直しました。<br />
+            しっかりと手の届く価格でありながら、プロ品質の撮影と仕上がりには一切妥協していません。<br className="hidden sm:block" />
+            撮影データも豊富にお渡しし、「選ぶ」ではなく「残す」ことを大切にしています。<br />
+            七五三やバースデーなど、大切な一日をもっと気軽に、もっと自由に楽しめる体験へ。<br className="hidden sm:block" />
+            価格・クオリティ・満足度・体験、そのすべてを高水準で実現した新しいフォトスタジオです。
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
+            {[
+              { label: '価格', desc: '手の届く料金設定' },
+              { label: 'クオリティ', desc: 'プロ品質の撮影' },
+              { label: '満足度', desc: '豊富なデータ納品' },
+              { label: '体験', desc: '気軽で自由な撮影' },
+            ].map((item) => (
+              <div key={item.label} className="border border-stone-700 rounded-xl p-4">
+                <p className="text-amber-400 font-bold text-sm mb-1">{item.label}</p>
+                <p className="text-stone-400 text-xs">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Plans */}
       <section id="plans" className="py-20 bg-stone-50">
         <div className="max-w-6xl mx-auto px-4">
