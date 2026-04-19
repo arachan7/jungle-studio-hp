@@ -94,7 +94,7 @@ export default function HomePage() {
               { href: '/column/half-birthday', label: 'ハーフバースデー', price: '¥29,800〜', img: '/half-birthday.jpg' },
               { href: '/column/omiyamairi', label: 'お宮参り', price: '¥19,800〜', img: '/omiyamairi.jpg' },
               { href: '/column/birthday', label: 'バースデー', price: '¥29,800〜', img: '/birthday.jpg' },
-              { href: '/column/nyuugaku', label: '入学・卒業', price: '¥24,800〜', img: '/nyuugaku.jpg' },
+              { href: '/column/nyuugaku', label: '卒入学', price: '¥24,800〜', img: '/nyuugaku.jpg' },
               { href: '/column/maternity', label: 'マタニティフォト', price: '¥15,000〜', img: '/maternity.jpg' },
               { href: '/column/newborn', label: 'ニューボーンフォト', price: '¥19,800〜', img: '/newborn.jpg' },
             ].map((item) => (

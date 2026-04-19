@@ -20,11 +20,11 @@ export default function NyuugakuColumn() {
       <nav className="text-xs text-stone-400 mb-8">
         <Link href="/" className="hover:text-amber-700">ホーム</Link>
         <span className="mx-2">/</span>
-        <span>入園・卒業記念写真</span>
+        <span>卒入学</span>
       </nav>
 
       <header className="mb-10">
-        <p className="text-amber-700 text-xs tracking-widest mb-3">COLUMN / 入園・卒業</p>
+        <p className="text-amber-700 text-xs tracking-widest mb-3">COLUMN / 卒入学</p>
         <h1 className="text-2xl sm:text-3xl font-bold leading-tight mb-4" style={{ fontFamily: 'serif' }}>
           入園・卒園・入学・卒業の記念写真ガイド｜<br className="sm:hidden" />成長の節目を最高の1枚に
         </h1>
@@ -68,13 +68,13 @@ export default function NyuugakuColumn() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオの入学・卒業プラン</h2>
+          <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオの卒入学プラン</h2>
           <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
             {[
-              { name: '入学・卒業エコノミープラン', price: '¥24,800', time: '約30〜40分', data: '50枚保証', studios: '2スタジオ' },
-              { name: '入学・卒業プレミアムプラン', price: '¥31,800', time: '約60分', data: '75枚保証', studios: '3スタジオ' },
-              { name: '入学・卒業ビジネスプラン', price: '¥44,800', time: '約90分', data: '100枚保証', studios: '4スタジオ', extra: '特典：アルバム or アクリルスタンド' },
-              { name: '入学・卒業ファーストプラン', price: '¥61,000', time: '約90分', data: '150枚保証（翌日納品）', studios: '選び放題', extra: '特典：アルバム＆アクリルスタンド' },
+              { name: '卒入学エコノミープラン', price: '¥24,800', time: '約30〜40分', data: '50枚保証', studios: '2スタジオ' },
+              { name: '卒入学プレミアムプラン', price: '¥31,800', time: '約60分', data: '75枚保証', studios: '3スタジオ' },
+              { name: '卒入学ビジネスプラン', price: '¥44,800', time: '約90分', data: '100枚保証', studios: '4スタジオ', extra: '特典：アルバム or アクリルスタンド' },
+              { name: '卒入学ファーストプラン', price: '¥61,000', time: '約90分', data: '150枚保証（翌日納品）', studios: '選び放題', extra: '特典：アルバム＆アクリルスタンド' },
             ].map((p) => (
               <div key={p.name} className="bg-white rounded-xl p-4">
                 <p className="font-bold text-stone-800 text-sm">{p.name}</p>
@@ -132,7 +132,7 @@ export default function NyuugakuColumn() {
       </div>
 
       <div className="mt-12 bg-stone-900 rounded-2xl p-8 text-center">
-        <p className="text-white font-bold mb-2" style={{ fontFamily: 'serif' }}>入園・卒業記念写真のご予約はこちら</p>
+        <p className="text-white font-bold mb-2" style={{ fontFamily: 'serif' }}>卒入学記念写真のご予約はこちら</p>
         <p className="text-stone-400 text-xs mb-5">24時間オンライン予約受付 / 神奈川県厚木市</p>
         <a
           href="https://studio-app-two.vercel.app/"

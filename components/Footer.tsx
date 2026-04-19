@@ -24,7 +24,7 @@ export default function Footer() {
               <li><Link href="/column/omiyamairi" className="hover:text-amber-400 transition-colors">お宮参り</Link></li>
               <li><Link href="/column/newborn" className="hover:text-amber-400 transition-colors">ニューボーンフォト</Link></li>
               <li><Link href="/column/maternity" className="hover:text-amber-400 transition-colors">マタニティフォト</Link></li>
-              <li><Link href="/column/nyuugaku" className="hover:text-amber-400 transition-colors">入園・卒業</Link></li>
+              <li><Link href="/column/nyuugaku" className="hover:text-amber-400 transition-colors">卒入学</Link></li>
             </ul>
           </div>
 

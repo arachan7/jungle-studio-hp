@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { href: '/column/omiyamairi', label: 'お宮参り' },
   { href: '/column/newborn', label: 'ニューボーンフォト' },
   { href: '/column/maternity', label: 'マタニティフォト' },
-  { href: '/column/nyuugaku', label: '入園・卒業' },
+  { href: '/column/nyuugaku', label: '卒入学' },
   { href: '/#plans', label: 'プラン・料金' },
   { href: '/#access', label: 'アクセス' },
 ];
