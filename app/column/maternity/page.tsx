@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'マタニティフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -105,17 +106,12 @@ export default function MaternityColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: 'マタニティフォトはいつ撮影するのがおすすめですか？', a: '妊娠7〜9ヶ月（妊娠28〜36週頃）がおすすめです。おなかが大きくふくらみ、かつ体調が比較的安定している時期です。' },
               { q: '衣装はレンタルできますか？持ち込みでも大丈夫ですか？', a: '基本1着レンタルOKです。それ以上のレンタルや、持ち込み希望の方は事前にご相談ください。' },
               { q: 'パパや上の子も一緒に撮れますか？', a: 'はい、ご家族での写真も撮影できます。どのプランでもご家族との撮影はOKです。' },
               { q: '撮影時間はどのくらいですか？', a: '撮影は約30分〜40分が目安です。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

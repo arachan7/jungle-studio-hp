@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'お宮参りの記念写真ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -109,7 +110,7 @@ export default function OmiyamairColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: 'お宮参りはいつ撮影するのがおすすめですか？', a: '伝統的には男の子は生後31〜32日目、女の子は生後32〜33日目とされていますが、現在は1ヶ月検診が終わった後、体調の良い日を選ぶご家族が多いです。100日祝いと一緒に撮影されるケースも増えています。' },
               { q: 'お宮参り用のお祝い着（産着）はレンタルできますか？', a: 'はい。お祝い着のレンタルがプランに含まれています。' },
               { q: '神社でのロケーション撮影もできますか？', a: '今はロケーション撮影不可ですが、今後実装予定です。' },
@@ -117,12 +118,7 @@ export default function OmiyamairColumn() {
               { q: '授乳・おむつ替えのスペースはありますか？', a: '専用スペースではないものの、お着替えスペースなどで対応可能です。当日スタッフへお申し付けください。' },
               { q: '赤ちゃんが泣いてしまっても大丈夫ですか？', a: '大丈夫です。泣いてしまうのもその子のありのままの姿です。スタッフが一緒にあやしながら丁寧に撮影します。泣いてしまってどうしても撮影が難しい場合は、別日に変更可能です。' },
               { q: '家族・祖父母も一緒に写真に入れますか？', a: 'はい、ご家族揃っての写真も撮影できます。人数が多くなる場合はスタジオ内に入りきれないこともあるため、事前にご相談ください。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

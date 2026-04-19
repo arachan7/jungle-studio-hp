@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: '七五三フォト完全ガイド｜厚木市のフォトスタジオ JUNGLE STUDIO',
@@ -99,8 +100,7 @@ export default function ShichigosanColumn() {
 
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>七五三撮影のよくある質問</h2>
-          <div className="space-y-4">
-            {[
+          <FaqAccordion items={[
               { q: '七五三の撮影はいつ頃がおすすめですか？', a: '七五三のお祝い本来の日は11月15日ですが、9月以降は大変混み合うためお早めのご予約をおすすめします。1月〜9月はオフシーズンとなり、お得な料金で撮影できます。前撮り・後撮りどちらも人気です。' },
               { q: '数え年・満年齢どちらで撮影すればいいですか？', a: 'どちらでも問題ありません。3歳は数え年だと着付けが大変な場合もあるため、お子様の体格や成長具合に合わせてお決めください。' },
               { q: 'きょうだい写真や家族写真も撮れますか？', a: 'はい。七五三メインのお子様の主役写真に加え、ごきょうだいやご家族との写真も撮影できます。お子様2人以上を主役で撮影したい場合は有料オプションになります。' },
@@ -114,12 +114,7 @@ export default function ShichigosanColumn() {
               { q: '七五三と同日に別のきょうだいのお宮参りや誕生日撮影もできますか？', a: '七五三が主役となるため、赤ちゃんや他のお子様のコンディション管理が難しくなるケースもあります。希望の場合は事前にご相談ください。' },
               { q: '七五三プランで洋装も着れますか？', a: 'スタジオによります。着物メインとなりますが、衣装チェンジで洋装も撮影できるスタジオがあります（追加料金の場合あり：+￥4,400程度）。' },
               { q: '撮影はしないで七五三の着物だけ借りられますか？', a: '基本対応していないですが、相談次第になります。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

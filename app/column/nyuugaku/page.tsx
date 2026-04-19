@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: '入園・卒園・入学・卒業の記念写真ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -114,19 +115,14 @@ export default function NyuugakuColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: '入学・入園の撮影はいつ頃がおすすめですか？', a: '入学式・入園式の前後、2〜4月が最も人気の時期です。早めのご予約をおすすめします。' },
               { q: 'ランドセルや制服など持ち込みで撮影できますか？', a: 'はい。ご自身のランドセル・制服・体操服などお持ち込みいただいて撮影できます。' },
               { q: '卒業袴の着付けはお願いできますか？', a: 'はい、卒業袴の着付け・ヘアメイクを別途オプションで承っているスタジオがあります。事前予約が必要です。' },
               { q: '入園・入学プランでは何着着られますか？', a: '基本1着ですが、時間が許す限りは撮影できます。' },
               { q: 'きょうだいの誕生日撮影と同日に入学撮影はできますか？', a: 'お子様の体力や撮影時間の制約があるため、事前にご相談ください。' },
               { q: '撮影時間はどのくらいですか？', a: 'ご来店からご退店まで約1時間〜2時間が目安です。それぞれのプランに時間目安が書いていますので、ご参考にしてください。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

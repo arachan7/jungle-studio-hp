@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'ニューボーンフォトとは｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -103,7 +104,7 @@ export default function NewbornColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: 'ニューボーンフォトはいつ撮影するのがおすすめですか？', a: '生後7〜14日以内がおすすめです。この時期は新生児特有の丸まった姿勢・柔らかさが残っており、後から振り返ると「この時期にしか撮れなかった」写真になります。' },
               { q: 'スタジオ撮影ですか？自宅への出張撮影もできますか？', a: '基本はスタジオ撮影になります。自宅への出張は今後予定しております。' },
               { q: '安全面は大丈夫ですか？', a: '赤ちゃんの安全を最優先に撮影します。フラッシュを使わず自然光での撮影が基本。使用する布・衣装・タオルは毎回無添加洗剤で洗濯・消毒し、スタッフは手洗い・消毒・マスク着用で対応します。' },
@@ -111,12 +112,7 @@ export default function NewbornColumn() {
               { q: '何カットデータをもらえますか？', a: '基本が50枚データ保証です。' },
               { q: '直前にキャンセルしたい場合はどうなりますか？', a: '前日・当日のキャンセルにはキャンセル料が発生する場合があります。詳しくはご予約フォームの1番下のキャンセルポリシーをご覧ください。' },
               { q: 'スタッフが感染症にかかった場合はどうなりますか？', a: 'スタッフや同居の家族が感染症にかかった場合は撮影の延期またはキャンセル対応します。その場合は全額返金が基本です。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'ハーフバースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -112,19 +113,14 @@ export default function HalfBirthdayColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: 'ハーフバースデーはいつ撮影するのがおすすめですか？', a: '生後6ヶ月前後が目安です。首がすわり、表情も豊かになる時期でねんね期の愛らしさが凝縮されています。±1〜2ヶ月前後でも全く問題ありません。' },
               { q: 'バースデー（1歳）はいつ撮影するのがおすすめですか？', a: 'つかまり立ちができるようになった頃がおすすめです。1歳前後になると人見知りが出ることもあるため、体調の良い日を選んでください。' },
               { q: 'ハーフバースデー・バースデープランは何着衣装を着られますか？', a: '2着〜4着以上撮影できます（レンタルまたはお持ち込み）。様々なプランがございます。' },
               { q: '家族・きょうだいと一緒に撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。親2人、子1人がベースで、家族写真は付いていますが、兄弟だけの写真や、お子様1人増えて家族写真を撮る場合は別途3,000〜5,000円オプション費用がかかります。' },
               { q: '持ち込み衣装はOKですか？', a: 'はい、持ち込み衣装も対応しています。お気に入りの衣装でかわいい姿を残せます。' },
               { q: '撮影データはいつもらえますか？', a: '1週間以内にオンラインアルバムでお渡しします。ファーストプランですと、翌日納品になります。即日納品オプションもございますので、メニュー表を参照ください。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>

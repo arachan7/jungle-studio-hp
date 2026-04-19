@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'バースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
@@ -77,7 +78,7 @@ export default function BirthdayColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>よくある質問</h2>
           <div className="space-y-4">
-            {[
+            <FaqAccordion items={[
               { q: '誕生日当日でないといけませんか？', a: 'いいえ。お誕生日の前後で都合の良い日にご予約いただけます。' },
               { q: '1歳の誕生日撮影でおすすめの時期は？', a: 'つかまり立ちができるようになった頃がおすすめです。人見知りが出やすい時期でもあるため、体調・機嫌の良い日を選んでください。' },
               { q: '誕生日プランでは何着着られますか？', a: '2着〜4着以上で、プランにより選べます。' },
@@ -85,12 +86,7 @@ export default function BirthdayColumn() {
               { q: 'バルーンや小物などの持ち込みはできますか？', a: '無料で持ち込み可能です（名前ボード・バルーン・髪飾りなど）。溶けやすいチョコレートや飴など衣装を汚す可能性のあるものはご遠慮ください。' },
               { q: 'きょうだいをそれぞれ主役で撮影できますか？', a: '基本プランは主役のお子様1名分の内容です。それぞれのお子様のソロ撮影は有料オプションまたはツインプランをお選びください。' },
               { q: '家族・きょうだいとの写真も撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。親2人、子1人がベースで、家族写真は付いています。ですが、兄弟だけの写真や、お子様1人増えて家族写真を撮る場合は別途3,000〜5,000円オプション費用がかかります。' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="bg-stone-50 px-5 py-3 font-semibold text-sm text-stone-800">Q. {faq.q}</div>
-                <div className="px-5 py-3 text-sm text-stone-600">A. {faq.a}</div>
-              </div>
-            ))}
+            ]} />
           </div>
         </section>
       </div>
