@@ -114,9 +114,9 @@ export default function Header() {
 
               {/* お問い合わせ */}
               <li>
-                <a href="https://studio-app-two.vercel.app/" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
+                <Link href="/contact" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
                   お問い合わせ
-                </a>
+                </Link>
               </li>
 
               {/* アクセス */}
