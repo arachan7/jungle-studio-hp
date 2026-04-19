@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import FaqAccordion from '@/components/FaqAccordion';
 
@@ -73,6 +74,16 @@ export default function FaqPage() {
         <span className="mx-2">/</span>
         <span>よくある質問</span>
       </nav>
+
+      <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-10">
+        <Image
+          src="/faq-hero.jpg"
+          alt="よくある質問"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
       <header className="mb-12">
         <p className="text-amber-700 text-xs tracking-widest mb-3">FAQ</p>
