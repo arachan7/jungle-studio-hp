@@ -51,7 +51,7 @@ export default function OmiyamairColumn() {
             現代では生後1ヶ月を目安に、家族の都合に合わせて行うご家庭が増えています。
           </p>
           <p className="text-stone-700 mt-3">
-            厚木市周辺では、厚木神社・愛甲八幡宮などでお宮参りをされる方が多く、
+            厚木市周辺では、厚木神社・愛甲八幡宮・寒川神社などでお宮参りをされる方が多く、
             参拝の前後にフォトスタジオで記念撮影をするケースが人気です。
           </p>
         </section>
@@ -61,7 +61,7 @@ export default function OmiyamairColumn() {
           <ul className="space-y-2 text-stone-700">
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>生後1ヶ月の赤ちゃんは体温調節が未熟。快適な室内スタジオが安心</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>授乳室完備で赤ちゃんのペースに合わせた撮影が可能</li>
-            <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>白無垢・産着・洋装など豊富な衣装から選択可能</li>
+            <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>豊富な衣装から選択可能</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>両家の祖父母も一緒に家族写真として残せる</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>参拝後の疲れを気にせずゆったり撮影できる</li>
           </ul>
@@ -117,7 +117,7 @@ export default function OmiyamairColumn() {
               { q: '百日祝いと一緒に撮影できますか？', a: 'はい、お宮参り・百日祝いを同日にまとめて撮影できますので、店頭またはご予約フォームにてお伝えください。' },
               { q: '授乳・おむつ替えのスペースはありますか？', a: '専用スペースではないものの、お着替えスペースなどで対応可能です。当日スタッフへお申し付けください。' },
               { q: '赤ちゃんが泣いてしまっても大丈夫ですか？', a: '大丈夫です。泣いてしまうのもその子のありのままの姿です。スタッフが一緒にあやしながら丁寧に撮影します。泣いてしまってどうしても撮影が難しい場合は、別日に変更可能です。' },
-              { q: '家族・祖父母も一緒に写真に入れますか？', a: 'はい、ご家族揃っての写真も撮影できます。人数が多くなる場合はスタジオ内に入りきれないこともあるため、事前にご相談ください。' },
+              { q: '家族・祖父母も一緒に写真に入れますか？', a: 'はい、3,000円の家族写真オプションを追加で、ご家族揃っての写真も撮影できます。人数が多くなる場合はスタジオ内に入りきれないこともあるため、事前にご相談ください。' },
             ]} />
           </div>
         </section>
