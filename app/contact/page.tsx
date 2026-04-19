@@ -16,7 +16,6 @@ export default function ContactPage() {
         <h1 className="text-2xl sm:text-3xl font-bold leading-tight mb-4" style={{ fontFamily: 'serif' }}>
           お問い合わせ
         </h1>
-        <p className="text-stone-500 text-sm">お気軽にご連絡ください</p>
       </header>
 
       <div className="space-y-5">
