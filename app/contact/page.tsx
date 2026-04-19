@@ -26,7 +26,7 @@ export default function ContactPage() {
           <p className="text-sm text-stone-500 mb-1">対応時間：24時間可能</p>
           <p className="text-xs text-stone-400 mb-5">※ご返信は10時〜19時を中心に、順次対応させていただきます。時間外でも確認でき次第ご返信いたします。</p>
           <a
-            href="https://line.me/R/ti/p/PLACEHOLDER"
+            href="https://lin.ee/8CBpUrL"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#06C755] hover:bg-[#05b34c] text-white text-sm font-bold px-6 py-3 rounded-full transition-colors"
