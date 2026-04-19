@@ -103,12 +103,12 @@ export default function Header() {
               </li>
               <li>
                 <a href="https://www.tiktok.com/@jungle_studio33" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  TikTok（スタジオの雰囲気や実績写真はこちら）
+                  TikTok①（スタジオの雰囲気や実績写真はこちら）
                 </a>
               </li>
               <li>
                 <a href="https://www.tiktok.com/@jungle_studio_ura" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  TikTok（ジャングルスタジオの裏側はこちら）
+                  TikTok②（ジャングルスタジオの裏側はこちら）
                 </a>
               </li>
 
