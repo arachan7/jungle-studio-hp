@@ -5,11 +5,12 @@ import Link from 'next/link';
 
 const NAV_ITEMS = [
   { href: '/column/shichigosan', label: '七五三' },
+  { href: '/column/half-birthday', label: 'ハーフバースデー' },
+  { href: '/column/birthday', label: 'バースデー' },
   { href: '/column/omiyamairi', label: 'お宮参り' },
   { href: '/column/newborn', label: 'ニューボーンフォト' },
   { href: '/column/maternity', label: 'マタニティフォト' },
   { href: '/column/nyuugaku', label: '卒入学' },
-  { href: '/#plans', label: 'プラン・料金' },
   { href: '/#access', label: 'アクセス' },
 ];
 
