@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Noto_Sans_JP } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FixedBottomNav from "@/components/FixedBottomNav";
+
+const notoSansJP = Noto_Sans_JP({ subsets: ['latin'], weight: ['400', '700'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: {
@@ -66,7 +69,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1 pt-16 pb-16">{children}</main>
         <Footer />
-        <FixedBottomNav />
+        <FixedBottomNav fontClassName={notoSansJP.className} />
       </body>
     </html>
   );

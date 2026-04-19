@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 
-export default function FixedBottomNav() {
+export default function FixedBottomNav({ fontClassName }: { fontClassName?: string }) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-rose-300 shadow-[0_-2px_12px_rgba(0,0,0,0.1)]">
+    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-rose-300 shadow-[0_-2px_12px_rgba(0,0,0,0.1)] ${fontClassName ?? ''}`}>
       <div className="flex h-16 divide-x divide-rose-200">
         <Link
           href="/#faq"
