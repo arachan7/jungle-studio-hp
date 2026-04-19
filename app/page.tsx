@@ -112,6 +112,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Latest News */}
+      <section className="py-16 bg-stone-50">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <p className="text-amber-700 tracking-widest text-xs mb-3">NEWS</p>
+            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'serif' }}>最新のコラム</h2>
+          </div>
+          <Link href="/news/grand-open" className="group block bg-white rounded-2xl border border-stone-200 p-6 hover:shadow-xl transition-shadow duration-300">
+            <p className="text-xs text-stone-400 tracking-widest mb-2">2026.04.19</p>
+            <h3 className="text-lg font-bold text-stone-800 group-hover:text-amber-700 transition-colors mb-3" style={{ fontFamily: 'serif' }}>
+              ジャングルスタジオ、まもなくオープンいたします
+            </h3>
+            <p className="text-sm text-stone-500 leading-relaxed line-clamp-3">
+              この度、フォトスタジオ「ジャングルスタジオ」は、4月25日・26日のプレオープンを経て、4月29日にグランドオープンを迎える運びとなりました。オープン前のこの段階で、すでにプレオープンのご予約を20件以上頂戴しております。
+            </p>
+            <p className="text-amber-700 text-xs font-bold mt-4">続きを読む →</p>
+          </Link>
+        </div>
+      </section>
+
       {/* Access */}
       <section id="access" className="py-20 bg-stone-50">
         <div className="max-w-4xl mx-auto px-4">
