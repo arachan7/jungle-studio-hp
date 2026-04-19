@@ -33,7 +33,7 @@ export default function NyuugakuColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=85"
+          src="/nyuugaku.jpg"
           alt="入学 卒業 記念写真 フォトスタジオ 厚木市"
           fill
           className="object-cover"

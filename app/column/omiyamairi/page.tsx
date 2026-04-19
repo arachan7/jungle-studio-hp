@@ -33,7 +33,7 @@ export default function OmiyamairColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=900&q=85"
+          src="/omiyamairi.jpg"
           alt="お宮参り 記念写真 フォトスタジオ 厚木市"
           fill
           className="object-cover"

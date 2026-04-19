@@ -33,7 +33,7 @@ export default function ShichigosanColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&q=85"
+          src="/shichigosan.jpg"
           alt="七五三 フォトスタジオ 厚木市 記念写真"
           fill
           className="object-cover"

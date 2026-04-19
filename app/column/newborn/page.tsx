@@ -33,7 +33,7 @@ export default function NewbornColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=900&q=85"
+          src="/newborn.jpg"
           alt="ニューボーンフォト 新生児撮影 フォトスタジオ 厚木市"
           fill
           className="object-cover"

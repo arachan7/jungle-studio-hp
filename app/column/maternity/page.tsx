@@ -33,7 +33,7 @@ export default function MaternityColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1519127051966-edeab5d5ab81?w=900&q=85"
+          src="/maternity.jpg"
           alt="マタニティフォト 妊婦 記念写真 フォトスタジオ 厚木市"
           fill
           className="object-cover"

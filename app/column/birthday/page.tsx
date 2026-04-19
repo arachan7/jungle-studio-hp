@@ -33,7 +33,7 @@ export default function BirthdayColumn() {
 
       <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
         <Image
-          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85"
+          src="/birthday.jpg"
           alt="バースデーフォト 誕生日 記念写真 フォトスタジオ 厚木市"
           fill
           className="object-cover"

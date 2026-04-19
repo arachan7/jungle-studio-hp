@@ -90,13 +90,13 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              { href: '/column/shichigosan', label: '七五三', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80' },
+              { href: '/column/shichigosan', label: '七五三', price: '¥24,800〜', img: '/shichigosan.jpg' },
               { href: '/column/half-birthday', label: 'ハーフバースデー', price: '¥29,800〜', img: '/half-birthday.jpg' },
-              { href: '/column/omiyamairi', label: 'お宮参り', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80' },
-              { href: '/column/birthday', label: 'バースデー', price: '¥29,800〜', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
-              { href: '/column/nyuugaku', label: '入学・卒業', price: '¥24,800〜', img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
-              { href: '/column/maternity', label: 'マタニティフォト', price: '¥15,000〜', img: 'https://images.unsplash.com/photo-1519127051966-edeab5d5ab81?w=400&q=80' },
-              { href: '/column/newborn', label: 'ニューボーンフォト', price: '¥19,800〜', img: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80' },
+              { href: '/column/omiyamairi', label: 'お宮参り', price: '¥19,800〜', img: '/omiyamairi.jpg' },
+              { href: '/column/birthday', label: 'バースデー', price: '¥29,800〜', img: '/birthday.jpg' },
+              { href: '/column/nyuugaku', label: '入学・卒業', price: '¥24,800〜', img: '/nyuugaku.jpg' },
+              { href: '/column/maternity', label: 'マタニティフォト', price: '¥15,000〜', img: '/maternity.jpg' },
+              { href: '/column/newborn', label: 'ニューボーンフォト', price: '¥19,800〜', img: '/newborn.jpg' },
             ].map((item) => (
               <Link key={item.href} href={item.href} className="group block rounded-2xl overflow-hidden border border-stone-200 hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-40 overflow-hidden">
