@@ -24,13 +24,20 @@ export default function Header() {
         </Link>
 
         <button
-          className="hamburger p-2 flex flex-col justify-center mr-2"
+          className="flex flex-col items-center justify-center gap-0.5 p-2 mr-1 text-stone-700 hover:text-amber-700 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="メニューを開く"
         >
-          <span className={open ? 'rotate-45 translate-y-1.5' : ''} />
-          <span className={open ? 'opacity-0' : ''} />
-          <span className={open ? '-rotate-45 -translate-y-1.5' : ''} />
+          {open ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+          <span className="text-[9px] font-bold tracking-widest">{open ? 'CLOSE' : 'MENU'}</span>
         </button>
       </div>
 
