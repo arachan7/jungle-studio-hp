@@ -18,19 +18,20 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-200">
-      <div className="max-w-6xl mx-auto px-3 h-14 flex items-center justify-between gap-2">
+      <div className="max-w-6xl mx-auto px-3 h-14 flex items-center justify-between gap-2 overflow-hidden">
         <Link href="/" className="text-xs sm:text-base font-bold tracking-widest text-stone-800 shrink-0" style={{ fontFamily: 'serif' }}>
           JUNGLE STUDIO
         </Link>
 
-        <div className="flex items-center gap-1.5 min-w-0">
+        <div className="flex items-center gap-1.5 shrink-0">
           <a
             href="https://studio-app-two.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-reserve px-2.5 py-1.5 rounded-full text-xs sm:text-sm sm:px-5 sm:py-2 whitespace-nowrap"
           >
-            【24時間対応】ご予約はこちら
+            <span className="sm:hidden">ご予約</span>
+            <span className="hidden sm:inline">【24時間対応】ご予約はこちら</span>
           </a>
 
           <button
