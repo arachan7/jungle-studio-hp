@@ -94,7 +94,7 @@ export default function ShichigosanColumn() {
             <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>当日スタジオに来店・衣装選び</li>
             <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>ヘアメイク・着付け（衣装持ち込みも可）</li>
             <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>プロカメラマンによる撮影</li>
-            <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>データ納品（プランにより即日〜翌日）</li>
+            <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>データ納品（翌日〜1週間以内）</li>
           </ol>
         </section>
 
