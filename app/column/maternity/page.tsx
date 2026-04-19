@@ -56,7 +56,7 @@ export default function MaternityColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>マタニティフォトを撮るベストな時期</h2>
           <div className="bg-amber-50 rounded-xl p-5">
-            <p className="font-semibold text-stone-800 mb-2 text-sm">妊娠7〜8ヶ月（妊娠28〜32週頃）が最適</p>
+            <p className="font-semibold text-stone-800 mb-2 text-sm">妊娠7〜9ヶ月（妊娠28〜36週頃）が最適</p>
             <ul className="text-sm text-stone-700 space-y-1">
               <li>・お腹が十分に大きく、丸みを帯びた美しいシルエットになる</li>
               <li>・体の動きがまだ比較的楽な時期</li>
