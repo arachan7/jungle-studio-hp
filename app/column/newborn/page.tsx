@@ -46,7 +46,7 @@ export default function NewbornColumn() {
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ニューボーンフォトとは</h2>
           <p className="text-stone-700">
-            ニューボーンフォト（Newborn Photo）とは、生後2〜3週間以内の新生児を専門に撮影するフォトグラフィーです。
+            ニューボーンフォト（Newborn Photo）とは、生後7日～14日以内、遅くとも30日以内の新生児を専門に撮影するフォトグラフィーです。
             この時期の赤ちゃんは、まるでお母さんのお腹の中にいるように丸まって眠る姿や、
             ふっくらとした頬、小さな手足が特徴的で、二度と戻らない「奇跡の姿」として人気が高まっています。
           </p>
@@ -69,7 +69,7 @@ export default function NewbornColumn() {
           </ul>
           <p className="text-stone-700 mt-3">
             生後3〜4週間以降は首が座り始め、赤ちゃんの動きが活発になるため、
-            安全で美しいニューボーンポーズが難しくなります。
+            安全で美しいニューボーンポーズが難しくなることがあります。
           </p>
         </section>
 
@@ -94,7 +94,6 @@ export default function NewbornColumn() {
             ジャングルスタジオでは以下の安全基準を遵守しています：
           </p>
           <ul className="space-y-2 text-stone-700 mt-3">
-            <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>室温を28〜30℃に調整し、赤ちゃんが快適な環境を維持</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>無理なポーズは一切行わない</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>常に保護者の方に立ち会っていただく</li>
             <li className="flex gap-2"><span className="text-amber-600 font-bold">✓</span>赤ちゃんのペースに合わせてゆっくり進める</li>
@@ -111,7 +110,7 @@ export default function NewbornColumn() {
               { q: '無理なポーズ（頬杖・直立など）はさせますか？', a: 'お腹の中にいた時に近い仰向けやうつ伏せポーズが基本です。無理のない体制での安全な撮影を行います。' },
               { q: '何カットデータをもらえますか？', a: '基本が50枚データ保証です。' },
               { q: '直前にキャンセルしたい場合はどうなりますか？', a: '前日・当日のキャンセルにはキャンセル料が発生する場合があります。詳しくはご予約フォームの1番下のキャンセルポリシーをご覧ください。' },
-              { q: 'スタッフが感染症にかかった場合はどうなりますか？', a: 'スタッフや同居の家族が感染症にかかった場合は撮影の延期またはキャンセル対応します。その場合は全額返金が基本です。' },
+              { q: 'スタッフが感染症にかかった場合はどうなりますか？', a: 'スタッフや同居の家族が感染症にかかった場合は撮影の延期またはキャンセル対応します。その場合は全額返金いたします。' },
             ]} />
           </div>
         </section>
