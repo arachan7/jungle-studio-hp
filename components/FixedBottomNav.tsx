@@ -15,7 +15,7 @@ export default function FixedBottomNav({ fontClassName }: { fontClassName?: stri
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
             <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth={3} strokeLinecap="round" />
           </svg>
-          <span className="text-[10px] font-bold tracking-wide">よくある質問</span>
+          <span className="text-xs font-bold tracking-wide">よくある質問</span>
         </Link>
 
         <Link
@@ -26,7 +26,7 @@ export default function FixedBottomNav({ fontClassName }: { fontClassName?: stri
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6M9 16h4" />
           </svg>
-          <span className="text-[10px] font-bold tracking-wide">ご利用の流れ</span>
+          <span className="text-xs font-bold tracking-wide">ご利用の流れ</span>
         </Link>
 
         <a
