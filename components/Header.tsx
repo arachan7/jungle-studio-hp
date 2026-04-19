@@ -97,18 +97,18 @@ export default function Header() {
 
               {/* SNS */}
               <li>
-                <a href="https://www.instagram.com/jungle_studio_photo/" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
+                <a href="https://www.instagram.com/jungle_studio33?igsh=ZGlmcjQ0N2gyZjhn&utm_source=qr" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
                   Instagram
                 </a>
               </li>
               <li>
-                <a href="https://www.threads.net/@jungle_studio_photo" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  Threads
+                <a href="https://www.tiktok.com/@jungle_studio33" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
+                  TikTok（スタジオの雰囲気や実績写真はこちら）
                 </a>
               </li>
               <li>
-                <a href="https://www.tiktok.com/@jungle_studio_photo" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  TikTok
+                <a href="https://www.tiktok.com/@jungle_studio_ura" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
+                  TikTok（ジャングルスタジオの裏側はこちら）
                 </a>
               </li>
 
