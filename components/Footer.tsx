@@ -19,6 +19,8 @@ export default function Footer() {
             <h4 className="text-white text-sm font-semibold tracking-widest mb-4">COLUMN</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/column/shichigosan" className="hover:text-amber-400 transition-colors">七五三フォト</Link></li>
+              <li><Link href="/column/half-birthday" className="hover:text-amber-400 transition-colors">ハーフバースデー</Link></li>
+              <li><Link href="/column/birthday" className="hover:text-amber-400 transition-colors">バースデー</Link></li>
               <li><Link href="/column/omiyamairi" className="hover:text-amber-400 transition-colors">お宮参り</Link></li>
               <li><Link href="/column/newborn" className="hover:text-amber-400 transition-colors">ニューボーンフォト</Link></li>
               <li><Link href="/column/maternity" className="hover:text-amber-400 transition-colors">マタニティフォト</Link></li>
