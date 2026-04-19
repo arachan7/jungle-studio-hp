@@ -75,13 +75,11 @@ export default function HalfBirthdayColumn() {
               { name: 'ビジネスプラン', price: '¥49,800', time: '約90分', data: '200枚保証', studios: '4スタジオ', costumes: '4着', extra: '特典：アルバム or アクリルスタンド' },
               { name: 'ファーストプラン', price: '¥66,000', time: '約90分', data: '200枚保証（即日納品）', studios: '選び放題', costumes: '4着＋家族', extra: '特典：アルバム＆アクリルスタンド' },
             ].map((p) => (
-              <div key={p.name} className="bg-white rounded-xl p-4 flex justify-between items-start flex-wrap gap-2">
-                <div>
-                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
-                  <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
-                  {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
-                </div>
-                <p className="text-xl font-bold text-amber-700">{p.price}</p>
+              <div key={p.name} className="bg-white rounded-xl p-4">
+                <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
+                {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
+                <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}
           </div>

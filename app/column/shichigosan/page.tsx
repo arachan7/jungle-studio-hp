@@ -75,13 +75,11 @@ export default function ShichigosanColumn() {
               { name: '七五三ビジネスプラン', price: '¥44,800', time: '約90分', data: '100枚保証', studios: '4スタジオ', extra: '特典：アルバム or アクリルスタンド' },
               { name: '七五三ファーストプラン', price: '¥61,000', time: '約90分', data: '150枚保証（翌日納品）', studios: '選び放題', extra: '特典：アルバム＆アクリルスタンド' },
             ].map((p) => (
-              <div key={p.name} className="bg-white rounded-xl p-4 flex justify-between items-start flex-wrap gap-2">
-                <div>
-                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
-                  <p className="text-xs text-stone-500">{p.time} / {p.studios} / {p.data}</p>
-                  {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
-                </div>
-                <p className="text-xl font-bold text-amber-700">{p.price}</p>
+              <div key={p.name} className="bg-white rounded-xl p-4">
+                <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                <p className="text-xs text-stone-500">{p.time} / {p.studios} / {p.data}</p>
+                {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
+                <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}
           </div>
