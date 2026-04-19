@@ -7,7 +7,7 @@ export default function FixedBottomNav({ fontClassName }: { fontClassName?: stri
     <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-rose-300 shadow-[0_-2px_12px_rgba(0,0,0,0.1)] ${fontClassName ?? ''}`}>
       <div className="flex h-16 divide-x divide-rose-200">
         <Link
-          href="/#faq"
+          href="/faq"
           className="flex-1 flex flex-col items-center justify-center gap-0.5 text-rose-500 hover:bg-rose-50 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

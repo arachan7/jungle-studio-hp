@@ -12,5 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/column/maternity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/column/newborn`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/flow`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/tips`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ];
 }
