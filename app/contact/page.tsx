@@ -23,7 +23,7 @@ export default function ContactPage() {
         {/* LINE */}
         <div className="border border-stone-200 rounded-2xl p-6">
           <p className="text-xs text-stone-400 tracking-widest mb-1">LINE</p>
-          <p className="text-lg font-bold text-stone-800 mb-4" style={{ fontFamily: 'serif' }}>公式LINEからのお問い合わせはこちら</p>
+          <p className="text-lg font-bold text-stone-800 mb-4" style={{ fontFamily: 'serif' }}>公式LINEでのお問い合わせはこちら</p>
           <p className="text-sm text-stone-500 mb-1">対応時間：24時間可能</p>
           <p className="text-xs text-stone-400 mb-5">※ご返信は10時〜19時を中心に、順次対応させていただきます。時間外でも確認でき次第ご返信いたします。</p>
           <a
