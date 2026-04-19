@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -102,6 +103,16 @@ export default function TipsPage() {
         <span className="mx-2">/</span>
         <span>撮影前に抑えておきたいポイント</span>
       </nav>
+
+      <div className="relative h-56 sm:h-72 rounded-2xl overflow-hidden mb-10">
+        <Image
+          src="/tips-hero.jpg"
+          alt="撮影前に抑えておきたいポイント"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
       <header className="mb-12">
         <p className="text-amber-700 text-xs tracking-widest mb-3">TIPS</p>
