@@ -24,7 +24,8 @@ export default function ContactPage() {
         <div className="border border-stone-200 rounded-2xl p-6">
           <p className="text-xs text-stone-400 tracking-widest mb-1">LINE</p>
           <p className="text-lg font-bold text-stone-800 mb-4" style={{ fontFamily: 'serif' }}>公式LINEからのお問い合わせはこちら</p>
-          <p className="text-sm text-stone-500 mb-5">LINEでお気軽にメッセージをお送りください。</p>
+          <p className="text-sm text-stone-500 mb-1">対応時間：24時間可能</p>
+          <p className="text-xs text-stone-400 mb-5">※ご返信は10時〜19時を中心に、順次対応させていただきます。時間外でも確認でき次第ご返信いたします。</p>
           <a
             href="https://line.me/R/ti/p/PLACEHOLDER"
             target="_blank"
@@ -42,7 +43,8 @@ export default function ContactPage() {
         <div className="border border-stone-200 rounded-2xl p-6">
           <p className="text-xs text-stone-400 tracking-widest mb-1">PHONE</p>
           <p className="text-lg font-bold text-stone-800 mb-4" style={{ fontFamily: 'serif' }}>電話はこちら</p>
-          <p className="text-3xl font-bold text-amber-700 tracking-wider mb-5">070-3763-0878</p>
+          <p className="text-3xl font-bold text-amber-700 tracking-wider mb-2">070-3763-0878</p>
+          <p className="text-sm text-stone-500 mb-5">対応時間：10時〜19時</p>
           <a
             href="tel:07037630878"
             className="inline-flex items-center gap-2 bg-amber-700 hover:bg-amber-800 text-white text-sm font-bold px-6 py-3 rounded-full transition-colors"
