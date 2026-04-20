@@ -18,10 +18,6 @@ export const metadata: Metadata = {
     siteName: "JUNGLE STUDIO",
     locale: "ja_JP",
     type: "website",
-    url: "https://www.junglestudiophoto.com",
-  },
-  alternates: {
-    canonical: "https://www.junglestudiophoto.com",
   },
 };
 
