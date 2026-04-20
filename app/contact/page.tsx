@@ -1,6 +1,16 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'お問い合わせ｜厚木市のフォトスタジオ JUNGLE STUDIO',
+  description: '神奈川県厚木市のフォトスタジオ「ジャングルスタジオ」へのお問い合わせはLINEまたはお電話で。24時間LINE受付、電話受付10時〜19時。',
+  openGraph: {
+    title: 'お問い合わせ｜JUNGLE STUDIO',
+    description: 'LINEまたはお電話でお気軽にお問い合わせください。24時間LINE受付中。',
+    url: 'https://www.junglestudiophoto.com/contact',
+  },
+  alternates: { canonical: 'https://www.junglestudiophoto.com/contact' },
+};
 
 export default function ContactPage() {
   return (
