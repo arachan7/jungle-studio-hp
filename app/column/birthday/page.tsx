@@ -62,7 +62,7 @@ export default function BirthdayColumn() {
               { name: 'エコノミープラン', price: '¥29,800', time: '約40分', data: '100枚保証', studios: '2スタジオ', costumes: '2着' },
               { name: 'プレミアムプラン', price: '¥36,800', time: '約60分', data: '150枚保証', studios: '3スタジオ', costumes: '3着' },
               { name: 'ビジネスプラン', price: '¥49,800', time: '約90分', data: '200枚保証', studios: '4スタジオ', costumes: '4着', extra: '特典：アルバム or アクリルスタンド' },
-              { name: 'ファーストプラン', price: '¥66,000', time: '約90分', data: '200枚保証（翌日納品）', studios: '選び放題', costumes: '4着＋家族', extra: '特典：アルバム＆アクリルスタンド' },
+              { name: 'ファーストプラン', price: '¥77,000', time: '約90分', data: '200枚保証（翌日納品）', studios: '選び放題', costumes: '4着＋家族', extra: '特典：アルバム＆アクリルスタンド' },
             ].map((p) => (
               <div key={p.name} className="bg-white rounded-xl p-4">
                 <p className="font-bold text-stone-800 text-sm">{p.name}</p>
