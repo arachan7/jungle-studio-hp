@@ -151,6 +151,14 @@ export default function HomePage() {
                     神奈川県厚木市旭町5丁目43-14<br />
                     パストラルASAHI 401-A
                   </dd>
+                  <a
+                    href="https://maps.google.com?q=%E3%80%92243-0014%20%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%8E%9A%E6%9C%A8%E5%B8%82%E6%97%AD%E7%94%BA%EF%BC%95%E4%B8%81%E7%9B%AE%EF%BC%94%EF%BC%93%E2%88%92%EF%BC%91%EF%BC%94%20%E3%83%91%E3%82%B9%E3%83%88%E3%83%A9%E3%83%AB%EF%BC%A1%EF%BC%B3%EF%BC%A1%EF%BC%A8%EF%BC%A9%20401-A%20%E3%82%B8%E3%83%A3%E3%83%B3%E3%82%B0%E3%83%AB%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA&ftid=0x6019ab3543bb0eeb:0xbc84ac82e4efff73&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,94286869&g_st=ic"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 mt-2 text-xs text-amber-700 hover:text-amber-900 transition-colors font-medium"
+                  >
+                    📍 Google マップで開く →
+                  </a>
                 </div>
                 <div>
                   <dt className="text-xs text-stone-400 tracking-widest mb-1">電話番号</dt>
@@ -181,17 +189,27 @@ export default function HomePage() {
                 予約する
               </a>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-md h-72">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3249.8!2d139.3629!3d35.4372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185cbde8f38f17%3A0x0!2z5paH5ZKHXODH5Yy65peF55S677yV5LiB55uu77yU77yT4oiS77yR77yE!5e0!3m2!1sja!2sjp!4v1"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="ジャングルスタジオ アクセスマップ"
-              />
+            <div>
+              <div className="rounded-2xl overflow-hidden shadow-md h-72">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3249.8!2d139.3629!3d35.4372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185cbde8f38f17%3A0x0!2z5paH5ZKHXODH5Yy65peF55S677yV5LiB55uu77yU77yT4oiS77yR77yE!5e0!3m2!1sja!2sjp!4v1"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="ジャングルスタジオ アクセスマップ"
+                />
+              </div>
+              <a
+                href="https://maps.google.com?q=%E3%80%92243-0014%20%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%8E%9A%E6%9C%A8%E5%B8%82%E6%97%AD%E7%94%BA%EF%BC%95%E4%B8%81%E7%9B%AE%EF%BC%94%EF%BC%93%E2%88%92%EF%BC%91%EF%BC%94%20%E3%83%91%E3%82%B9%E3%83%88%E3%83%A9%E3%83%AB%EF%BC%A1%EF%BC%B3%EF%BC%A1%EF%BC%A8%EF%BC%A9%20401-A%20%E3%82%B8%E3%83%A3%E3%83%B3%E3%82%B0%E3%83%AB%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA&ftid=0x6019ab3543bb0eeb:0xbc84ac82e4efff73&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,94286869&g_st=ic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-amber-700 hover:bg-amber-800 text-white text-sm font-bold transition-colors shadow-md"
+              >
+                📍 Google マップで経路を確認する
+              </a>
             </div>
           </div>
         </div>
