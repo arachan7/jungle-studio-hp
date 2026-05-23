@@ -86,7 +86,7 @@ export default function NewbornColumn() {
                   <p className="font-bold text-stone-800 text-sm">{p.name}</p>
                   {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
                 </div>
-                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
+                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data}</p>
                 <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}

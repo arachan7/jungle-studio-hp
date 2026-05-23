@@ -73,7 +73,7 @@ export default function MaternityColumn() {
             <div className="bg-white rounded-xl p-4 flex justify-between items-start flex-wrap gap-2">
               <div>
                 <p className="font-bold text-stone-800 text-sm">マタニティフォト</p>
-                <p className="text-xs text-stone-500">約30〜40分 / 1着 / 2スタジオ / 50枚保証 / 親子写真込み</p>
+                <p className="text-xs text-stone-500">約30〜40分 / 1着 / 2スタジオ / 50枚保証</p>
                 <p className="text-xs text-stone-400 mt-1">パートナー・上の子と一緒の撮影も可</p>
               </div>
               <p className="text-xl font-bold text-amber-700">¥19,800〜</p>
