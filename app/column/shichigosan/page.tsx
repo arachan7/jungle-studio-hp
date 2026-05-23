@@ -89,6 +89,54 @@ export default function ShichigosanColumn() {
         </section>
 
         <section>
+          <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>シンプルプランという選択肢</h2>
+          <div className="bg-stone-50 border-2 border-stone-200 rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-red-500 text-white text-xs font-extrabold px-3 py-1 rounded-full">🎀 当日決めたい方に！</span>
+            </div>
+            <div className="bg-white rounded-xl p-4 mb-4">
+              <p className="font-bold text-stone-800 text-sm mb-1">シンプルプラン</p>
+              <p className="text-xl font-bold text-amber-700 mb-2">¥5,000〜</p>
+              <div className="text-xs text-stone-500 space-y-1">
+                <p>撮影時間：約90〜120分</p>
+                <p>衣装：1〜4着（主役のみ）</p>
+                <p>スタジオ：3〜4スタジオ</p>
+                <p>家族・兄弟写真：何人でも自由</p>
+                <p>データ保証：0枚スタート（撮影後にご自身で選択）</p>
+                <p>主役追加：+¥2,500/人</p>
+              </div>
+            </div>
+            <div className="bg-amber-50 rounded-xl p-4 mb-4">
+              <p className="font-semibold text-stone-800 text-sm mb-2">撮影後のデータ購入（当日選択）</p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-white rounded-lg p-2 text-center">
+                  <p className="text-stone-500">美肌レタッチ 1枚</p>
+                  <p className="font-bold text-stone-800">¥3,000</p>
+                </div>
+                <div className="bg-white rounded-lg p-2 text-center">
+                  <p className="text-stone-500">美肌レタッチ 10枚</p>
+                  <p className="font-bold text-stone-800">¥25,000</p>
+                </div>
+                <div className="bg-white rounded-lg p-2 text-center">
+                  <p className="text-stone-500">美肌レタッチ 20枚</p>
+                  <p className="font-bold text-stone-800">¥45,000</p>
+                </div>
+                <div className="bg-white rounded-lg p-2 text-center">
+                  <p className="text-stone-500">全データ（光レタッチのみ）</p>
+                  <p className="font-bold text-stone-800">¥50,000</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-xs text-stone-600 space-y-1">
+              <p className="font-semibold text-stone-700 mb-1">こんな方におすすめ</p>
+              <p>✓ データ枚数を当日の雰囲気で決めたい方</p>
+              <p>✓ ご家族・きょうだい全員でたくさん撮りたい方</p>
+              <p>✓ 予算を自分でコントロールしたい方</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>七五三撮影の準備・当日の流れ</h2>
           <ol className="space-y-3 text-stone-700">
             <li className="flex gap-3"><span className="bg-amber-100 text-amber-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>オンラインで予約（24時間受付）</li>
