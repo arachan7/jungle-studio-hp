@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'マタニティフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-  description: 'マタニティフォトを神奈川県厚木市で撮るならジャングルスタジオ。妊娠中の美しい姿とお腹の大きさを最高の写真で残します。¥15,000〜。24時間オンライン予約受付中。',
+  description: 'マタニティフォトを神奈川県厚木市で撮るならジャングルスタジオ。妊娠中の美しい姿とお腹の大きさを最高の写真で残します。¥19,800〜。24時間オンライン予約受付中。',
   keywords: ['マタニティフォト', '厚木市', 'フォトスタジオ', 'マタニティ 写真', '妊婦 撮影', '妊娠 記念写真', 'マタニティ 神奈川', 'マタニティ 料金'],
   openGraph: {
     title: 'マタニティフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: '妊娠中の輝く姿を永遠に。¥15,000〜、24時間予約受付。',
+    description: '妊娠中の輝く姿を永遠に。¥19,800〜、24時間予約受付。',
     url: 'https://www.junglestudiophoto.com/column/maternity',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/maternity' },
@@ -76,7 +76,7 @@ export default function MaternityColumn() {
                 <p className="text-xs text-stone-500">約30〜40分 / 1着 / 2スタジオ / 50枚保証 / 親子写真込み</p>
                 <p className="text-xs text-stone-400 mt-1">パートナー・上の子と一緒の撮影も可</p>
               </div>
-              <p className="text-xl font-bold text-amber-700">¥15,000〜</p>
+              <p className="text-xl font-bold text-amber-700">¥19,800〜</p>
             </div>
           </div>
         </section>
@@ -109,7 +109,7 @@ export default function MaternityColumn() {
             <FaqAccordion items={[
               { q: 'マタニティフォトはいつ撮影するのがおすすめですか？', a: '妊娠7〜9ヶ月（妊娠28〜36週頃）がおすすめです。おなかが大きくふくらみ、かつ体調が比較的安定している時期です。' },
               { q: '衣装はレンタルできますか？持ち込みでも大丈夫ですか？', a: '基本1着レンタルOKです。それ以上のレンタルや、持ち込み希望の方は事前にご相談ください。' },
-              { q: 'パパや上の子も一緒に撮れますか？', a: 'はい、ご家族での写真も撮影できます。ですが、マタニティフォトは親子写真や親同士での撮影が付属しないので、別途3,000円～5,000円のオプションが必要になります。' },
+              { q: 'パパや上の子も一緒に撮れますか？', a: 'はい、ご家族での写真も撮影できます。ご家族写真は+¥4,000のオプションで追加いただけます。' },
               { q: '撮影時間はどのくらいですか？', a: '撮影は約30分〜40分が目安です。' },
             ]} />
           </div>

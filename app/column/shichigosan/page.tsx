@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: '七五三フォト完全ガイド｜厚木市のフォトスタジオ JUNGLE STUDIO',
-  description: '七五三の記念写真を神奈川県厚木市で撮るなら「ジャングルスタジオ」。3歳・5歳・7歳の七五三写真の準備・衣装・当日の流れを完全解説。スタジオ撮影の料金は¥24,800〜。24時間オンライン予約。',
+  description: '七五三の記念写真を神奈川県厚木市で撮るなら「ジャングルスタジオ」。3歳・5歳・7歳の七五三写真の準備・衣装・当日の流れを完全解説。スタジオ撮影の料金は¥25,000〜。24時間オンライン予約。',
   keywords: ['七五三', '写真', '厚木市', 'フォトスタジオ', '七五三撮影', '七五三 神奈川', '七五三 料金', '3歳 七五三', '5歳 七五三', '7歳 七五三'],
   openGraph: {
     title: '七五三フォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: '神奈川県厚木市で七五三の記念写真。¥24,800〜でプロのスタジオ撮影。24時間オンライン予約受付中。',
+    description: '神奈川県厚木市で七五三の記念写真。¥25,000〜でプロのスタジオ撮影。24時間オンライン予約受付中。',
     url: 'https://www.junglestudiophoto.com/column/shichigosan',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/shichigosan' },
@@ -71,20 +71,21 @@ export default function ShichigosanColumn() {
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオの七五三プラン</h2>
           <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
             {[
-              { name: '七五三エコノミープラン', price: '¥24,800', time: '約30〜40分', data: '50枚保証', studios: '2スタジオ' },
-              { name: '七五三プレミアムプラン', price: '¥31,800', time: '約60分', data: '75枚保証', studios: '3スタジオ' },
-              { name: '七五三ビジネスプラン', price: '¥44,800', time: '約90分', data: '100枚保証', studios: '4スタジオ', extra: '特典：アルバム or アクリルスタンド' },
-              { name: '七五三ファーストプラン', price: '¥72,000', time: '約90分', data: '150枚保証（翌日納品）', studios: '選び放題', extra: '特典：アルバム＆アクリルスタンド' },
+              { name: 'エコノミープラン', price: '¥25,000〜', time: '約40分', data: '50枚保証', studios: '2スタジオ〜', costumes: '1着' },
+              { name: 'プレミアムプラン', price: '¥30,000〜', time: '約60分', data: '80枚保証', studios: '3スタジオ〜', costumes: '1着〜', popular: true },
+              { name: 'ファーストプラン', price: '¥35,000〜', time: '約90分', data: '120枚保証', studios: '4スタジオ', costumes: '1着〜' },
             ].map((p) => (
               <div key={p.name} className="bg-white rounded-xl p-4">
-                <p className="font-bold text-stone-800 text-sm">{p.name}</p>
-                <p className="text-xs text-stone-500">{p.time} / {p.studios} / {p.data}</p>
-                {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                  {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
+                </div>
+                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
                 <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}
           </div>
-          <p className="text-xs text-stone-400 mt-2">すべて親子写真込み。主役2人以上は追加料金あり（2人目＋¥20,000〜）</p>
+          <p className="text-xs text-stone-400 mt-2">すべて親子写真込み。主役2人以上は2人目からプラン料金の50%で追加可能</p>
         </section>
 
         <section>

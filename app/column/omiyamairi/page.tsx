@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'お宮参りの記念写真ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-  description: 'お宮参りの記念写真を神奈川県厚木市で撮るならジャングルスタジオ。生後1ヶ月の赤ちゃんと家族の大切な瞬間をプロが撮影。¥19,800〜。24時間オンライン予約受付中。',
+  description: 'お宮参りの記念写真を神奈川県厚木市で撮るならジャングルスタジオ。生後1ヶ月の赤ちゃんと家族の大切な瞬間をプロが撮影。¥25,000〜。24時間オンライン予約受付中。',
   keywords: ['お宮参り', '写真', '厚木市', 'フォトスタジオ', 'お宮参り撮影', '赤ちゃん 写真', 'お宮参り 料金', '生後1ヶ月 記念写真', '神奈川 お宮参り'],
   openGraph: {
     title: 'お宮参りの記念写真ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: '生後1ヶ月の記念をプロのスタジオ写真で。¥19,800〜、24時間予約受付。',
+    description: '生後1ヶ月の記念をプロのスタジオ写真で。¥25,000〜、24時間予約受付。',
     url: 'https://www.junglestudiophoto.com/column/omiyamairi',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/omiyamairi' },
@@ -69,16 +69,22 @@ export default function OmiyamairColumn() {
 
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオのお宮参りプラン</h2>
-          <div className="bg-amber-50 rounded-2xl p-6">
-            <div className="bg-white rounded-xl p-4 flex justify-between items-start flex-wrap gap-2">
-              <div>
-                <p className="font-bold text-stone-800 text-sm">お宮参りプラン</p>
-                <p className="text-xs text-stone-500">約30〜40分 / 2スタジオ / 50枚保証 / 親子写真込み</p>
-                <p className="text-xs text-stone-400 mt-1">衣装持ち込みOK</p>
+          <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
+            {[
+              { name: 'エコノミープラン', price: '¥25,000〜', time: '約40分', data: '50枚保証', studios: '2スタジオ〜', costumes: '〜2着' },
+              { name: 'プレミアムプラン', price: '¥30,000〜', time: '約60分', data: '80枚保証', studios: '3スタジオ〜', costumes: '〜3着', popular: true },
+              { name: 'ファーストプラン', price: '¥35,000〜', time: '約90分', data: '120枚保証', studios: '4スタジオ', costumes: '〜4着' },
+            ].map((p) => (
+              <div key={p.name} className="bg-white rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                  {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
+                </div>
+                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
+                <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
-              <p className="text-xl font-bold text-amber-700">¥19,800〜</p>
-            </div>
-            <p className="text-xs text-stone-400 mt-3">延長料金：15分ごとに¥3,300（税込）</p>
+            ))}
+            <p className="text-xs text-stone-400">延長料金：15分ごとに¥3,300（税込）</p>
           </div>
         </section>
 
@@ -117,7 +123,7 @@ export default function OmiyamairColumn() {
               { q: '百日祝いと一緒に撮影できますか？', a: 'はい、お宮参り・百日祝いを同日にまとめて撮影できますので、店頭またはご予約フォームにてお伝えください。' },
               { q: '授乳・おむつ替えのスペースはありますか？', a: '専用スペースではないものの、お着替えスペースなどで対応可能です。当日スタッフへお申し付けください。' },
               { q: '赤ちゃんが泣いてしまっても大丈夫ですか？', a: '大丈夫です。泣いてしまうのもその子のありのままの姿です。スタッフが一緒にあやしながら丁寧に撮影します。泣いてしまってどうしても撮影が難しい場合は、別日に変更可能です。' },
-              { q: '家族・祖父母も一緒に写真に入れますか？', a: 'はい、3,000円の家族写真オプションを追加で、ご家族揃っての写真も撮影できます。人数が多くなる場合はスタジオ内に入りきれないこともあるため、事前にご相談ください。' },
+              { q: '家族・祖父母も一緒に写真に入れますか？', a: 'はい、+¥4,000の家族写真オプションを追加で、ご家族揃っての写真も撮影できます。人数が多くなる場合はスタジオ内に入りきれないこともあるため、事前にご相談ください。' },
             ]} />
           </div>
         </section>

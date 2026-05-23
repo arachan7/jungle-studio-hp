@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'ニューボーンフォトとは｜厚木市フォトスタジオ JUNGLE STUDIO',
-  description: 'ニューボーンフォト（新生児撮影）を神奈川県厚木市で撮るならジャングルスタジオ。生後2週間以内の赤ちゃんの奇跡の瞬間をプロが撮影。¥19,800〜。24時間オンライン予約。',
+  description: 'ニューボーンフォト（新生児撮影）を神奈川県厚木市で撮るならジャングルスタジオ。生後2週間以内の赤ちゃんの奇跡の瞬間をプロが撮影。¥25,000〜。24時間オンライン予約。',
   keywords: ['ニューボーンフォト', '新生児撮影', '厚木市', 'フォトスタジオ', 'ニューボーン 写真', '生後2週間 写真', '赤ちゃん スタジオ', '神奈川 ニューボーン'],
   openGraph: {
     title: 'ニューボーンフォトとは｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: '生後2週間以内の奇跡の瞬間を。¥19,800〜、24時間予約受付。',
+    description: '生後2週間以内の奇跡の瞬間を。¥25,000〜、24時間予約受付。',
     url: 'https://www.junglestudiophoto.com/column/newborn',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/newborn' },
@@ -75,15 +75,22 @@ export default function NewbornColumn() {
 
         <section>
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオのニューボーンフォトプラン</h2>
-          <div className="bg-amber-50 rounded-2xl p-6">
-            <div className="bg-white rounded-xl p-4 flex justify-between items-start flex-wrap gap-2">
-              <div>
-                <p className="font-bold text-stone-800 text-sm">ニューボーンフォト</p>
-                <p className="text-xs text-stone-500">約30〜40分 / 1着 / 2スタジオ / 50枚保証 / 親子写真込み</p>
-                <p className="text-xs text-amber-700 mt-1">生後14日以内の撮影推奨</p>
+          <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
+            {[
+              { name: 'エコノミープラン', price: '¥25,000〜', time: '約40分', data: '50枚保証', studios: '2スタジオ〜', costumes: '〜2着' },
+              { name: 'プレミアムプラン', price: '¥30,000〜', time: '約60分', data: '80枚保証', studios: '3スタジオ〜', costumes: '〜3着', popular: true },
+              { name: 'ファーストプラン', price: '¥35,000〜', time: '約90分', data: '120枚保証', studios: '4スタジオ', costumes: '〜4着' },
+            ].map((p) => (
+              <div key={p.name} className="bg-white rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                  {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
+                </div>
+                <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
+                <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
-              <p className="text-xl font-bold text-amber-700">¥19,800〜</p>
-            </div>
+            ))}
+            <p className="text-xs text-amber-700 font-medium">生後14日以内の撮影推奨</p>
           </div>
         </section>
 

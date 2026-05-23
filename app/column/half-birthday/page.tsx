@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'ハーフバースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-  description: 'ハーフバースデーの記念写真を神奈川県厚木市で撮るならジャングルスタジオ。生後6ヶ月の大切な瞬間をプロが撮影。¥29,800〜。24時間オンライン予約受付中。',
+  description: 'ハーフバースデーの記念写真を神奈川県厚木市で撮るならジャングルスタジオ。生後6ヶ月の大切な瞬間をプロが撮影。¥25,000〜。24時間オンライン予約受付中。',
   keywords: ['ハーフバースデー', '写真', '厚木市', 'フォトスタジオ', 'ハーフバースデー撮影', '生後6ヶ月 記念写真', '半歳 写真', '神奈川 ハーフバースデー'],
   openGraph: {
     title: 'ハーフバースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: '生後6ヶ月の記念をプロのスタジオ写真で。¥29,800〜、24時間予約受付。',
+    description: '生後6ヶ月の記念をプロのスタジオ写真で。¥25,000〜、24時間予約受付。',
     url: 'https://www.junglestudiophoto.com/column/half-birthday',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/half-birthday' },
@@ -71,15 +71,16 @@ export default function HalfBirthdayColumn() {
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオのハーフバースデープラン</h2>
           <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
             {[
-              { name: 'エコノミープラン', price: '¥29,800', time: '約40分', data: '100枚保証', studios: '2スタジオ', costumes: '2着' },
-              { name: 'プレミアムプラン', price: '¥36,800', time: '約60分', data: '150枚保証', studios: '3スタジオ', costumes: '3着' },
-              { name: 'ビジネスプラン', price: '¥49,800', time: '約90分', data: '200枚保証', studios: '4スタジオ', costumes: '4着', extra: '特典：アルバム or アクリルスタンド' },
-              { name: 'ファーストプラン', price: '¥77,000', time: '約90分', data: '200枚保証（翌日納品）', studios: '選び放題', costumes: '4着＋家族', extra: '特典：アルバム＆アクリルスタンド' },
+              { name: 'エコノミープラン', price: '¥25,000〜', time: '約40分', data: '50枚保証', studios: '2スタジオ〜', costumes: '〜2着' },
+              { name: 'プレミアムプラン', price: '¥30,000〜', time: '約60分', data: '80枚保証', studios: '3スタジオ〜', costumes: '〜3着', popular: true },
+              { name: 'ファーストプラン', price: '¥35,000〜', time: '約90分', data: '120枚保証', studios: '4スタジオ', costumes: '〜4着' },
             ].map((p) => (
               <div key={p.name} className="bg-white rounded-xl p-4">
-                <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                  {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
+                </div>
                 <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
-                {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
                 <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}
@@ -116,7 +117,7 @@ export default function HalfBirthdayColumn() {
               { q: 'ハーフバースデーはいつ撮影するのがおすすめですか？', a: '生後6ヶ月前後が目安です。首がすわり、表情も豊かになる時期でねんね期の愛らしさが凝縮されています。±1〜2ヶ月前後でも全く問題ありません。' },
               { q: 'バースデー（1歳）はいつ撮影するのがおすすめですか？', a: 'つかまり立ちができるようになった頃がおすすめです。1歳前後になると人見知りが出ることもあるため、体調の良い日を選んでください。' },
               { q: 'ハーフバースデー・バースデープランは何着衣装を着られますか？', a: '2着〜4着以上撮影できます（レンタルまたはお持ち込み）。様々なプランがございます。' },
-              { q: '家族・きょうだいと一緒に撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。親2人、子1人がベースで、家族写真は付いていますが、兄弟だけの写真や、お子様1人増えて家族写真を撮る場合は別途3,000〜5,000円オプション費用がかかります。' },
+              { q: '家族・きょうだいと一緒に撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。ご家族写真は+¥4,000のオプションで追加いただけます。' },
               { q: '持ち込み衣装はOKですか？', a: 'はい、持ち込み衣装も対応しています。お気に入りの衣装でかわいい姿を残せます。' },
               { q: '撮影データはいつもらえますか？', a: '1週間以内にLINEまたはメールにてお渡しします。ファーストプランですと、翌日納品になります。' },
             ]} />

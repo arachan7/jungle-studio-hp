@@ -5,11 +5,11 @@ import FaqAccordion from '@/components/FaqAccordion';
 
 export const metadata: Metadata = {
   title: 'バースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-  description: 'バースデー・誕生日記念写真を神奈川県厚木市で撮るならジャングルスタジオ。1歳・2歳・3歳などお誕生日の特別な瞬間をプロが撮影。¥29,800〜。24時間オンライン予約受付中。',
+  description: 'バースデー・誕生日記念写真を神奈川県厚木市で撮るならジャングルスタジオ。1歳・2歳・3歳などお誕生日の特別な瞬間をプロが撮影。¥25,000〜。24時間オンライン予約受付中。',
   keywords: ['バースデーフォト', '誕生日 写真', '厚木市', 'フォトスタジオ', '1歳 記念写真', '誕生日撮影', 'スマッシュケーキ', '神奈川 バースデー'],
   openGraph: {
     title: 'バースデーフォト完全ガイド｜厚木市フォトスタジオ JUNGLE STUDIO',
-    description: 'お誕生日の特別な瞬間をプロのスタジオ写真で。¥29,800〜、24時間予約受付。',
+    description: 'お誕生日の特別な瞬間をプロのスタジオ写真で。¥25,000〜、24時間予約受付。',
     url: 'https://www.junglestudiophoto.com/column/birthday',
   },
   alternates: { canonical: 'https://www.junglestudiophoto.com/column/birthday' },
@@ -59,15 +59,16 @@ export default function BirthdayColumn() {
           <h2 className="text-xl font-bold mb-3" style={{ fontFamily: 'serif' }}>ジャングルスタジオのバースデープラン</h2>
           <div className="bg-amber-50 rounded-2xl p-6 space-y-4">
             {[
-              { name: 'エコノミープラン', price: '¥29,800', time: '約40分', data: '100枚保証', studios: '2スタジオ', costumes: '2着' },
-              { name: 'プレミアムプラン', price: '¥36,800', time: '約60分', data: '150枚保証', studios: '3スタジオ', costumes: '3着' },
-              { name: 'ビジネスプラン', price: '¥49,800', time: '約90分', data: '200枚保証', studios: '4スタジオ', costumes: '4着', extra: '特典：アルバム or アクリルスタンド' },
-              { name: 'ファーストプラン', price: '¥77,000', time: '約90分', data: '200枚保証（翌日納品）', studios: '選び放題', costumes: '4着＋家族', extra: '特典：アルバム＆アクリルスタンド' },
+              { name: 'エコノミープラン', price: '¥25,000〜', time: '約40分', data: '50枚保証', studios: '2スタジオ〜', costumes: '〜2着' },
+              { name: 'プレミアムプラン', price: '¥30,000〜', time: '約60分', data: '80枚保証', studios: '3スタジオ〜', costumes: '〜3着', popular: true },
+              { name: 'ファーストプラン', price: '¥35,000〜', time: '約90分', data: '120枚保証', studios: '4スタジオ', costumes: '〜4着' },
             ].map((p) => (
               <div key={p.name} className="bg-white rounded-xl p-4">
-                <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold text-stone-800 text-sm">{p.name}</p>
+                  {p.popular && <span className="text-[10px] font-extrabold bg-red-500 text-white px-2 py-0.5 rounded-full">⭐ 一番人気</span>}
+                </div>
                 <p className="text-xs text-stone-500">{p.time} / 衣装{p.costumes} / {p.studios} / {p.data} / 親子写真込み</p>
-                {p.extra && <p className="text-xs text-amber-700 mt-1">★ {p.extra}</p>}
                 <p className="text-xl font-bold text-amber-700 mt-2">{p.price}</p>
               </div>
             ))}
@@ -84,7 +85,7 @@ export default function BirthdayColumn() {
               { q: 'スマッシュケーキはできますか？', a: '今の所対応していないですが、今後実装予定になります。' },
               { q: 'バルーンや小物などの持ち込みはできますか？', a: '無料で持ち込み可能です（名前ボード・バルーン・髪飾りなど）。溶けやすいチョコレートや飴など衣装を汚す可能性のあるものはご遠慮ください。' },
               { q: 'きょうだいをそれぞれ主役で撮影できますか？', a: '基本プランは主役のお子様1名分の内容です。それぞれのお子様のソロ撮影は有料オプションまたはツインプランをお選びください。' },
-              { q: '家族・きょうだいとの写真も撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。親2人、子1人がベースで、家族写真は付いています。ですが、兄弟だけの写真や、お子様1人増えて家族写真を撮る場合は別途3,000〜5,000円オプション費用がかかります。' },
+              { q: '家族・きょうだいとの写真も撮れますか？', a: 'どのプランでもご家族との撮影は対応しています。ご家族写真は+¥4,000のオプションで追加いただけます。' },
             ]} />
           </div>
         </section>
