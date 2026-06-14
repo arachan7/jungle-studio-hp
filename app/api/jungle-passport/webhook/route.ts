@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import { getDb } from '@/app/lib/db';
 import { junglePassports, webhookEvents } from '@/app/lib/schema';
 import { eq } from 'drizzle-orm';
+import { cleanEnv } from '@/app/lib/env';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,11 +14,11 @@ export async function POST(request: Request) {
     return new Response('No signature', { status: 400 });
   }
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const stripe = new Stripe(cleanEnv('STRIPE_SECRET_KEY'));
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(body, sig, cleanEnv('STRIPE_WEBHOOK_SECRET'));
   } catch {
     return new Response('Invalid signature', { status: 400 });
   }

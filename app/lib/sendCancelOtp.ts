@@ -1,17 +1,12 @@
 import nodemailer from 'nodemailer';
-
-function getRequiredEnv(key: string): string {
-  const v = process.env[key];
-  if (!v) throw new Error(`${key} is required`);
-  return v;
-}
+import { cleanEnv } from './env';
 
 /** 解約用ワンタイムコードを登録メールアドレスに送信する（Gmail SMTP） */
 export async function sendCancelOtpEmail(to: string, code: string) {
-  const gmailUser = getRequiredEnv('GMAIL_USER');
+  const gmailUser = cleanEnv('GMAIL_USER');
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user: gmailUser, pass: getRequiredEnv('GMAIL_APP_PASSWORD') },
+    auth: { user: gmailUser, pass: cleanEnv('GMAIL_APP_PASSWORD') },
   });
 
   await transporter.sendMail({

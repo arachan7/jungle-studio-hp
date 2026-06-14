@@ -4,6 +4,7 @@ import { junglePassports } from '@/app/lib/schema';
 import { eq } from 'drizzle-orm';
 import { verifyOtp } from '@/app/lib/cancelOtp';
 import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
+import { cleanEnv } from '@/app/lib/env';
 
 // 本人確認コード（OTP）を検証したうえで契約状況を返す。
 // confirm=true かつ active のときのみ実際に解約（cancel_at_period_end）を行う。
@@ -85,7 +86,7 @@ export async function POST(request: Request) {
     return Response.json({ error: '契約情報が見つかりません' }, { status: 500 });
   }
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const stripe = new Stripe(cleanEnv('STRIPE_SECRET_KEY'));
   const sub = (await stripe.subscriptions.update(passport.stripeSubscriptionId, {
     cancel_at_period_end: true,
   })) as unknown as { current_period_end: number };
