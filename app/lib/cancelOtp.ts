@@ -1,13 +1,12 @@
 import { createHash, randomInt, timingSafeEqual } from 'crypto';
 import { neon } from '@neondatabase/serverless';
+import { getDbUrl } from './db';
 
 const OTP_TTL_SECONDS = 10 * 60; // 10分で失効
 const MAX_ATTEMPTS = 5; // コード入力の試行上限
 
 function getSql() {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error('DATABASE_URL is required');
-  return neon(url);
+  return neon(getDbUrl());
 }
 
 /** コードをDB漏洩対策のペッパー付きでハッシュ化（平文は保存しない） */

@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless';
+import { getDbUrl } from './db';
 
 /**
  * DBベースの固定ウィンドウ・レートリミッタ。
@@ -12,9 +13,7 @@ export async function checkRateLimit(
   limit: number,
   windowSeconds: number,
 ): Promise<boolean> {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error('DATABASE_URL is required');
-  const sql = neon(url);
+  const sql = neon(getDbUrl());
 
   const rows = (await sql`
     INSERT INTO passport_rate_limits (key, count, window_start)
