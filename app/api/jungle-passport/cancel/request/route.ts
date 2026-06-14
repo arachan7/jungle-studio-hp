@@ -1,6 +1,6 @@
 import { getDb } from '@/app/lib/db';
 import { junglePassports } from '@/app/lib/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { issueOtp } from '@/app/lib/cancelOtp';
 import { sendCancelOtpEmail } from '@/app/lib/sendCancelOtp';
 import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   const rows = await db
     .select({ id: junglePassports.id })
     .from(junglePassports)
-    .where(eq(junglePassports.email, normEmail));
+    .where(and(eq(junglePassports.email, normEmail), eq(junglePassports.name, normName)));
 
   // 登録メールが存在する場合のみコードを発行・送信する（コードは本人の受信箱にしか届かない）。
   // 未登録でも応答は変えず、メール存在の判定を防ぐ。

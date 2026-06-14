@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import { getDb } from '@/app/lib/db';
 import { junglePassports } from '@/app/lib/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { verifyOtp } from '@/app/lib/cancelOtp';
 import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
 import { cleanEnv } from '@/app/lib/env';
@@ -27,7 +27,8 @@ export async function POST(request: Request) {
   // レート制限: コード検証の総当たり対策（IP単位）
   const ip = getClientIp(request);
   const ipOk = await checkRateLimit(`cancel:ip:${ip}`, 20, 10 * 60);
-  if (!ipOk) {
+  const mailOk = await checkRateLimit(`cancel:mail:${normEmail}`, 8, 10 * 60);
+  if (!ipOk || !mailOk) {
     return Response.json(
       { error: '試行回数が上限に達しました。しばらく経ってからお試しください' },
       { status: 429 },
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
   const rows = await db
     .select()
     .from(junglePassports)
-    .where(eq(junglePassports.email, normEmail));
+    .where(and(eq(junglePassports.email, normEmail), eq(junglePassports.name, normName)));
 
   if (rows.length === 0) {
     return Response.json({ error: '登録情報が見つかりません' }, { status: 404 });
