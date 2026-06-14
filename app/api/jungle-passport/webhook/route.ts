@@ -25,15 +25,15 @@ export async function POST(request: Request) {
 
   const db = getDb();
 
-  // べき等性: 同一イベントIDを記録できなければ（=既処理）何もせず終了。
-  // Stripeはイベントを複数回・順不同で配信し得るため、二重処理を防ぐ。
-  const inserted = await db
-    .insert(webhookEvents)
-    .values({ eventId: event.id })
-    .onConflictDoNothing({ target: webhookEvents.eventId })
-    .returning({ eventId: webhookEvents.eventId });
+  // べき等性: 既に処理済みのイベントはスキップ。
+  // 記録は「処理が成功した後」に行う（処理途中で失敗した場合は再送で再処理させ、
+  // 記録だけ先行して処理が欠落するのを防ぐ）。ハンドラ自体も upsert / 条件付き更新で冪等。
+  const seen = await db
+    .select({ eventId: webhookEvents.eventId })
+    .from(webhookEvents)
+    .where(eq(webhookEvents.eventId, event.id));
 
-  if (inserted.length === 0) {
+  if (seen.length > 0) {
     return new Response('OK');
   }
 
@@ -124,6 +124,12 @@ export async function POST(request: Request) {
       .set({ status: 'expired', expiresAt: new Date() })
       .where(eq(junglePassports.stripeSubscriptionId, sub.id));
   }
+
+  // 処理成功後にイベントIDを記録（次回以降の再送はスキップされる）
+  await db
+    .insert(webhookEvents)
+    .values({ eventId: event.id })
+    .onConflictDoNothing({ target: webhookEvents.eventId });
 
   return new Response('OK');
 }
