@@ -84,9 +84,12 @@ export async function POST(request: Request) {
       id: string;
       status: string;
       cancel_at_period_end: boolean;
-      current_period_end: number;
+      current_period_end?: number;
+      items?: { data?: { current_period_end?: number }[] };
       trial_end: number | null;
     };
+    // current_period_end はAPI更新でトップレベル→items配下へ移動。両対応。
+    const periodEnd = sub.current_period_end ?? sub.items?.data?.[0]?.current_period_end ?? 0;
 
     const rows = await db
       .select({ id: junglePassports.id, status: junglePassports.status })
@@ -100,7 +103,7 @@ export async function POST(request: Request) {
 
     if (sub.status === 'active' && sub.cancel_at_period_end && passport.status === 'active') {
       // 解約予約: 期間満了日まで有効
-      const expiresAt = new Date(sub.current_period_end * 1000);
+      const expiresAt = new Date(periodEnd * 1000);
       await db
         .update(junglePassports)
         .set({ status: 'cancelled', cancelledAt: now, expiresAt })

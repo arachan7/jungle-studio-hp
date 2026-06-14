@@ -87,11 +87,21 @@ export async function POST(request: Request) {
   }
 
   const stripe = new Stripe(cleanEnv('STRIPE_SECRET_KEY'));
-  const sub = (await stripe.subscriptions.update(passport.stripeSubscriptionId, {
+  const sub = await stripe.subscriptions.update(passport.stripeSubscriptionId, {
     cancel_at_period_end: true,
-  })) as unknown as { current_period_end: number };
+  });
 
-  const expiresAt = new Date(sub.current_period_end * 1000);
+  // Stripe API更新で current_period_end はトップレベルから items 配下へ移動した。
+  // 新旧どちらの配置でも拾えるようにフォールバックする。
+  const s = sub as unknown as {
+    current_period_end?: number;
+    items?: { data?: { current_period_end?: number }[] };
+  };
+  const periodEnd = s.current_period_end ?? s.items?.data?.[0]?.current_period_end;
+  if (!periodEnd) {
+    return Response.json({ error: '解約日の取得に失敗しました' }, { status: 500 });
+  }
+  const expiresAt = new Date(periodEnd * 1000);
 
   await db
     .update(junglePassports)
