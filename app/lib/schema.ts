@@ -31,7 +31,8 @@ export const webhookEvents = pgTable('webhook_events', {
 });
 
 // 固定ウィンドウのレートリミット（サーバーレス間で共有するためDBに保持）
-export const rateLimits = pgTable('rate_limits', {
+// 共有DBに別用途の rate_limits が既存のため、衝突回避で専用名にしている
+export const rateLimits = pgTable('passport_rate_limits', {
   key: text('key').primaryKey(),
   count: integer('count').notNull().default(0),
   windowStart: timestamp('window_start').notNull(),

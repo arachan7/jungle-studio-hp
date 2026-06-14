@@ -17,15 +17,15 @@ export async function checkRateLimit(
   const sql = neon(url);
 
   const rows = (await sql`
-    INSERT INTO rate_limits (key, count, window_start)
+    INSERT INTO passport_rate_limits (key, count, window_start)
     VALUES (${key}, 1, now())
     ON CONFLICT (key) DO UPDATE SET
       count = CASE
-        WHEN rate_limits.window_start < now() - make_interval(secs => ${windowSeconds})
-        THEN 1 ELSE rate_limits.count + 1 END,
+        WHEN passport_rate_limits.window_start < now() - make_interval(secs => ${windowSeconds}::int)
+        THEN 1 ELSE passport_rate_limits.count + 1 END,
       window_start = CASE
-        WHEN rate_limits.window_start < now() - make_interval(secs => ${windowSeconds})
-        THEN now() ELSE rate_limits.window_start END
+        WHEN passport_rate_limits.window_start < now() - make_interval(secs => ${windowSeconds}::int)
+        THEN now() ELSE passport_rate_limits.window_start END
     RETURNING count;
   `) as { count: number }[];
 

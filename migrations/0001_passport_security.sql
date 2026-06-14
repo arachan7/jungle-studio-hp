@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS webhook_events (
 );
 
 -- 固定ウィンドウのレートリミット（サーバーレス間で共有）
-CREATE TABLE IF NOT EXISTS rate_limits (
+-- 共有DBに別用途の rate_limits が既存のため、衝突回避で専用名 passport_rate_limits を使う
+CREATE TABLE IF NOT EXISTS passport_rate_limits (
   key           TEXT PRIMARY KEY,
   count         INTEGER NOT NULL DEFAULT 0,
   window_start  TIMESTAMP NOT NULL

@@ -23,10 +23,10 @@ export async function issueOtp(email: string): Promise<string> {
   const sql = getSql();
   await sql`
     INSERT INTO cancel_otps (email, code_hash, expires_at, attempts, created_at)
-    VALUES (${email}, ${codeHash}, now() + make_interval(secs => ${OTP_TTL_SECONDS}), 0, now())
+    VALUES (${email}, ${codeHash}, now() + make_interval(secs => ${OTP_TTL_SECONDS}::int), 0, now())
     ON CONFLICT (email) DO UPDATE SET
       code_hash = ${codeHash},
-      expires_at = now() + make_interval(secs => ${OTP_TTL_SECONDS}),
+      expires_at = now() + make_interval(secs => ${OTP_TTL_SECONDS}::int),
       attempts = 0,
       created_at = now();
   `;
