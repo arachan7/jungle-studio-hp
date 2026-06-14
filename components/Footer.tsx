@@ -47,6 +47,9 @@ export default function Footer() {
 
         <div className="border-t border-stone-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-stone-500">© 2026 Jungle Studio. All rights reserved.</p>
+          <Link href="/jungle-passport/cancel" className="text-xs text-stone-600 hover:text-stone-400 transition-colors">
+            ジャングルパスポート解約
+          </Link>
           <a
             href="https://studio-app-two.vercel.app/"
             target="_blank"
