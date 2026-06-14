@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 import { getDb } from '@/app/lib/db';
-import { junglePassports } from '@/app/lib/schema';
+import { junglePassports, webhookEvents } from '@/app/lib/schema';
 import { eq } from 'drizzle-orm';
 
 export const dynamic = 'force-dynamic';
@@ -23,6 +23,18 @@ export async function POST(request: Request) {
   }
 
   const db = getDb();
+
+  // べき等性: 同一イベントIDを記録できなければ（=既処理）何もせず終了。
+  // Stripeはイベントを複数回・順不同で配信し得るため、二重処理を防ぐ。
+  const inserted = await db
+    .insert(webhookEvents)
+    .values({ eventId: event.id })
+    .onConflictDoNothing({ target: webhookEvents.eventId })
+    .returning({ eventId: webhookEvents.eventId });
+
+  if (inserted.length === 0) {
+    return new Response('OK');
+  }
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
@@ -53,15 +65,15 @@ export async function POST(request: Request) {
         trialStartAt: now,
         trialEndAt: trialEnd,
       })
+      // conflict時は status / trial日付 を上書きしない。
+      // checkout.session.completed が遅延・再配信され、subscription.updated で
+      // すでに trial→active へ進んだ後に届いても、無料期間や課金状態を巻き戻さないため。
       .onConflictDoUpdate({
         target: junglePassports.email,
         set: {
           plan,
           stripeCustomerId: customerId,
           stripeSubscriptionId: subscriptionId,
-          status: initialStatus,
-          trialStartAt: now,
-          trialEndAt: trialEnd,
         },
       });
   }
@@ -85,17 +97,21 @@ export async function POST(request: Request) {
     const passport = rows[0];
     const now = new Date();
 
-    if (sub.status === 'active' && passport.status === 'trial') {
-      await db
-        .update(junglePassports)
-        .set({ status: 'active' })
-        .where(eq(junglePassports.id, passport.id));
-    } else if (sub.cancel_at_period_end && passport.status === 'active') {
+    if (sub.status === 'active' && sub.cancel_at_period_end && passport.status === 'active') {
+      // 解約予約: 期間満了日まで有効
       const expiresAt = new Date(sub.current_period_end * 1000);
       await db
         .update(junglePassports)
         .set({ status: 'cancelled', cancelledAt: now, expiresAt })
         .where(eq(junglePassports.id, passport.id));
+    } else if (sub.status === 'active' && !sub.cancel_at_period_end) {
+      // 無料期間終了で課金開始（trial→active）、または解約予約の取り消し（cancelled→active）
+      if (passport.status === 'trial' || passport.status === 'cancelled') {
+        await db
+          .update(junglePassports)
+          .set({ status: 'active', cancelledAt: null, expiresAt: null })
+          .where(eq(junglePassports.id, passport.id));
+      }
     }
   }
 
