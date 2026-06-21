@@ -3,7 +3,7 @@ import { verifySessionFromRequest } from '@/lib/editorAuth';
 
 const OWNER = 'arachan7';
 const REPO = 'jungle-studio-hp';
-const BRANCH = 'main';
+const BRANCH = 'master';
 
 // 編集を許可するファイルのホワイトリスト
 const ALLOWED_FILES = new Set<string>([

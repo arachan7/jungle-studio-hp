@@ -3,7 +3,7 @@ import { verifySessionFromRequest } from '@/lib/editorAuth';
 
 const OWNER = 'arachan7';
 const REPO = 'jungle-studio-hp';
-const BRANCH = 'main';
+const BRANCH = 'master';
 
 const ALLOWED_TYPES: Record<string, string> = {
   'image/jpeg': 'jpg',
