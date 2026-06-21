@@ -71,7 +71,7 @@ export default function EditableImage({
       if (typeof window !== 'undefined' && window.parent !== window) {
         window.parent.postMessage(
           { type: 'eid-change', eid, changeType: 'image', value: data.path },
-          '*',
+          window.location.origin,
         );
       }
     } finally {

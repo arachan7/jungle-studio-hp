@@ -37,7 +37,7 @@ export default function EditableText({
     if (typeof window !== 'undefined' && window.parent !== window) {
       window.parent.postMessage(
         { type: 'eid-change', eid, changeType: 'text', value },
-        '*',
+        window.location.origin,
       );
     }
   };

@@ -99,6 +99,7 @@ function Editor() {
   // iframe からの変更通知を受信
   useEffect(() => {
     const handler = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return;
       const data = e.data;
       if (!data || data.type !== 'eid-change') return;
       const { eid, changeType, value } = data as {
