@@ -7,16 +7,17 @@ type Change = { type: 'text' | 'image'; value: string };
 // 編集対象ページ（表示パス → TSXファイルパス）
 const PAGES: { label: string; path: string; file: string }[] = [
   { label: 'トップ', path: '/', file: 'app/components/HomeContent.tsx' },
-  { label: 'FAQ', path: '/faq', file: 'app/faq/page.tsx' },
-  { label: 'ご利用の流れ', path: '/flow', file: 'app/flow/page.tsx' },
-  { label: ' 撮影のコツ', path: '/tips', file: 'app/tips/page.tsx' },
-  { label: 'コラム: 七五三', path: '/column/shichigosan', file: 'app/column/shichigosan/page.tsx' },
-  { label: 'コラム: ハーフバースデー', path: '/column/half-birthday', file: 'app/column/half-birthday/page.tsx' },
-  { label: 'コラム: お宮参り', path: '/column/omiyamairi', file: 'app/column/omiyamairi/page.tsx' },
-  { label: 'コラム: バースデー', path: '/column/birthday', file: 'app/column/birthday/page.tsx' },
-  { label: 'コラム: 卒入学', path: '/column/nyuugaku', file: 'app/column/nyuugaku/page.tsx' },
-  { label: 'コラム: マタニティ', path: '/column/maternity', file: 'app/column/maternity/page.tsx' },
-  { label: 'コラム: ニューボーン', path: '/column/newborn', file: 'app/column/newborn/page.tsx' },
+  { label: 'FAQ', path: '/faq', file: 'app/faq/FaqContent.tsx' },
+  { label: 'ご利用の流れ', path: '/flow', file: 'app/flow/FlowContent.tsx' },
+  { label: ' 撮影のコツ', path: '/tips', file: 'app/tips/TipsContent.tsx' },
+  { label: 'コラム: 七五三', path: '/column/shichigosan', file: 'app/column/shichigosan/ColumnContent.tsx' },
+  { label: 'コラム: ハーフバースデー', path: '/column/half-birthday', file: 'app/column/half-birthday/ColumnContent.tsx' },
+  { label: 'コラム: お宮参り', path: '/column/omiyamairi', file: 'app/column/omiyamairi/ColumnContent.tsx' },
+  { label: 'コラム: バースデー', path: '/column/birthday', file: 'app/column/birthday/ColumnContent.tsx' },
+  { label: 'コラム: 卒入学', path: '/column/nyuugaku', file: 'app/column/nyuugaku/ColumnContent.tsx' },
+  { label: 'コラム: マタニティ', path: '/column/maternity', file: 'app/column/maternity/ColumnContent.tsx' },
+  { label: 'コラム: ニューボーン', path: '/column/newborn', file: 'app/column/newborn/ColumnContent.tsx' },
+  { label: 'ニュース: グランドオープン', path: '/news/grand-open', file: 'app/news/grand-open/NewsContent.tsx' },
 ];
 
 function pageToFile(path: string): string {
@@ -166,7 +167,7 @@ function Editor() {
   };
 
   const fileSupported = useMemo(
-    () => pageToFile(currentPath) === 'app/components/HomeContent.tsx',
+    () => pageToFile(currentPath) !== '',
     [currentPath],
   );
 

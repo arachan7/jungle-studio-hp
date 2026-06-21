@@ -8,16 +8,23 @@ const BRANCH = 'master';
 // 編集を許可するファイルのホワイトリスト
 const ALLOWED_FILES = new Set<string>([
   'app/components/HomeContent.tsx',
-  'app/page.tsx',
-  'app/faq/page.tsx',
-  'app/flow/page.tsx',
-  'app/tips/page.tsx',
+  'app/faq/FaqContent.tsx',
+  'app/flow/FlowContent.tsx',
+  'app/tips/TipsContent.tsx',
+  'app/column/shichigosan/ColumnContent.tsx',
+  'app/column/half-birthday/ColumnContent.tsx',
+  'app/column/birthday/ColumnContent.tsx',
+  'app/column/omiyamairi/ColumnContent.tsx',
+  'app/column/newborn/ColumnContent.tsx',
+  'app/column/maternity/ColumnContent.tsx',
+  'app/column/nyuugaku/ColumnContent.tsx',
+  'app/news/grand-open/NewsContent.tsx',
 ]);
 
-// app/column/*/page.tsx を許可
+// app/column/*/ColumnContent.tsx を許可
 function isAllowedFile(filePath: string): boolean {
   if (ALLOWED_FILES.has(filePath)) return true;
-  if (/^app\/column\/[a-z0-9-]+\/page\.tsx$/.test(filePath)) return true;
+  if (/^app\/column\/[a-z0-9-]+\/ColumnContent\.tsx$/.test(filePath)) return true;
   return false;
 }
 

@@ -3,7 +3,7 @@
 import { useEditMode } from './EditModeContext';
 import type { CSSProperties } from 'react';
 
-type Tag = 'p' | 'h1' | 'h2' | 'h3' | 'span' | 'dd';
+type Tag = 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'span' | 'dd' | 'dt' | 'li' | 'div';
 
 type Props = {
   eid: string;
