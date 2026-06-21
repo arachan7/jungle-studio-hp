@@ -1,23 +1,15 @@
 import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { generateToken, EDITOR_COOKIE_NAME } from '@/lib/editorAuth';
+import { getClientIp, verifySameOrigin } from '@/lib/editorSecurity';
+import { checkRateLimit } from '@/app/lib/rateLimit';
 
-// IP 別のレート制限（失敗5回で30分ロック）。サーバープロセス内のメモリで管理。
-const rateLimit = new Map<string, { count: number; lockedUntil: number }>();
-
-const MAX_ATTEMPTS = 5;
-const LOCK_MS = 30 * 60 * 1000; // 30分
-
-function getClientIp(req: Request): string {
-  const fwd = req.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  return req.headers.get('x-real-ip') ?? 'unknown';
-}
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCK_WINDOW_SECONDS = 30 * 60;
 
 function timingSafeEqualStr(a: string, b: string): boolean {
   const ab = Buffer.from(a, 'utf8');
   const bb = Buffer.from(b, 'utf8');
-  // 長さが異なる場合でもタイミング差を抑えるためダミー比較を行う
   if (ab.length !== bb.length) {
     crypto.timingSafeEqual(ab, ab);
     return false;
@@ -26,30 +18,19 @@ function timingSafeEqualStr(a: string, b: string): boolean {
 }
 
 export async function POST(req: Request) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword || !process.env.EDITOR_SECRET) {
-    return Response.json(
-      { error: 'サーバー設定が未完了です（環境変数が不足しています）' },
-      { status: 500 },
-    );
+  if (!verifySameOrigin(req)) {
+    return Response.json({ error: 'Invalid request origin' }, { status: 403 });
   }
 
-  const ip = getClientIp(req);
-  const now = Date.now();
-  const entry = rateLimit.get(ip);
-
-  if (entry && entry.lockedUntil > now) {
-    const minutes = Math.ceil((entry.lockedUntil - now) / 60000);
-    return Response.json(
-      { error: `試行回数が上限に達しました。約${minutes}分後にお試しください` },
-      { status: 429 },
-    );
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword || !process.env.EDITOR_SECRET) {
+    return Response.json({ error: 'Editor is not configured' }, { status: 500 });
   }
 
   let password = '';
   try {
-    const body = (await req.json()) as { password?: string };
-    password = body.password ?? '';
+    const body = (await req.json()) as { password?: unknown };
+    password = typeof body.password === 'string' ? body.password : '';
   } catch {
     password = '';
   }
@@ -57,18 +38,17 @@ export async function POST(req: Request) {
   const ok = password.length > 0 && timingSafeEqualStr(password, adminPassword);
 
   if (!ok) {
-    const prev = entry && entry.lockedUntil <= now ? { count: 0, lockedUntil: 0 } : entry;
-    const count = (prev?.count ?? 0) + 1;
-    if (count >= MAX_ATTEMPTS) {
-      rateLimit.set(ip, { count, lockedUntil: now + LOCK_MS });
-    } else {
-      rateLimit.set(ip, { count, lockedUntil: 0 });
+    const ip = getClientIp(req);
+    const allowed = await checkRateLimit(
+      `editor_auth_fail:${ip}`,
+      MAX_FAILED_ATTEMPTS,
+      LOCK_WINDOW_SECONDS,
+    );
+    if (!allowed) {
+      return Response.json({ error: 'Too many login attempts' }, { status: 429 });
     }
-    return Response.json({ error: 'パスワードが正しくありません' }, { status: 401 });
+    return Response.json({ error: 'Invalid password' }, { status: 401 });
   }
-
-  // 成功: カウンタをリセットしてセッション Cookie を発行
-  rateLimit.delete(ip);
 
   const token = generateToken();
   const cookieStore = await cookies();
@@ -77,7 +57,7 @@ export async function POST(req: Request) {
     secure: true,
     sameSite: 'lax',
     path: '/',
-    maxAge: 8 * 60 * 60, // 8時間
+    maxAge: 8 * 60 * 60,
   });
 
   return Response.json({ ok: true });

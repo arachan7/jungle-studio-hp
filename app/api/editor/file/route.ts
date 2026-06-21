@@ -1,11 +1,13 @@
 import { Octokit } from '@octokit/rest';
 import { verifySessionFromRequest } from '@/lib/editorAuth';
+import { verifySameOrigin } from '@/lib/editorSecurity';
 
 const OWNER = 'arachan7';
 const REPO = 'jungle-studio-hp';
 const BRANCH = 'master';
+const MAX_CHANGES = 100;
+const MAX_TEXT_LENGTH = 10_000;
 
-// 編集を許可するファイルのホワイトリスト
 const ALLOWED_FILES = new Set<string>([
   'app/components/HomeContent.tsx',
   'app/faq/FaqContent.tsx',
@@ -21,23 +23,36 @@ const ALLOWED_FILES = new Set<string>([
   'app/news/grand-open/NewsContent.tsx',
 ]);
 
-// app/column/*/ColumnContent.tsx を許可
+type Change = { eid: string; type: 'text' | 'image'; value: string };
+
 function isAllowedFile(filePath: string): boolean {
   if (ALLOWED_FILES.has(filePath)) return true;
-  if (/^app\/column\/[a-z0-9-]+\/ColumnContent\.tsx$/.test(filePath)) return true;
-  return false;
+  return /^app\/column\/[a-z0-9-]+\/ColumnContent\.tsx$/.test(filePath);
 }
 
-type Change = { eid: string; type: 'text' | 'image'; value: string };
+function isValidEid(eid: string): boolean {
+  return /^[a-zA-Z0-9_-]{1,80}$/.test(eid);
+}
+
+function isValidImagePath(value: string): boolean {
+  return /^\/[a-zA-Z0-9_-]+-\d+\.(jpg|png|webp)$/.test(value);
+}
+
+function normalizeChange(input: unknown): Change | null {
+  if (!input || typeof input !== 'object') return null;
+  const raw = input as { eid?: unknown; type?: unknown; value?: unknown };
+  if (typeof raw.eid !== 'string' || !isValidEid(raw.eid)) return null;
+  if (raw.type !== 'text' && raw.type !== 'image') return null;
+  if (typeof raw.value !== 'string') return null;
+  if (raw.type === 'text' && raw.value.length > MAX_TEXT_LENGTH) return null;
+  if (raw.type === 'image' && !isValidImagePath(raw.value)) return null;
+  return { eid: raw.eid, type: raw.type, value: raw.value };
+}
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-/**
- * {/* EDITABLE:eid:start *​/} ... {/* EDITABLE:eid:end *​/} の範囲を取得する。
- * 戻り値は [マーカー間本文の開始index, 終了index]（マーカー自身は含まない）。
- */
 function findBlock(
   source: string,
   eid: string,
@@ -50,33 +65,18 @@ function findBlock(
   const blockStart = startMatch.index + startMatch[0].length;
   const endMatch = endRe.exec(source.slice(blockStart));
   if (!endMatch) return null;
-  const blockEnd = blockStart + endMatch.index;
-  return { start: blockStart, end: blockEnd };
+  return { start: blockStart, end: blockStart + endMatch.index };
 }
 
-/**
- * テキスト値を JSX の文字列リテラル children として安全な形へ変換する。
- * 改行は {'\n'} 表現ではなく、JSX 式コンテナで安全に埋め込む。
- * 中括弧・タグ等の特殊文字は JSX 式 {"..."} に包んでエスケープする。
- */
 function toJsxTextChildren(value: string): string {
-  // innerText 由来の改行を <br /> に変換しつつ、各テキスト断片は {"..."} で安全に包む。
-  const lines = value.split('\n');
-  const parts = lines.map((line) => {
-    if (line.length === 0) return '';
-    const escaped = line.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-    return `{"${escaped}"}`;
-  });
-  return parts.join('<br />');
+  return value
+    .split('\n')
+    .map((line) => (line.length === 0 ? '' : `{${JSON.stringify(line)}}`))
+    .join('<br />');
 }
 
-/**
- * EditableText の children（マーカー間）を置換する。
- * <EditableText ...> と </EditableText> の間を新しいテキストに差し替える。
- */
 function replaceTextInBlock(block: string, value: string): string | null {
-  const openRe = /<EditableText\b[^>]*>/;
-  const open = openRe.exec(block);
+  const open = /<EditableText\b[^>]*>/.exec(block);
   if (!open) return null;
   const childrenStart = open.index + open[0].length;
   const closeIdx = block.indexOf('</EditableText>', childrenStart);
@@ -84,54 +84,53 @@ function replaceTextInBlock(block: string, value: string): string | null {
 
   const before = block.slice(0, childrenStart);
   const after = block.slice(closeIdx);
-  const newChildren = `\n        ${toJsxTextChildren(value)}\n      `;
-  return before + newChildren + after;
+  return `${before}\n        ${toJsxTextChildren(value)}\n      ${after}`;
 }
 
-/**
- * EditableImage の src="..." を置換する。
- */
 function replaceImageInBlock(block: string, value: string): string | null {
   const tagRe = /<EditableImage\b[^>]*?\bsrc=("[^"]*"|\{[^}]*\})/;
   const m = tagRe.exec(block);
   if (!m) return null;
-  const srcAttr = m[1];
-  const newSrc = `"${value}"`;
-  const replaced = block.replace(srcAttr, newSrc);
-  return replaced;
+  return block.replace(m[1], JSON.stringify(value));
 }
 
 export async function POST(req: Request) {
+  if (!verifySameOrigin(req)) {
+    return Response.json({ error: 'Invalid request origin' }, { status: 403 });
+  }
   if (!verifySessionFromRequest(req)) {
-    return Response.json({ error: '認証が必要です' }, { status: 401 });
+    return Response.json({ error: 'Authentication required' }, { status: 401 });
   }
 
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
-    return Response.json({ error: 'GITHUB_TOKEN が未設定です' }, { status: 500 });
+    return Response.json({ error: 'GITHUB_TOKEN is not configured' }, { status: 500 });
   }
 
-  let body: { changes?: Change[]; filePath?: string };
+  let body: { changes?: unknown; filePath?: unknown };
   try {
-    body = (await req.json()) as { changes?: Change[]; filePath?: string };
+    body = (await req.json()) as { changes?: unknown; filePath?: unknown };
   } catch {
-    return Response.json({ error: '不正なリクエストです' }, { status: 400 });
+    return Response.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  const filePath = body.filePath ?? '';
-  const changes = Array.isArray(body.changes) ? body.changes : [];
+  const filePath = typeof body.filePath === 'string' ? body.filePath : '';
+  const rawChanges = Array.isArray(body.changes) ? body.changes : [];
+  const changes = rawChanges.map(normalizeChange);
 
   if (!isAllowedFile(filePath)) {
-    return Response.json({ error: '許可されていないファイルです' }, { status: 403 });
+    return Response.json({ error: 'File is not editable' }, { status: 403 });
   }
-  if (changes.length === 0) {
-    return Response.json({ error: '変更がありません' }, { status: 400 });
+  if (rawChanges.length === 0 || rawChanges.length > MAX_CHANGES) {
+    return Response.json({ error: 'Invalid changes' }, { status: 400 });
+  }
+  if (changes.some((change) => change === null)) {
+    return Response.json({ error: 'Invalid change payload' }, { status: 400 });
   }
 
   const octokit = new Octokit({ auth: token });
 
   try {
-    // 現在のファイル内容と sha を取得
     const res = await octokit.repos.getContent({
       owner: OWNER,
       repo: REPO,
@@ -139,19 +138,20 @@ export async function POST(req: Request) {
       ref: BRANCH,
     });
     if (Array.isArray(res.data) || !('content' in res.data)) {
-      return Response.json({ error: 'ファイルを取得できませんでした' }, { status: 502 });
+      return Response.json({ error: 'Unable to fetch file' }, { status: 502 });
     }
+
     const sha = res.data.sha;
     let content = Buffer.from(res.data.content, 'base64').toString('utf8');
-
     const failed: string[] = [];
 
-    for (const change of changes) {
+    for (const change of changes as Change[]) {
       const blockRange = findBlock(content, change.eid);
       if (!blockRange) {
         failed.push(change.eid);
         continue;
       }
+
       const block = content.slice(blockRange.start, blockRange.end);
       const updated =
         change.type === 'text'
@@ -162,24 +162,19 @@ export async function POST(req: Request) {
         failed.push(change.eid);
         continue;
       }
-      content =
-        content.slice(0, blockRange.start) + updated + content.slice(blockRange.end);
+      content = content.slice(0, blockRange.start) + updated + content.slice(blockRange.end);
     }
 
     if (failed.length === changes.length) {
-      return Response.json(
-        { error: `更新対象が見つかりませんでした: ${failed.join(', ')}` },
-        { status: 422 },
-      );
+      return Response.json({ error: `No editable blocks found: ${failed.join(', ')}` }, { status: 422 });
     }
 
-    const newBase64 = Buffer.from(content, 'utf8').toString('base64');
     await octokit.repos.createOrUpdateFileContents({
       owner: OWNER,
       repo: REPO,
       path: filePath,
-      message: 'ビジュアルエディタ: コンテンツ更新',
-      content: newBase64,
+      message: 'Visual editor: update content',
+      content: Buffer.from(content, 'utf8').toString('base64'),
       sha,
       branch: BRANCH,
     });
@@ -187,6 +182,6 @@ export async function POST(req: Request) {
     return Response.json({ ok: true, skipped: failed });
   } catch (e) {
     console.error('file update error', e);
-    return Response.json({ error: '保存に失敗しました' }, { status: 502 });
+    return Response.json({ error: 'Save failed' }, { status: 502 });
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export type Change = { type: 'text' | 'image'; value: string };
 
@@ -25,32 +25,31 @@ export function EditModeProvider({
   isEditMode: boolean;
   children: React.ReactNode;
 }) {
-  // pendingChanges は ref で実体を保持しつつ、変更を UI に伝えるため state も併用
-  const ref = useRef<Map<string, Change>>(new Map());
-  const [, setTick] = useState(0);
+  const [pendingChanges, setPendingChanges] = useState<Map<string, Change>>(new Map());
 
   const addChange = useCallback((eid: string, change: Change) => {
-    ref.current.set(eid, change);
-    setTick((t) => t + 1);
+    setPendingChanges((prev) => {
+      const next = new Map(prev);
+      next.set(eid, change);
+      return next;
+    });
   }, []);
 
   const clearChanges = useCallback(() => {
-    ref.current.clear();
-    setTick((t) => t + 1);
+    setPendingChanges(new Map());
   }, []);
 
-  return (
-    <EditModeContext.Provider
-      value={{
-        isEditMode,
-        addChange,
-        pendingChanges: ref.current,
-        clearChanges,
-      }}
-    >
-      {children}
-    </EditModeContext.Provider>
+  const value = useMemo(
+    () => ({
+      isEditMode,
+      addChange,
+      pendingChanges,
+      clearChanges,
+    }),
+    [addChange, clearChanges, isEditMode, pendingChanges],
   );
+
+  return <EditModeContext.Provider value={value}>{children}</EditModeContext.Provider>;
 }
 
 export function useEditMode(): EditModeContextType {

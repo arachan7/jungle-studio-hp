@@ -32,20 +32,22 @@ export default function EditableImage({
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const imageProps = {
-    src: currentSrc,
-    alt,
-    fill,
-    width,
-    height,
-    className,
-    priority,
-    sizes,
-    'data-eid': eid,
-  };
+  const image = (
+    <Image
+      src={currentSrc}
+      alt={alt}
+      fill={fill}
+      width={width}
+      height={height}
+      className={className}
+      priority={priority}
+      sizes={sizes}
+      data-eid={eid}
+    />
+  );
 
   if (!isEditMode) {
-    return <Image {...imageProps} />;
+    return image;
   }
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +64,7 @@ export default function EditableImage({
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
-        alert(data.error ?? 'アップロードに失敗しました');
+        alert(data.error ?? 'Upload failed');
         return;
       }
       const data = (await res.json()) as { path: string };
@@ -86,10 +88,10 @@ export default function EditableImage({
       style={fill ? { position: 'absolute', inset: 0 } : undefined}
       onClick={() => !uploading && inputRef.current?.click()}
     >
-      <Image {...imageProps} />
+      {image}
       <span className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-black/0 group-hover:bg-black/50 transition-colors">
         <span className="opacity-0 group-hover:opacity-100 text-white text-sm font-bold transition-opacity">
-          📷 画像を変更
+          Change image
         </span>
       </span>
       {uploading && (

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 type Status = {
@@ -265,9 +266,9 @@ export default function JunglePassportCancelPage() {
               解約の手続きが完了しました。<br />
               <span className="font-semibold">{fmt(doneExpires)}</span> まで引き続きご利用いただけます。
             </p>
-            <a href="/" className="inline-block text-stone-500 text-sm underline">
+            <Link href="/" className="inline-block text-stone-500 text-sm underline">
               トップページへ
-            </a>
+            </Link>
           </div>
         )}
       </div>
