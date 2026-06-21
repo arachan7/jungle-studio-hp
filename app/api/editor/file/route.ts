@@ -32,6 +32,17 @@ function isAllowedFile(filePath: string): boolean {
   return /^app\/column\/[a-z0-9-]+\/ColumnContent\.tsx$/.test(filePath);
 }
 
+// 編集先ブランチを検証する。
+// 許可: draft-slot-1 / draft-slot-2 / draft-slot-3 のみ。
+// 未指定（undefined）は master 直接編集として従来通り扱う。
+// master の直接指定は禁止（スロット経由のみ）。
+function resolveTargetBranch(input: unknown): { branch: string } | { error: string } {
+  if (input === undefined || input === null) return { branch: BRANCH };
+  if (typeof input !== 'string') return { error: 'Invalid branch' };
+  if (/^draft-slot-[123]$/.test(input)) return { branch: input };
+  return { error: 'Invalid branch' };
+}
+
 function isValidEid(eid: string): boolean {
   return /^[a-zA-Z0-9_-]{1,80}$/.test(eid);
 }
@@ -140,9 +151,9 @@ export async function POST(req: Request) {
     return Response.json({ error: 'GITHUB_TOKEN is not configured' }, { status: 500 });
   }
 
-  let body: { changes?: unknown; filePath?: unknown };
+  let body: { changes?: unknown; filePath?: unknown; branch?: unknown };
   try {
-    body = (await req.json()) as { changes?: unknown; filePath?: unknown };
+    body = (await req.json()) as { changes?: unknown; filePath?: unknown; branch?: unknown };
   } catch {
     return Response.json({ error: 'Invalid request' }, { status: 400 });
   }
@@ -150,6 +161,12 @@ export async function POST(req: Request) {
   const filePath = typeof body.filePath === 'string' ? body.filePath : '';
   const rawChanges = Array.isArray(body.changes) ? body.changes : [];
   const changes = rawChanges.map(normalizeChange);
+
+  const branchResult = resolveTargetBranch(body.branch);
+  if ('error' in branchResult) {
+    return Response.json({ error: branchResult.error }, { status: 400 });
+  }
+  const targetBranch = branchResult.branch;
 
   if (!isAllowedFile(filePath)) {
     return Response.json({ error: 'File is not editable' }, { status: 403 });
@@ -168,7 +185,7 @@ export async function POST(req: Request) {
       owner: OWNER,
       repo: REPO,
       path: filePath,
-      ref: BRANCH,
+      ref: targetBranch,
     });
     if (Array.isArray(res.data) || !('content' in res.data)) {
       return Response.json({ error: 'Unable to fetch file' }, { status: 502 });
@@ -208,10 +225,10 @@ export async function POST(req: Request) {
       owner: OWNER,
       repo: REPO,
       path: filePath,
-      message: 'Visual editor: update content',
+      message: 'ビジュアルエディタ: update content',
       content: Buffer.from(content, 'utf8').toString('base64'),
       sha,
-      branch: BRANCH,
+      branch: targetBranch,
     });
 
     return Response.json({ ok: true, skipped: failed });

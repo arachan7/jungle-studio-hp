@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { CurrentSlot, SlotInfo, SlotNumber } from '@/lib/editorTypes';
 
 type Change = { type: 'text' | 'image' | 'link'; value: string };
 
-type Stage = 'login' | 'backup-select' | 'editing';
+type Stage = 'login' | 'slot-select' | 'editing';
 type HistoryItem = {
   sha: string;
   message: string;
@@ -39,11 +40,36 @@ function fileForEid(eid: string, pageFile: string): string {
   return pageFile;
 }
 
+// 日時フォーマット（共通）
+function formatDate(iso: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
 export default function EditorShell({ isAuthed }: { isAuthed: boolean }) {
-  const [stage, setStage] = useState<Stage>(isAuthed ? 'backup-select' : 'login');
-  if (stage === 'login') return <LoginForm onLogin={() => setStage('backup-select')} />;
-  if (stage === 'backup-select') return <BackupSelect onStart={() => setStage('editing')} />;
-  return <Editor />;
+  const [stage, setStage] = useState<Stage>(isAuthed ? 'slot-select' : 'login');
+  const [currentSlot, setCurrentSlot] = useState<CurrentSlot>(null);
+
+  if (stage === 'login') {
+    return <LoginForm onLogin={() => setStage('slot-select')} />;
+  }
+  if (stage === 'slot-select') {
+    return (
+      <SlotSelect
+        onEdit={(slot) => {
+          setCurrentSlot(slot);
+          setStage('editing');
+        }}
+        onRestoreToMaster={() => {
+          setCurrentSlot(null);
+          setStage('editing');
+        }}
+      />
+    );
+  }
+  return <Editor currentSlot={currentSlot} onBack={() => setStage('slot-select')} />;
 }
 
 function LoginForm({ onLogin }: { onLogin: () => void }) {
@@ -106,29 +132,96 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
   );
 }
 
-function BackupSelect({ onStart }: { onStart: () => void }) {
+function SlotSelect({
+  onEdit,
+  onRestoreToMaster,
+}: {
+  onEdit: (slot: { slot: SlotNumber; branch: string }) => void;
+  onRestoreToMaster: () => void;
+}) {
+  const [slots, setSlots] = useState<SlotInfo[] | null>(null);
   const [history, setHistory] = useState<HistoryItem[] | null>(null);
-  const [restoring, setRestoring] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState('');
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 3000);
+  }, []);
+
+  const loadSlots = useCallback(() => {
+    fetch('/api/editor/slots')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => setSlots(Array.isArray(d) ? (d as SlotInfo[]) : []))
+      .catch(() => setSlots([]));
+  }, []);
+
+  useEffect(() => {
+    loadSlots();
+  }, [loadSlots]);
 
   useEffect(() => {
     fetch('/api/editor/history')
       .then((r) => (r.ok ? r.json() : []))
-      .then((d) => setHistory(Array.isArray(d) ? d : []))
+      .then((d) => setHistory(Array.isArray(d) ? (d as HistoryItem[]) : []))
       .catch(() => setHistory([]));
   }, []);
 
-  const formatDate = (iso: string) => {
-    if (!iso) return '';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return '';
-    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const createSlot = async (slot: SlotNumber) => {
+    const ok = window.confirm(
+      `スロット${slot}をmasterの現在の状態で新規作成します。よろしいですか？`,
+    );
+    if (!ok) return;
+    setBusy(true);
+    try {
+      const res = await fetch('/api/editor/slots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slot }),
+      });
+      if (res.ok) {
+        showToast(`スロット${slot}を作成しました`);
+        loadSlots();
+      } else {
+        const d = (await res.json().catch(() => ({}))) as { error?: string };
+        showToast(d.error ?? '作成に失敗しました');
+      }
+    } catch {
+      showToast('通信エラーが発生しました');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const publishSlot = async (slot: SlotNumber) => {
+    const ok = window.confirm(
+      `スロット${slot}の内容を本番（master）に公開します。よろしいですか？`,
+    );
+    if (!ok) return;
+    setBusy(true);
+    try {
+      const res = await fetch('/api/editor/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slot }),
+      });
+      if (res.ok) {
+        showToast(`スロット${slot}を公開しました。数分後に本番へ反映されます`);
+      } else {
+        const d = (await res.json().catch(() => ({}))) as { error?: string };
+        showToast(d.error ?? '公開に失敗しました');
+      }
+    } catch {
+      showToast('通信エラーが発生しました');
+    } finally {
+      setBusy(false);
+    }
   };
 
   const restore = async (sha: string) => {
     const ok = window.confirm('この状態に復元しますか？現在の内容は上書きされます。');
     if (!ok) return;
-    setRestoring(true);
+    setBusy(true);
     try {
       const res = await fetch('/api/editor/restore', {
         method: 'POST',
@@ -136,40 +229,54 @@ function BackupSelect({ onStart }: { onStart: () => void }) {
         body: JSON.stringify({ sha }),
       });
       if (res.ok) {
-        setToast('復元しました。数分後に本番へ反映されます');
-        setTimeout(() => onStart(), 2000);
+        showToast('復元しました。編集画面に移動します');
+        setTimeout(() => onRestoreToMaster(), 1500);
       } else {
         const d = (await res.json().catch(() => ({}))) as { error?: string };
-        setToast(d.error ?? '復元に失敗しました');
+        showToast(d.error ?? '復元に失敗しました');
       }
     } catch {
-      setToast('通信エラーが発生しました');
+      showToast('通信エラーが発生しました');
     } finally {
-      setRestoring(false);
+      setBusy(false);
     }
   };
 
   return (
     <div className="fixed inset-0 z-[9999] bg-stone-100 flex items-start justify-center p-4 overflow-y-auto">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 my-8 flex flex-col">
+      <div className="w-full max-w-md my-8 flex flex-col gap-5">
         <div className="text-center">
           <p className="text-2xl mb-1">🌿</p>
           <h1 className="text-lg font-bold text-stone-800">ビジュアルエディタ</h1>
         </div>
 
-        <button
-          onClick={onStart}
-          disabled={restoring}
-          className="w-full bg-stone-900 hover:bg-stone-800 text-white rounded-lg py-4 text-base font-bold mt-6 transition-colors disabled:opacity-50"
-        >
-          ✏️ 新しい編集を始める
-        </button>
+        <p className="text-sm font-bold text-stone-700">
+          📂 どのスロットを編集・公開しますか？
+        </p>
 
-        <div className="border-t border-stone-200 my-6" />
+        <div className="flex flex-col gap-3">
+          {slots === null && (
+            <p className="text-stone-400 text-sm py-4 text-center">読み込み中...</p>
+          )}
+          {slots !== null &&
+            slots.map((info) => (
+              <SlotCard
+                key={info.slot}
+                info={info}
+                busy={busy}
+                onEdit={() =>
+                  onEdit({ slot: info.slot, branch: `draft-slot-${info.slot}` })
+                }
+                onPublish={() => publishSlot(info.slot)}
+                onCreate={() => createSlot(info.slot)}
+              />
+            ))}
+        </div>
 
-        <h2 className="text-sm font-bold text-stone-700 mb-3">🕐 バックアップから復元</h2>
+        <div className="border-t border-stone-200 my-1" />
 
-        <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-auto">
+        <h2 className="text-sm font-bold text-stone-700">🕐 バックアップから復元</h2>
+        <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto">
           {history === null && (
             <p className="text-stone-400 text-sm py-4 text-center">読み込み中...</p>
           )}
@@ -180,7 +287,7 @@ function BackupSelect({ onStart }: { onStart: () => void }) {
             history.map((item) => (
               <div
                 key={item.sha}
-                className="flex items-center gap-3 border border-stone-200 rounded-xl px-4 py-3"
+                className="flex items-center gap-3 bg-white border border-stone-200 rounded-xl px-4 py-3"
               >
                 <span className="text-lg shrink-0">
                   {item.type === 'initial' ? '🌿' : '✏️'}
@@ -195,10 +302,10 @@ function BackupSelect({ onStart }: { onStart: () => void }) {
                 </div>
                 <button
                   onClick={() => restore(item.sha)}
-                  disabled={restoring}
+                  disabled={busy}
                   className="shrink-0 border border-stone-300 hover:bg-stone-100 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors disabled:opacity-50"
                 >
-                  {restoring ? '復元中...' : 'この状態に戻す'}
+                  この状態に戻す
                 </button>
               </div>
             ))}
@@ -214,7 +321,70 @@ function BackupSelect({ onStart }: { onStart: () => void }) {
   );
 }
 
-function Editor() {
+function SlotCard({
+  info,
+  busy,
+  onEdit,
+  onPublish,
+  onCreate,
+}: {
+  info: SlotInfo;
+  busy: boolean;
+  onEdit: () => void;
+  onPublish: () => void;
+  onCreate: () => void;
+}) {
+  return (
+    <div className="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm">
+      <p className="text-sm font-bold text-stone-800 mb-2">スロット {info.slot}</p>
+      {info.exists ? (
+        <>
+          <p className="text-xs text-stone-500 mb-3">
+            ✏️ 最終編集:{' '}
+            {info.lastCommit && formatDate(info.lastCommit.date)
+              ? formatDate(info.lastCommit.date)
+              : '不明'}
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={onEdit}
+              disabled={busy}
+              className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+            >
+              このスロットを編集
+            </button>
+            <button
+              onClick={onPublish}
+              disabled={busy}
+              className="flex-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+            >
+              公開する→
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-xs text-stone-400 mb-3">📭 未使用</p>
+          <button
+            onClick={onCreate}
+            disabled={busy}
+            className="w-full bg-stone-700 hover:bg-stone-800 text-white rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+          >
+            新規作成
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Editor({
+  currentSlot,
+  onBack,
+}: {
+  currentSlot: CurrentSlot;
+  onBack: () => void;
+}) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pending, setPending] = useState<Map<string, Change>>(new Map());
   const [saving, setSaving] = useState(false);
@@ -263,6 +433,16 @@ function Editor() {
     setIframeKey((k) => k + 1);
   };
 
+  const back = () => {
+    if (pending.size > 0) {
+      const ok = window.confirm(
+        '保存していない変更があります。スロット選択に戻ると失われます。続けますか？',
+      );
+      if (!ok) return;
+    }
+    onBack();
+  };
+
   const save = async () => {
     if (pending.size === 0) return;
     setSaving(true);
@@ -282,7 +462,12 @@ function Editor() {
         const res = await fetch('/api/editor/file', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ changes, filePath }),
+          body: JSON.stringify({
+            changes,
+            filePath,
+            // undefined なら省略（master 扱い）
+            branch: currentSlot?.branch,
+          }),
         });
         if (res.ok) {
           const data = (await res.json()) as { skipped?: string[] };
@@ -297,10 +482,13 @@ function Editor() {
         showToast(anyError);
       } else {
         setPending(new Map());
+        const dest = currentSlot
+          ? `スロット${currentSlot.slot}に保存しました`
+          : '保存しました。数分後に本番へ反映されます';
         if (skipped.length > 0) {
           showToast(`保存しました（未対応: ${skipped.join(', ')}）`);
         } else {
-          showToast('保存しました。数分後に本番へ反映されます');
+          showToast(dest);
         }
       }
     } catch {
@@ -312,14 +500,27 @@ function Editor() {
 
   const fileSupported = useMemo(() => currentFile !== '', [currentFile]);
 
+  const slotLabel = currentSlot
+    ? `スロット${currentSlot.slot}を編集中`
+    : 'master（復元状態）を編集中';
+
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col">
-      <div className="h-12 bg-stone-900 text-white flex items-center gap-4 px-4 shrink-0">
+      <div className="h-12 bg-stone-900 text-white flex items-center gap-3 px-4 shrink-0">
         <span className="font-bold text-sm whitespace-nowrap">🌿 ビジュアルエディタ</span>
+        <span className="text-xs bg-stone-700 rounded px-2 py-0.5 whitespace-nowrap">
+          {slotLabel}
+        </span>
+        <button
+          onClick={back}
+          className="text-xs border border-stone-600 hover:bg-stone-800 rounded px-2 py-1 whitespace-nowrap transition-colors"
+        >
+          ←スロット選択に戻る
+        </button>
         <select
           value={pageIndex}
           onChange={(e) => changePage(Number(e.target.value))}
-          className="bg-stone-800 text-white text-sm rounded px-2 py-1 border border-stone-700 max-w-[40%]"
+          className="bg-stone-800 text-white text-sm rounded px-2 py-1 border border-stone-700 max-w-[30%]"
         >
           {PAGES.map((p, i) => (
             <option key={`${p.label}-${i}`} value={i}>
