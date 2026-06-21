@@ -4,6 +4,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 type Change = { type: 'text' | 'image' | 'link'; value: string };
 
+type Stage = 'login' | 'backup-select' | 'editing';
+type HistoryItem = {
+  sha: string;
+  message: string;
+  date: string;
+  type: 'initial' | 'editor';
+  label: string;
+};
+
 const HEADER_FILE = 'components/Header.tsx';
 
 // 編集対象ページ（表示パス → TSXファイルパス）
@@ -31,11 +40,13 @@ function fileForEid(eid: string, pageFile: string): string {
 }
 
 export default function EditorShell({ isAuthed }: { isAuthed: boolean }) {
-  if (!isAuthed) return <LoginForm />;
+  const [stage, setStage] = useState<Stage>(isAuthed ? 'backup-select' : 'login');
+  if (stage === 'login') return <LoginForm onLogin={() => setStage('backup-select')} />;
+  if (stage === 'backup-select') return <BackupSelect onStart={() => setStage('editing')} />;
   return <Editor />;
 }
 
-function LoginForm() {
+function LoginForm({ onLogin }: { onLogin: () => void }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,7 +62,7 @@ function LoginForm() {
         body: JSON.stringify({ password }),
       });
       if (res.ok) {
-        window.location.reload();
+        onLogin();
         return;
       }
       const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -91,6 +102,114 @@ function LoginForm() {
           {loading ? '確認中...' : 'ログイン'}
         </button>
       </form>
+    </div>
+  );
+}
+
+function BackupSelect({ onStart }: { onStart: () => void }) {
+  const [history, setHistory] = useState<HistoryItem[] | null>(null);
+  const [restoring, setRestoring] = useState(false);
+  const [toast, setToast] = useState('');
+
+  useEffect(() => {
+    fetch('/api/editor/history')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => setHistory(Array.isArray(d) ? d : []))
+      .catch(() => setHistory([]));
+  }, []);
+
+  const formatDate = (iso: string) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+
+  const restore = async (sha: string) => {
+    const ok = window.confirm('この状態に復元しますか？現在の内容は上書きされます。');
+    if (!ok) return;
+    setRestoring(true);
+    try {
+      const res = await fetch('/api/editor/restore', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sha }),
+      });
+      if (res.ok) {
+        setToast('復元しました。数分後に本番へ反映されます');
+        setTimeout(() => onStart(), 2000);
+      } else {
+        const d = (await res.json().catch(() => ({}))) as { error?: string };
+        setToast(d.error ?? '復元に失敗しました');
+      }
+    } catch {
+      setToast('通信エラーが発生しました');
+    } finally {
+      setRestoring(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[9999] bg-stone-100 flex items-start justify-center p-4 overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 my-8 flex flex-col">
+        <div className="text-center">
+          <p className="text-2xl mb-1">🌿</p>
+          <h1 className="text-lg font-bold text-stone-800">ビジュアルエディタ</h1>
+        </div>
+
+        <button
+          onClick={onStart}
+          disabled={restoring}
+          className="w-full bg-stone-900 hover:bg-stone-800 text-white rounded-lg py-4 text-base font-bold mt-6 transition-colors disabled:opacity-50"
+        >
+          ✏️ 新しい編集を始める
+        </button>
+
+        <div className="border-t border-stone-200 my-6" />
+
+        <h2 className="text-sm font-bold text-stone-700 mb-3">🕐 バックアップから復元</h2>
+
+        <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-auto">
+          {history === null && (
+            <p className="text-stone-400 text-sm py-4 text-center">読み込み中...</p>
+          )}
+          {history !== null && history.length === 0 && (
+            <p className="text-stone-400 text-sm py-4 text-center">履歴がありません</p>
+          )}
+          {history !== null &&
+            history.map((item) => (
+              <div
+                key={item.sha}
+                className="flex items-center gap-3 border border-stone-200 rounded-xl px-4 py-3"
+              >
+                <span className="text-lg shrink-0">
+                  {item.type === 'initial' ? '🌿' : '✏️'}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-stone-800 text-sm truncate">
+                    {item.label}
+                  </p>
+                  {formatDate(item.date) && (
+                    <p className="text-xs text-stone-400">{formatDate(item.date)}</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => restore(item.sha)}
+                  disabled={restoring}
+                  className="shrink-0 border border-stone-300 hover:bg-stone-100 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors disabled:opacity-50"
+                >
+                  {restoring ? '復元中...' : 'この状態に戻す'}
+                </button>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-sm px-5 py-3 rounded-full shadow-lg z-[10000]">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }
