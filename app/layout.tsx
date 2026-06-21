@@ -4,6 +4,9 @@ import { Noto_Sans_JP } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FixedBottomNav from "@/components/FixedBottomNav";
+import { cookies } from "next/headers";
+import { verifySession, EDITOR_COOKIE_NAME } from "@/lib/editorAuth";
+import { EditModeProvider } from "@/components/EditModeContext";
 
 const notoSansJP = Noto_Sans_JP({ subsets: ['latin'], weight: ['400', '700'], display: 'swap' });
 
@@ -48,11 +51,15 @@ const structuredData = {
   "sameAs": [],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const session = cookieStore.get(EDITOR_COOKIE_NAME)?.value ?? '';
+  const isEditMode = verifySession(session);
+
   return (
     <html lang="ja" className="h-full antialiased">
       <head>
@@ -62,10 +69,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1 pt-16 pb-16">{children}</main>
-        <Footer />
-        <FixedBottomNav fontClassName={notoSansJP.className} />
+        <EditModeProvider isEditMode={isEditMode}>
+          <Header />
+          <main className="flex-1 pt-16 pb-16">{children}</main>
+          <Footer />
+          <FixedBottomNav fontClassName={notoSansJP.className} />
+        </EditModeProvider>
       </body>
     </html>
   );
