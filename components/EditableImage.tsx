@@ -82,10 +82,44 @@ export default function EditableImage({
     }
   };
 
+  // fill モード: 後続の overlay div にクリック領域を奪われるため、
+  // wrapper 自体のクリックは無効化し、z-[100] の固定ボタンで変更を受け付ける
+  if (fill) {
+    return (
+      <span
+        className="block w-full h-full"
+        style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+      >
+        {image}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!uploading) inputRef.current?.click();
+          }}
+          className="absolute top-2 right-2 z-[100] flex items-center gap-1 bg-black/70 hover:bg-black/90 text-white text-xs font-bold px-3 py-2 rounded-lg shadow-lg transition-colors"
+        >
+          📷 画像を変更
+        </button>
+        {uploading && (
+          <span className="absolute inset-0 z-[101] flex items-center justify-center bg-black/60">
+            <span className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent" />
+          </span>
+        )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={handleFile}
+        />
+      </span>
+    );
+  }
+
   return (
     <span
       className="group block w-full h-full cursor-pointer relative"
-      style={fill ? { position: 'absolute', inset: 0 } : undefined}
       onClick={() => !uploading && inputRef.current?.click()}
     >
       {image}

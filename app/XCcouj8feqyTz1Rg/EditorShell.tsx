@@ -2,10 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-type Change = { type: 'text' | 'image'; value: string };
+type Change = { type: 'text' | 'image' | 'link'; value: string };
+
+const HEADER_FILE = 'components/Header.tsx';
 
 // 編集対象ページ（表示パス → TSXファイルパス）
 const PAGES: { label: string; path: string; file: string }[] = [
+  { label: 'ヘッダー（共通）', path: '/', file: HEADER_FILE },
   { label: 'トップ', path: '/', file: 'app/components/HomeContent.tsx' },
   { label: 'FAQ', path: '/faq', file: 'app/faq/FaqContent.tsx' },
   { label: 'ご利用の流れ', path: '/flow', file: 'app/flow/FlowContent.tsx' },
@@ -20,8 +23,11 @@ const PAGES: { label: string; path: string; file: string }[] = [
   { label: 'ニュース: グランドオープン', path: '/news/grand-open', file: 'app/news/grand-open/NewsContent.tsx' },
 ];
 
-function pageToFile(path: string): string {
-  return PAGES.find((p) => p.path === path)?.file ?? '';
+// eid から保存先ファイルを決定する。
+// header-* の eid はどのページで編集してもヘッダーファイルに保存する。
+function fileForEid(eid: string, pageFile: string): string {
+  if (eid.startsWith('header-')) return HEADER_FILE;
+  return pageFile;
 }
 
 export default function EditorShell({ isAuthed }: { isAuthed: boolean }) {
@@ -90,11 +96,15 @@ function LoginForm() {
 }
 
 function Editor() {
-  const [currentPath, setCurrentPath] = useState('/');
+  const [pageIndex, setPageIndex] = useState(0);
   const [pending, setPending] = useState<Map<string, Change>>(new Map());
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState('');
   const [iframeKey, setIframeKey] = useState(0);
+
+  const currentPage = PAGES[pageIndex] ?? PAGES[0];
+  const currentPath = currentPage.path;
+  const currentFile = currentPage.file;
 
   // iframe からの変更通知を受信
   useEffect(() => {
@@ -104,7 +114,7 @@ function Editor() {
       if (!data || data.type !== 'eid-change') return;
       const { eid, changeType, value } = data as {
         eid: string;
-        changeType: 'text' | 'image';
+        changeType: 'text' | 'image' | 'link';
         value: string;
       };
       setPending((prev) => {
@@ -122,7 +132,7 @@ function Editor() {
     setTimeout(() => setToast(''), 3000);
   }, []);
 
-  const changePage = (path: string) => {
+  const changePage = (idx: number) => {
     if (pending.size > 0) {
       const ok = window.confirm(
         '保存していない変更があります。ページを切り替えると失われます。続けますか？',
@@ -130,7 +140,7 @@ function Editor() {
       if (!ok) return;
     }
     setPending(new Map());
-    setCurrentPath(path);
+    setPageIndex(idx);
     setIframeKey((k) => k + 1);
   };
 
@@ -138,27 +148,41 @@ function Editor() {
     if (pending.size === 0) return;
     setSaving(true);
     try {
-      const changes = [...pending.entries()].map(([eid, c]) => ({
-        eid,
-        type: c.type,
-        value: c.value,
-      }));
-      const res = await fetch('/api/editor/file', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ changes, filePath: pageToFile(currentPath) }),
-      });
-      if (res.ok) {
-        const data = (await res.json()) as { skipped?: string[] };
+      // eid ごとに保存先ファイルを振り分け、ファイル単位でまとめて保存する
+      const byFile = new Map<string, { eid: string; type: Change['type']; value: string }[]>();
+      for (const [eid, c] of pending.entries()) {
+        const file = fileForEid(eid, currentFile);
+        const list = byFile.get(file) ?? [];
+        list.push({ eid, type: c.type, value: c.value });
+        byFile.set(file, list);
+      }
+
+      const skipped: string[] = [];
+      let anyError = '';
+      for (const [filePath, changes] of byFile.entries()) {
+        const res = await fetch('/api/editor/file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ changes, filePath }),
+        });
+        if (res.ok) {
+          const data = (await res.json()) as { skipped?: string[] };
+          if (data.skipped) skipped.push(...data.skipped);
+        } else {
+          const data = (await res.json().catch(() => ({}))) as { error?: string };
+          anyError = data.error ?? '保存に失敗しました';
+        }
+      }
+
+      if (anyError) {
+        showToast(anyError);
+      } else {
         setPending(new Map());
-        if (data.skipped && data.skipped.length > 0) {
-          showToast(`保存しました（未対応: ${data.skipped.join(', ')}）`);
+        if (skipped.length > 0) {
+          showToast(`保存しました（未対応: ${skipped.join(', ')}）`);
         } else {
           showToast('保存しました。数分後に本番へ反映されます');
         }
-      } else {
-        const data = (await res.json().catch(() => ({}))) as { error?: string };
-        showToast(data.error ?? '保存に失敗しました');
       }
     } catch {
       showToast('通信エラーが発生しました');
@@ -167,22 +191,19 @@ function Editor() {
     }
   };
 
-  const fileSupported = useMemo(
-    () => pageToFile(currentPath) !== '',
-    [currentPath],
-  );
+  const fileSupported = useMemo(() => currentFile !== '', [currentFile]);
 
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col">
       <div className="h-12 bg-stone-900 text-white flex items-center gap-4 px-4 shrink-0">
         <span className="font-bold text-sm whitespace-nowrap">🌿 ビジュアルエディタ</span>
         <select
-          value={currentPath}
-          onChange={(e) => changePage(e.target.value)}
+          value={pageIndex}
+          onChange={(e) => changePage(Number(e.target.value))}
           className="bg-stone-800 text-white text-sm rounded px-2 py-1 border border-stone-700 max-w-[40%]"
         >
-          {PAGES.map((p) => (
-            <option key={p.path} value={p.path}>
+          {PAGES.map((p, i) => (
+            <option key={`${p.label}-${i}`} value={i}>
               {p.label}
             </option>
           ))}

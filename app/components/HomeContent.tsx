@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import EditableText from '@/components/EditableText';
 import EditableImage from '@/components/EditableImage';
+import EditableLink from '@/components/EditableLink';
 
 export default function HomeContent() {
   return (
@@ -19,7 +20,7 @@ export default function HomeContent() {
           className="object-cover"
         />
         {/* EDITABLE:hero-img:end */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         <div className="relative z-10 px-4 flex flex-col items-center gap-6">
           <p className="text-white/80 tracking-[0.3em] text-sm font-light">JUNGLE STUDIO</p>
           {/* EDITABLE:hero-title:start */}
@@ -41,14 +42,18 @@ export default function HomeContent() {
             {"神奈川県厚木市旭町のフォトスタジオ。"}<br />{"七五三・お宮参り・ニューボーンフォト"}<br />{"マタニティフォト・入園・卒園・入学・卒業"}<br />{"など、お子様の成長を唯一無二の写真で残します。"}
           </EditableText>
           {/* EDITABLE:hero-sub:end */}
-          <a
+          {/* EDITABLE:hero-btn:start */}
+          <EditableLink
+            eid="hero-btn"
             href="https://studio-app-two.vercel.app/"
+            external
             target="_blank"
             rel="noopener noreferrer"
             className="btn-reserve px-8 py-4 rounded-full text-base mt-2"
           >
             【24時間対応】ご予約はこちら
-          </a>
+          </EditableLink>
+          {/* EDITABLE:hero-btn:end */}
         </div>
       </section>
 
@@ -333,14 +338,18 @@ export default function HomeContent() {
             {"お子様の記念日、家族の大切な瞬間を"}<br />{"ジャングルスタジオで最高の写真に残しましょう。"}
           </EditableText>
           {/* EDITABLE:cta-body:end */}
-          <a
+          {/* EDITABLE:cta-btn:start */}
+          <EditableLink
+            eid="cta-btn"
             href="https://studio-app-two.vercel.app/"
+            external
             target="_blank"
             rel="noopener noreferrer"
             className="btn-reserve inline-block px-12 py-4 rounded-full text-base"
           >
             【24時間対応】ご予約はこちら
-          </a>
+          </EditableLink>
+          {/* EDITABLE:cta-btn:end */}
         </div>
       </section>
     </>

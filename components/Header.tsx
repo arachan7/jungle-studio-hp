@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import EditableText from '@/components/EditableText';
 
 const PLAN_ITEMS = [
   { href: '/column/shichigosan', label: '七五三' },
@@ -13,6 +14,35 @@ const PLAN_ITEMS = [
   { href: '/column/nyuugaku', label: '卒入学' },
 ];
 
+// 各プラン項目のラベル。EDITABLE マーカーで個別に編集可能にする。
+const PLAN_LABELS: Record<string, string> = {
+  /* EDITABLE:header-plan-shichigosan:start */
+  'shichigosan': '七五三',
+  /* EDITABLE:header-plan-shichigosan:end */
+  /* EDITABLE:header-plan-half-birthday:start */
+  'half-birthday': 'ハーフバースデー',
+  /* EDITABLE:header-plan-half-birthday:end */
+  /* EDITABLE:header-plan-birthday:start */
+  'birthday': 'バースデー',
+  /* EDITABLE:header-plan-birthday:end */
+  /* EDITABLE:header-plan-omiyamairi:start */
+  'omiyamairi': 'お宮参り',
+  /* EDITABLE:header-plan-omiyamairi:end */
+  /* EDITABLE:header-plan-newborn:start */
+  'newborn': 'ニューボーンフォト',
+  /* EDITABLE:header-plan-newborn:end */
+  /* EDITABLE:header-plan-maternity:start */
+  'maternity': 'マタニティフォト',
+  /* EDITABLE:header-plan-maternity:end */
+  /* EDITABLE:header-plan-nyuugaku:start */
+  'nyuugaku': '卒入学',
+  /* EDITABLE:header-plan-nyuugaku:end */
+};
+
+function planSlug(href: string): string {
+  return href.replace('/column/', '');
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [planOpen, setPlanOpen] = useState(false);
@@ -22,8 +52,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-200">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="text-base sm:text-xl font-bold tracking-widest text-stone-800" style={{ fontFamily: 'serif' }}>
-          JUNGLE STUDIO
+        <Link href="/" style={{ fontFamily: 'serif' }}>
+          {/* EDITABLE:header-logo:start */}
+          <EditableText eid="header-logo" tag="span" className="text-base sm:text-xl font-bold tracking-widest text-stone-800">
+            JUNGLE STUDIO
+          </EditableText>
+          {/* EDITABLE:header-logo:end */}
         </Link>
 
         <button
@@ -51,7 +85,9 @@ export default function Header() {
               {/* ご利用の流れ */}
               <li>
                 <Link href="/flow" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  ご利用の流れ
+                  {/* EDITABLE:header-nav-flow:start */}
+                  <EditableText eid="header-nav-flow" tag="span">ご利用の流れ</EditableText>
+                  {/* EDITABLE:header-nav-flow:end */}
                 </Link>
               </li>
 
@@ -61,22 +97,28 @@ export default function Header() {
                   className="w-full flex items-center justify-between py-2.5 border-b border-stone-100 text-sm tracking-wide text-stone-700 hover:text-amber-700 transition-colors text-left"
                   onClick={() => setPlanOpen(!planOpen)}
                 >
-                  <span>撮影プランと料金</span>
+                  {/* EDITABLE:header-nav-plan:start */}
+                  <EditableText eid="header-nav-plan" tag="span">撮影プランと料金</EditableText>
+                  {/* EDITABLE:header-nav-plan:end */}
                   <span className={`text-amber-600 text-lg leading-none transition-transform duration-200 ${planOpen ? 'rotate-45' : ''}`}>+</span>
                 </button>
                 {planOpen && (
                   <ul className="pl-4 mt-1 mb-1 space-y-0.5">
-                    {PLAN_ITEMS.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          className="block text-stone-500 hover:text-amber-700 transition-colors py-2 border-b border-stone-50 text-sm"
-                          onClick={close}
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
+                    {PLAN_ITEMS.map((item) => {
+                      const slug = planSlug(item.href);
+                      const label = PLAN_LABELS[slug] ?? item.label;
+                      return (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            className="block text-stone-500 hover:text-amber-700 transition-colors py-2 border-b border-stone-50 text-sm"
+                            onClick={close}
+                          >
+                            <EditableText eid={`header-plan-${slug}`} tag="span">{label}</EditableText>
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </li>
@@ -84,45 +126,59 @@ export default function Header() {
               {/* 撮影前に抑えておきたいポイント */}
               <li>
                 <Link href="/tips" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  撮影前に抑えておきたいポイント
+                  {/* EDITABLE:header-nav-tips:start */}
+                  <EditableText eid="header-nav-tips" tag="span">撮影前に抑えておきたいポイント</EditableText>
+                  {/* EDITABLE:header-nav-tips:end */}
                 </Link>
               </li>
 
               {/* よくある質問 */}
               <li>
                 <Link href="/faq" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  よくある質問
+                  {/* EDITABLE:header-nav-faq:start */}
+                  <EditableText eid="header-nav-faq" tag="span">よくある質問</EditableText>
+                  {/* EDITABLE:header-nav-faq:end */}
                 </Link>
               </li>
 
               {/* SNS */}
               <li>
                 <a href="https://www.instagram.com/jungle_studio33?igsh=ZGlmcjQ0N2gyZjhn&utm_source=qr" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  Instagram
+                  {/* EDITABLE:header-nav-instagram:start */}
+                  <EditableText eid="header-nav-instagram" tag="span">Instagram</EditableText>
+                  {/* EDITABLE:header-nav-instagram:end */}
                 </a>
               </li>
               <li>
                 <a href="https://www.tiktok.com/@jungle_studio33" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  TikTok①（スタジオの雰囲気や実績写真はこちら）
+                  {/* EDITABLE:header-nav-tiktok1:start */}
+                  <EditableText eid="header-nav-tiktok1" tag="span">TikTok①（スタジオの雰囲気や実績写真はこちら）</EditableText>
+                  {/* EDITABLE:header-nav-tiktok1:end */}
                 </a>
               </li>
               <li>
                 <a href="https://www.tiktok.com/@jungle_studio_ura" target="_blank" rel="noopener noreferrer" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  TikTok②（ジャングルスタジオの裏側はこちら）
+                  {/* EDITABLE:header-nav-tiktok2:start */}
+                  <EditableText eid="header-nav-tiktok2" tag="span">TikTok②（ジャングルスタジオの裏側はこちら）</EditableText>
+                  {/* EDITABLE:header-nav-tiktok2:end */}
                 </a>
               </li>
 
               {/* お問い合わせ */}
               <li>
                 <Link href="/contact" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 border-b border-stone-100 text-sm tracking-wide" onClick={close}>
-                  お問い合わせ
+                  {/* EDITABLE:header-nav-contact:start */}
+                  <EditableText eid="header-nav-contact" tag="span">お問い合わせ</EditableText>
+                  {/* EDITABLE:header-nav-contact:end */}
                 </Link>
               </li>
 
               {/* アクセス */}
               <li>
                 <Link href="/#access" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 text-sm tracking-wide" onClick={close}>
-                  アクセス
+                  {/* EDITABLE:header-nav-access:start */}
+                  <EditableText eid="header-nav-access" tag="span">アクセス</EditableText>
+                  {/* EDITABLE:header-nav-access:end */}
                 </Link>
               </li>
             </ul>

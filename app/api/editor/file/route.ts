@@ -21,9 +21,10 @@ const ALLOWED_FILES = new Set<string>([
   'app/column/maternity/ColumnContent.tsx',
   'app/column/nyuugaku/ColumnContent.tsx',
   'app/news/grand-open/NewsContent.tsx',
+  'components/Header.tsx',
 ]);
 
-type Change = { eid: string; type: 'text' | 'image'; value: string };
+type Change = { eid: string; type: 'text' | 'image' | 'link'; value: string };
 
 function isAllowedFile(filePath: string): boolean {
   if (ALLOWED_FILES.has(filePath)) return true;
@@ -42,11 +43,22 @@ function normalizeChange(input: unknown): Change | null {
   if (!input || typeof input !== 'object') return null;
   const raw = input as { eid?: unknown; type?: unknown; value?: unknown };
   if (typeof raw.eid !== 'string' || !isValidEid(raw.eid)) return null;
-  if (raw.type !== 'text' && raw.type !== 'image') return null;
+  if (raw.type !== 'text' && raw.type !== 'image' && raw.type !== 'link') return null;
   if (typeof raw.value !== 'string') return null;
   if (raw.type === 'text' && raw.value.length > MAX_TEXT_LENGTH) return null;
   if (raw.type === 'image' && !isValidImagePath(raw.value)) return null;
+  if (raw.type === 'link' && !isValidLinkValue(raw.value)) return null;
   return { eid: raw.eid, type: raw.type, value: raw.value };
+}
+
+function isValidLinkValue(value: string): boolean {
+  if (value.length > MAX_TEXT_LENGTH) return false;
+  try {
+    const parsed = JSON.parse(value) as { text?: unknown; href?: unknown };
+    return typeof parsed.text === 'string' && typeof parsed.href === 'string';
+  } catch {
+    return false;
+  }
 }
 
 function escapeRegExp(s: string): string {
@@ -58,8 +70,9 @@ function findBlock(
   eid: string,
 ): { start: number; end: number } | null {
   const e = escapeRegExp(eid);
-  const startRe = new RegExp(`\\{/\\*\\s*EDITABLE:${e}:start\\s*\\*/\\}`);
-  const endRe = new RegExp(`\\{/\\*\\s*EDITABLE:${e}:end\\s*\\*/\\}`);
+  // JSX コメント {/* ... */} と通常のブロックコメント /* ... */ の両方に対応
+  const startRe = new RegExp(`\\{?/\\*\\s*EDITABLE:${e}:start\\s*\\*/\\}?`);
+  const endRe = new RegExp(`\\{?/\\*\\s*EDITABLE:${e}:end\\s*\\*/\\}?`);
   const startMatch = startRe.exec(source);
   if (!startMatch) return null;
   const blockStart = startMatch.index + startMatch[0].length;
@@ -77,14 +90,25 @@ function toJsxTextChildren(value: string): string {
 
 function replaceTextInBlock(block: string, value: string): string | null {
   const open = /<EditableText\b[^>]*>/.exec(block);
-  if (!open) return null;
-  const childrenStart = open.index + open[0].length;
-  const closeIdx = block.indexOf('</EditableText>', childrenStart);
-  if (closeIdx === -1) return null;
+  if (open) {
+    const childrenStart = open.index + open[0].length;
+    const closeIdx = block.indexOf('</EditableText>', childrenStart);
+    if (closeIdx === -1) return null;
 
-  const before = block.slice(0, childrenStart);
-  const after = block.slice(closeIdx);
-  return `${before}\n        ${toJsxTextChildren(value)}\n      ${after}`;
+    const before = block.slice(0, childrenStart);
+    const after = block.slice(closeIdx);
+    return `${before}\n        ${toJsxTextChildren(value)}\n      ${after}`;
+  }
+
+  // EditableText タグが無い場合（例: PLAN_LABELS オブジェクトのエントリ）、
+  // `'key': 'value',` の value 部分を置換する
+  const entryRe = /(:\s*)(['"])(?:[^\\]|\\.)*?\2/;
+  const m = entryRe.exec(block);
+  if (m) {
+    const oneLine = value.replace(/\n/g, ' ');
+    return block.replace(entryRe, `${m[1]}${JSON.stringify(oneLine)}`);
+  }
+  return null;
 }
 
 function replaceImageInBlock(block: string, value: string): string | null {
@@ -92,6 +116,40 @@ function replaceImageInBlock(block: string, value: string): string | null {
   const m = tagRe.exec(block);
   if (!m) return null;
   return block.replace(m[1], JSON.stringify(value));
+}
+
+function replaceLinkInBlock(block: string, value: string): string | null {
+  let parsed: { text?: unknown; href?: unknown };
+  try {
+    parsed = JSON.parse(value) as { text?: unknown; href?: unknown };
+  } catch {
+    return null;
+  }
+  if (typeof parsed.text !== 'string' || typeof parsed.href !== 'string') {
+    return null;
+  }
+  const text = parsed.text;
+  const href = parsed.href;
+
+  // <EditableLink ... href="..."> ... </EditableLink> の href と children を置換
+  const open = /<EditableLink\b[^>]*>/.exec(block);
+  if (!open) return null;
+  let openTag = open[0];
+
+  const hrefRe = /\bhref=("[^"]*"|\{[^}]*\})/;
+  if (hrefRe.test(openTag)) {
+    openTag = openTag.replace(hrefRe, `href=${JSON.stringify(href)}`);
+  } else {
+    return null;
+  }
+
+  const childrenStart = open.index + open[0].length;
+  const closeIdx = block.indexOf('</EditableLink>', childrenStart);
+  if (closeIdx === -1) return null;
+
+  const before = block.slice(0, open.index);
+  const after = block.slice(closeIdx);
+  return `${before}${openTag}\n            ${text}\n          ${after}`;
 }
 
 export async function POST(req: Request) {
@@ -156,7 +214,9 @@ export async function POST(req: Request) {
       const updated =
         change.type === 'text'
           ? replaceTextInBlock(block, change.value)
-          : replaceImageInBlock(block, change.value);
+          : change.type === 'image'
+            ? replaceImageInBlock(block, change.value)
+            : replaceLinkInBlock(block, change.value);
 
       if (updated === null) {
         failed.push(change.eid);

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-export type Change = { type: 'text' | 'image'; value: string };
+export type Change = { type: 'text' | 'image' | 'link'; value: string };
 
 type EditModeContextType = {
   isEditMode: boolean;
