@@ -35,19 +35,40 @@ export async function POST(req: Request) {
     return Response.json({ error: 'GITHUB_TOKEN is not configured' }, { status: 500 });
   }
 
-  let body: { sha?: unknown };
+  let body: { sha?: unknown; fromBranch?: unknown };
   try {
-    body = (await req.json()) as { sha?: unknown };
+    body = (await req.json()) as { sha?: unknown; fromBranch?: unknown };
   } catch {
     return Response.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  const sha = typeof body.sha === 'string' ? body.sha : '';
-  if (!/^[0-9a-f]{7,40}$/.test(sha)) {
-    return Response.json({ error: 'Invalid sha' }, { status: 400 });
-  }
-
   const octokit = new Octokit({ auth: token });
+
+  // 復元元の SHA を決定する。
+  // fromBranch: 'initial-hp' が指定された場合は initial-hp の最新コミット SHA を使う。
+  // それ以外は body.sha を従来通り使う。
+  let sha: string;
+  if (body.fromBranch === 'initial-hp') {
+    try {
+      const branch = await octokit.repos.getBranch({
+        owner: OWNER,
+        repo: REPO,
+        branch: 'initial-hp',
+      });
+      sha = branch.data.commit.sha;
+    } catch (e) {
+      if ((e as { status?: number }).status === 404) {
+        return Response.json({ error: '初期HPが存在しません' }, { status: 404 });
+      }
+      console.error('restore (initial-hp lookup) error', e);
+      return Response.json({ error: 'Restore failed' }, { status: 502 });
+    }
+  } else {
+    sha = typeof body.sha === 'string' ? body.sha : '';
+    if (!/^[0-9a-f]{7,40}$/.test(sha)) {
+      return Response.json({ error: 'Invalid sha' }, { status: 400 });
+    }
+  }
 
   try {
     let restored = 0;

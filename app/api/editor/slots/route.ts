@@ -2,9 +2,11 @@ import { Octokit } from '@octokit/rest';
 import { verifySessionFromRequest } from '@/lib/editorAuth';
 import { verifySameOrigin } from '@/lib/editorSecurity';
 import {
-  isValidSlot,
-  slotBranch,
-  SLOT_NUMBERS,
+  DRAFT_BRANCH,
+  INITIAL_BRANCH,
+  isValidCreateAction,
+  MASTER_BRANCH,
+  SLOT_DEFS,
   type SlotInfo,
 } from '@/lib/editorTypes';
 
@@ -25,16 +27,19 @@ export async function GET(req: Request) {
 
   try {
     const slots: SlotInfo[] = await Promise.all(
-      SLOT_NUMBERS.map(async (slot) => {
+      SLOT_DEFS.map(async (def) => {
         try {
           const res = await octokit.repos.getBranch({
             owner: OWNER,
             repo: REPO,
-            branch: slotBranch(slot),
+            branch: def.branch,
           });
           const commit = res.data.commit;
           return {
-            slot,
+            key: def.key,
+            label: def.label,
+            branch: def.branch,
+            locked: def.locked,
             exists: true,
             lastCommit: {
               sha: commit.sha,
@@ -47,7 +52,14 @@ export async function GET(req: Request) {
           };
         } catch (e) {
           if ((e as { status?: number }).status === 404) {
-            return { slot, exists: false, lastCommit: null };
+            return {
+              key: def.key,
+              label: def.label,
+              branch: def.branch,
+              locked: def.locked,
+              exists: false,
+              lastCommit: null,
+            };
           }
           throw e;
         }
@@ -74,40 +86,52 @@ export async function POST(req: Request) {
     return Response.json({ error: 'GITHUB_TOKEN is not configured' }, { status: 500 });
   }
 
-  let body: { slot?: unknown };
+  let body: { action?: unknown };
   try {
-    body = (await req.json()) as { slot?: unknown };
+    body = (await req.json()) as { action?: unknown };
   } catch {
     return Response.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  if (!isValidSlot(body.slot)) {
-    return Response.json({ error: 'Invalid slot' }, { status: 400 });
+  if (!isValidCreateAction(body.action)) {
+    return Response.json({ error: 'Invalid action' }, { status: 400 });
   }
-  const slot = body.slot;
+  const targetBranch = body.action === 'create-initial' ? INITIAL_BRANCH : DRAFT_BRANCH;
 
   const octokit = new Octokit({ auth: token });
 
   try {
+    // 既に存在する場合は弾く
+    try {
+      await octokit.repos.getBranch({
+        owner: OWNER,
+        repo: REPO,
+        branch: targetBranch,
+      });
+      return Response.json({ error: 'already exists' }, { status: 409 });
+    } catch (e) {
+      if ((e as { status?: number }).status !== 404) throw e;
+    }
+
     // master の最新コミット SHA を取得
     const ref = await octokit.git.getRef({
       owner: OWNER,
       repo: REPO,
-      ref: 'heads/master',
+      ref: `heads/${MASTER_BRANCH}`,
     });
     const masterSha = ref.data.object.sha;
 
-    // その SHA から下書きスロットのブランチを作成
+    // その SHA からブランチを作成
     await octokit.git.createRef({
       owner: OWNER,
       repo: REPO,
-      ref: `refs/heads/${slotBranch(slot)}`,
+      ref: `refs/heads/${targetBranch}`,
       sha: masterSha,
     });
 
     return Response.json({ ok: true });
   } catch (e) {
     console.error('slot create error', e);
-    return Response.json({ error: 'Failed to create slot' }, { status: 502 });
+    return Response.json({ error: 'Failed to create branch' }, { status: 502 });
   }
 }

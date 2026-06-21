@@ -33,13 +33,13 @@ function isAllowedFile(filePath: string): boolean {
 }
 
 // 編集先ブランチを検証する。
-// 許可: draft-slot-1 / draft-slot-2 / draft-slot-3 のみ。
-// 未指定（undefined）は master 直接編集として従来通り扱う。
-// master の直接指定は禁止（スロット経由のみ）。
+// 許可: master / draft-slot-1 のみ。
+// 未指定（undefined）は master 直接編集として扱う。
+// initial-hp への書き込みは禁止（復元専用）。
 function resolveTargetBranch(input: unknown): { branch: string } | { error: string } {
   if (input === undefined || input === null) return { branch: BRANCH };
   if (typeof input !== 'string') return { error: 'Invalid branch' };
-  if (/^draft-slot-[123]$/.test(input)) return { branch: input };
+  if (/^(master|draft-slot-1)$/.test(input)) return { branch: input };
   return { error: 'Invalid branch' };
 }
 

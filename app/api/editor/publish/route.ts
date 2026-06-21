@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { verifySessionFromRequest } from '@/lib/editorAuth';
 import { verifySameOrigin } from '@/lib/editorSecurity';
-import { isValidSlot, slotBranch } from '@/lib/editorTypes';
+import { DRAFT_BRANCH, MASTER_BRANCH } from '@/lib/editorTypes';
 
 const OWNER = 'arachan7';
 const REPO = 'jungle-studio-hp';
@@ -19,27 +19,15 @@ export async function POST(req: Request) {
     return Response.json({ error: 'GITHUB_TOKEN is not configured' }, { status: 500 });
   }
 
-  let body: { slot?: unknown };
-  try {
-    body = (await req.json()) as { slot?: unknown };
-  } catch {
-    return Response.json({ error: 'Invalid request' }, { status: 400 });
-  }
-
-  if (!isValidSlot(body.slot)) {
-    return Response.json({ error: 'Invalid slot' }, { status: 400 });
-  }
-  const slot = body.slot;
-
   const octokit = new Octokit({ auth: token });
 
   try {
     await octokit.repos.merge({
       owner: OWNER,
       repo: REPO,
-      base: 'master',
-      head: slotBranch(slot),
-      commit_message: `ビジュアルエディタ: スロット${slot}を公開`,
+      base: MASTER_BRANCH,
+      head: DRAFT_BRANCH,
+      commit_message: 'ビジュアルエディタ: 前回の編集HPを公開',
     });
 
     return Response.json({ ok: true });
