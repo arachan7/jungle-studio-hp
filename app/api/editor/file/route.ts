@@ -1,6 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { verifySessionFromRequest } from '@/lib/editorAuth';
 import { verifySameOrigin } from '@/lib/editorSecurity';
+import { parseEditableLinkValue } from '@/lib/editorLink';
 
 const OWNER = 'arachan7';
 const REPO = 'jungle-studio-hp';
@@ -47,18 +48,8 @@ function normalizeChange(input: unknown): Change | null {
   if (typeof raw.value !== 'string') return null;
   if (raw.type === 'text' && raw.value.length > MAX_TEXT_LENGTH) return null;
   if (raw.type === 'image' && !isValidImagePath(raw.value)) return null;
-  if (raw.type === 'link' && !isValidLinkValue(raw.value)) return null;
+  if (raw.type === 'link' && parseEditableLinkValue(raw.value) === null) return null;
   return { eid: raw.eid, type: raw.type, value: raw.value };
-}
-
-function isValidLinkValue(value: string): boolean {
-  if (value.length > MAX_TEXT_LENGTH) return false;
-  try {
-    const parsed = JSON.parse(value) as { text?: unknown; href?: unknown };
-    return typeof parsed.text === 'string' && typeof parsed.href === 'string';
-  } catch {
-    return false;
-  }
 }
 
 function escapeRegExp(s: string): string {
@@ -70,7 +61,6 @@ function findBlock(
   eid: string,
 ): { start: number; end: number } | null {
   const e = escapeRegExp(eid);
-  // JSX コメント {/* ... */} と通常のブロックコメント /* ... */ の両方に対応
   const startRe = new RegExp(`\\{?/\\*\\s*EDITABLE:${e}:start\\s*\\*/\\}?`);
   const endRe = new RegExp(`\\{?/\\*\\s*EDITABLE:${e}:end\\s*\\*/\\}?`);
   const startMatch = startRe.exec(source);
@@ -100,8 +90,6 @@ function replaceTextInBlock(block: string, value: string): string | null {
     return `${before}\n        ${toJsxTextChildren(value)}\n      ${after}`;
   }
 
-  // EditableText タグが無い場合（例: PLAN_LABELS オブジェクトのエントリ）、
-  // `'key': 'value',` の value 部分を置換する
   const entryRe = /(:\s*)(['"])(?:[^\\]|\\.)*?\2/;
   const m = entryRe.exec(block);
   if (m) {
@@ -119,29 +107,16 @@ function replaceImageInBlock(block: string, value: string): string | null {
 }
 
 function replaceLinkInBlock(block: string, value: string): string | null {
-  let parsed: { text?: unknown; href?: unknown };
-  try {
-    parsed = JSON.parse(value) as { text?: unknown; href?: unknown };
-  } catch {
-    return null;
-  }
-  if (typeof parsed.text !== 'string' || typeof parsed.href !== 'string') {
-    return null;
-  }
-  const text = parsed.text;
-  const href = parsed.href;
+  const parsed = parseEditableLinkValue(value);
+  if (!parsed) return null;
 
-  // <EditableLink ... href="..."> ... </EditableLink> の href と children を置換
   const open = /<EditableLink\b[^>]*>/.exec(block);
   if (!open) return null;
   let openTag = open[0];
 
   const hrefRe = /\bhref=("[^"]*"|\{[^}]*\})/;
-  if (hrefRe.test(openTag)) {
-    openTag = openTag.replace(hrefRe, `href=${JSON.stringify(href)}`);
-  } else {
-    return null;
-  }
+  if (!hrefRe.test(openTag)) return null;
+  openTag = openTag.replace(hrefRe, `href=${JSON.stringify(parsed.href)}`);
 
   const childrenStart = open.index + open[0].length;
   const closeIdx = block.indexOf('</EditableLink>', childrenStart);
@@ -149,7 +124,7 @@ function replaceLinkInBlock(block: string, value: string): string | null {
 
   const before = block.slice(0, open.index);
   const after = block.slice(closeIdx);
-  return `${before}${openTag}\n            ${text}\n          ${after}`;
+  return `${before}${openTag}\n            {${JSON.stringify(parsed.text)}}\n          ${after}`;
 }
 
 export async function POST(req: Request) {

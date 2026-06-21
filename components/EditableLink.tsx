@@ -3,6 +3,11 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useEditMode } from './EditModeContext';
+import {
+  isSafeEditableHref,
+  MAX_LINK_HREF_LENGTH,
+  MAX_LINK_TEXT_LENGTH,
+} from '@/lib/editorLink';
 
 type Props = {
   eid: string;
@@ -29,6 +34,7 @@ export default function EditableLink({
   const [open, setOpen] = useState(false);
   const [draftText, setDraftText] = useState(children);
   const [draftUrl, setDraftUrl] = useState(href);
+  const [error, setError] = useState('');
 
   const link = external ? (
     <a href={url} target={target} rel={rel} className={className} data-eid={eid}>
@@ -47,14 +53,27 @@ export default function EditableLink({
   const openPopover = () => {
     setDraftText(text);
     setDraftUrl(url);
+    setError('');
     setOpen(true);
   };
 
   const handleSave = () => {
-    setText(draftText);
-    setUrl(draftUrl);
+    const nextText = draftText.trim();
+    const nextUrl = draftUrl.trim();
+    if (!nextText || nextText.length > MAX_LINK_TEXT_LENGTH) {
+      setError(`Text must be 1-${MAX_LINK_TEXT_LENGTH} characters.`);
+      return;
+    }
+    if (!isSafeEditableHref(nextUrl)) {
+      setError('URL must be http(s), mailto, tel, or a site-relative path.');
+      return;
+    }
+
+    setText(nextText);
+    setUrl(nextUrl);
     setOpen(false);
-    const value = JSON.stringify({ text: draftText, href: draftUrl });
+    setError('');
+    const value = JSON.stringify({ text: nextText, href: nextUrl });
     addChange(eid, { type: 'link', value });
     if (typeof window !== 'undefined' && window.parent !== window) {
       window.parent.postMessage(
@@ -86,6 +105,7 @@ export default function EditableLink({
           <input
             type="text"
             value={draftText}
+            maxLength={MAX_LINK_TEXT_LENGTH}
             onChange={(e) => setDraftText(e.target.value)}
             className="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -95,9 +115,11 @@ export default function EditableLink({
           <input
             type="text"
             value={draftUrl}
+            maxLength={MAX_LINK_HREF_LENGTH}
             onChange={(e) => setDraftUrl(e.target.value)}
-            className="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+          {error && <span className="block text-xs text-red-600 mb-3">{error}</span>}
           <span className="flex gap-2">
             <button
               type="button"
