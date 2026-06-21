@@ -11,7 +11,10 @@ function getSql() {
 
 /** コードをDB漏洩対策のペッパー付きでハッシュ化（平文は保存しない） */
 function hashCode(code: string): string {
-  const pepper = process.env.CANCEL_OTP_SECRET ?? '';
+  const pepper = process.env.CANCEL_OTP_SECRET;
+  if (!pepper) {
+    throw new Error('CANCEL_OTP_SECRET is required');
+  }
   return createHash('sha256').update(`${pepper}:${code}`).digest('hex');
 }
 
