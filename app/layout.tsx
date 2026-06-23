@@ -16,11 +16,6 @@ export const metadata: Metadata = {
     template: "%s | JUNGLE STUDIO",
   },
   description: "神奈川県厚木市のフォトスタジオ「ジャングルスタジオ」。七五三・お宮参り・ニューボーンフォト・マタニティ・入園卒業など、お子様の大切な瞬間を高品質な写真で残します。24時間オンライン予約受付。",
-  manifest: '/manifest.json',
-  icons: {
-    apple: '/koala.png',
-    icon: '/koala.png',
-  },
   keywords: ["フォトスタジオ", "厚木市", "七五三", "お宮参り", "ニューボーンフォト", "マタニティフォト", "記念写真", "ジャングルスタジオ", "厚木 写真館", "神奈川 フォトスタジオ"],
   openGraph: {
     siteName: "JUNGLE STUDIO",
