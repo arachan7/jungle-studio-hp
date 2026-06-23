@@ -90,15 +90,17 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-stone-100 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-gradient-to-b from-slate-100 to-slate-200 flex items-center justify-center p-4">
       <form
         onSubmit={submit}
-        className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-5"
+        className="w-full max-w-sm bg-white rounded-3xl shadow-2xl shadow-slate-300/50 p-8 flex flex-col gap-5 ring-1 ring-slate-100"
       >
         <div className="text-center">
-          <p className="text-2xl mb-1">🌿</p>
-          <h1 className="text-lg font-bold text-stone-800">ビジュアルエディタ</h1>
-          <p className="text-xs text-stone-500 mt-1">パスワードを入力してください</p>
+          <div className="mx-auto mb-3 w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center ring-4 ring-emerald-100 text-4xl">
+            🐨
+          </div>
+          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight">編集コアラ</h1>
+          <p className="text-xs text-slate-500 mt-1.5 font-medium">パスワードを入力してください</p>
         </div>
         <input
           type="password"
@@ -106,13 +108,13 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
           onChange={(e) => setPassword(e.target.value)}
           autoFocus
           placeholder="パスワード"
-          className="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400 transition-colors"
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
         <button
           type="submit"
           disabled={loading || !password}
-          className="w-full bg-stone-900 text-white rounded-lg py-3 text-sm font-bold disabled:opacity-50"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3 text-sm font-extrabold shadow-lg shadow-emerald-600/20 transition-colors disabled:opacity-50 disabled:shadow-none"
         >
           {loading ? '確認中...' : 'ログイン'}
         </button>
@@ -261,44 +263,47 @@ function SlotSelect({
   const draft = findSlot(slots, 'draft');
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-stone-100 flex items-start justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[9999] bg-gradient-to-b from-slate-100 to-slate-200 flex items-start justify-center p-4 overflow-y-auto">
       <div className="w-full max-w-md my-8 flex flex-col gap-5">
-        <div className="text-center">
-          <p className="text-2xl mb-1">🌿</p>
-          <h1 className="text-lg font-bold text-stone-800">ビジュアルエディタ</h1>
+        <div className="flex flex-col items-center text-center bg-white rounded-3xl shadow-lg shadow-slate-300/40 ring-1 ring-slate-100 px-6 py-6">
+          <div className="mb-2 w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center ring-4 ring-emerald-100 text-4xl">
+            🐨
+          </div>
+          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight">編集コアラ</h1>
+          <p className="text-xs text-emerald-600 mt-1 font-bold">ホームページかんたん編集ツール</p>
         </div>
 
         {slots === null && (
-          <p className="text-stone-400 text-sm py-8 text-center">読み込み中...</p>
+          <p className="text-slate-400 text-sm py-8 text-center font-medium">読み込み中...</p>
         )}
 
         {slots !== null && (
           <div className="flex flex-col gap-4">
             {/* 🔒 初期HP */}
-            <div className="bg-stone-50 border-2 border-stone-300 rounded-2xl p-5">
-              <p className="text-sm font-bold text-stone-800 mb-1">🔒 初期HP（変更不可）</p>
+            <div className="bg-white border border-slate-300 rounded-3xl p-5 shadow-sm shadow-slate-200/60">
+              <p className="text-sm font-extrabold text-slate-800 mb-1">🔒 初期HP（変更不可）</p>
               {initial?.exists ? (
                 <>
-                  <p className="text-xs text-stone-500 mb-3">
+                  <p className="text-xs text-slate-500 mb-3 font-medium">
                     最初の状態（絶対に変更されません）
                   </p>
                   <button
                     onClick={restoreFromInitial}
                     disabled={busy}
-                    className="bg-stone-700 hover:bg-stone-800 text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors disabled:opacity-50"
+                    className="bg-slate-700 hover:bg-slate-800 text-white text-sm font-extrabold rounded-xl px-4 py-2 transition-colors disabled:opacity-50"
                   >
                     この状態に戻す
                   </button>
                 </>
               ) : (
                 <>
-                  <p className="text-xs text-stone-500 mb-3">
+                  <p className="text-xs text-slate-500 mb-3 font-medium">
                     まだ初期HPが保存されていません。現在の公開中HPを初期HPとして保存できます。
                   </p>
                   <button
                     onClick={createInitial}
                     disabled={busy}
-                    className="bg-stone-700 hover:bg-stone-800 text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors disabled:opacity-50"
+                    className="bg-slate-700 hover:bg-slate-800 text-white text-sm font-extrabold rounded-xl px-4 py-2 transition-colors disabled:opacity-50"
                   >
                     初期HPとして保存
                   </button>
@@ -307,14 +312,14 @@ function SlotSelect({
             </div>
 
             {/* 📢 今のHP */}
-            <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5">
+            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-5 shadow-sm shadow-emerald-200/50">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-sm font-bold text-stone-800">📢 今のHP</p>
-                <span className="text-[10px] font-bold bg-amber-600 text-white rounded-full px-2 py-0.5">
+                <p className="text-sm font-extrabold text-slate-800">📢 今のHP</p>
+                <span className="text-[10px] font-extrabold bg-emerald-600 text-white rounded-full px-2.5 py-0.5 shadow-sm shadow-emerald-600/30">
                   公開中
                 </span>
               </div>
-              <p className="text-xs text-stone-500 mb-3">
+              <p className="text-xs text-slate-500 mb-3 font-medium">
                 最終更新:{' '}
                 {current?.lastCommit && formatDate(current.lastCommit.date)
                   ? formatDate(current.lastCommit.date)
@@ -323,18 +328,18 @@ function SlotSelect({
               <button
                 onClick={() => onEdit({ key: 'current', branch: 'master' })}
                 disabled={busy}
-                className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors disabled:opacity-50"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-extrabold rounded-xl px-4 py-2 shadow-lg shadow-emerald-600/20 transition-colors disabled:opacity-50 disabled:shadow-none"
               >
                 今のHPを編集する
               </button>
             </div>
 
             {/* ✏️ 前回の編集HP */}
-            <div className="bg-white border-2 border-stone-200 rounded-2xl p-5">
-              <p className="text-sm font-bold text-stone-800 mb-1">✏️ 前回の編集HP</p>
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm shadow-slate-200/60">
+              <p className="text-sm font-extrabold text-slate-800 mb-1">✏️ 前回の編集HP</p>
               {draft?.exists ? (
                 <>
-                  <p className="text-xs text-stone-500 mb-3">
+                  <p className="text-xs text-slate-500 mb-3 font-medium">
                     最終編集:{' '}
                     {draft.lastCommit && formatDate(draft.lastCommit.date)
                       ? formatDate(draft.lastCommit.date)
@@ -344,14 +349,14 @@ function SlotSelect({
                     <button
                       onClick={() => onEdit({ key: 'draft', branch: 'draft-slot-1' })}
                       disabled={busy}
-                      className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+                      className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl py-2 text-sm font-extrabold transition-colors disabled:opacity-50"
                     >
                       編集する
                     </button>
                     <button
                       onClick={publishDraft}
                       disabled={busy}
-                      className="flex-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-2 text-sm font-extrabold shadow-lg shadow-emerald-600/20 transition-colors disabled:opacity-50 disabled:shadow-none"
                     >
                       公開する→
                     </button>
@@ -359,13 +364,13 @@ function SlotSelect({
                 </>
               ) : (
                 <>
-                  <p className="text-xs text-stone-400 mb-3">
+                  <p className="text-xs text-slate-400 mb-3 font-medium">
                     下書きがまだありません。今のHPをコピーして編集を始められます。
                   </p>
                   <button
                     onClick={createDraft}
                     disabled={busy}
-                    className="w-full bg-stone-700 hover:bg-stone-800 text-white rounded-lg py-2 text-sm font-bold transition-colors disabled:opacity-50"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-2 text-sm font-extrabold shadow-lg shadow-emerald-600/20 transition-colors disabled:opacity-50 disabled:shadow-none"
                   >
                     新規作成
                   </button>
@@ -377,7 +382,7 @@ function SlotSelect({
       </div>
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-sm px-5 py-3 rounded-full shadow-lg z-[10000]">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-full shadow-xl z-[10000]">
           {toast}
         </div>
       )}
@@ -514,21 +519,21 @@ function Editor({
 
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col">
-      <div className="h-12 bg-stone-900 text-white flex items-center gap-3 px-4 shrink-0">
-        <span className="font-bold text-sm whitespace-nowrap">🌿 ビジュアルエディタ</span>
-        <span className="text-xs bg-stone-700 rounded px-2 py-0.5 whitespace-nowrap">
+      <div className="h-12 bg-slate-800 text-white flex items-center gap-3 px-4 shrink-0 shadow-md shadow-slate-900/20">
+        <span className="font-extrabold text-sm whitespace-nowrap">🐨 編集コアラ</span>
+        <span className="text-xs font-bold bg-slate-700 rounded-full px-2.5 py-0.5 whitespace-nowrap">
           {slotLabel}
         </span>
         <button
           onClick={back}
-          className="text-xs border border-stone-600 hover:bg-stone-800 rounded px-2 py-1 whitespace-nowrap transition-colors"
+          className="text-xs font-bold border border-slate-600 hover:bg-slate-700 rounded-full px-2.5 py-1 whitespace-nowrap transition-colors"
         >
           ←選択に戻る
         </button>
         <select
           value={pageIndex}
           onChange={(e) => changePage(Number(e.target.value))}
-          className="bg-stone-800 text-white text-sm rounded px-2 py-1 border border-stone-700 max-w-[30%]"
+          className="bg-slate-700 text-white text-sm font-medium rounded-lg px-2 py-1 border border-slate-600 max-w-[30%]"
         >
           {PAGES.map((p, i) => (
             <option key={`${p.label}-${i}`} value={i}>
@@ -538,19 +543,19 @@ function Editor({
         </select>
         <div className="flex-1" />
         {pending.size > 0 && (
-          <span className="text-xs text-amber-300">未保存: {pending.size}件</span>
+          <span className="text-xs font-bold text-emerald-300">未保存: {pending.size}件</span>
         )}
         <button
           onClick={save}
           disabled={pending.size === 0 || saving}
-          className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded px-4 py-1.5 disabled:opacity-40 whitespace-nowrap"
+          className="bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-extrabold rounded-full px-4 py-1.5 shadow-sm shadow-emerald-500/30 disabled:opacity-40 disabled:shadow-none whitespace-nowrap transition-colors"
         >
           {saving ? '保存中...' : '保存'}
         </button>
       </div>
 
       {!fileSupported && (
-        <div className="bg-amber-50 text-amber-800 text-xs px-4 py-2 border-b border-amber-200 shrink-0">
+        <div className="bg-emerald-50 text-emerald-800 text-xs font-medium px-4 py-2 border-b border-emerald-200 shrink-0">
           このページはまだ編集マーカーが未設定のため、表示のみ可能です（トップページが編集対応済みです）。
         </div>
       )}
@@ -563,7 +568,7 @@ function Editor({
       />
 
       {toast && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-sm px-5 py-3 rounded-full shadow-lg z-[10000]">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-full shadow-xl z-[10000]">
           {toast}
         </div>
       )}
