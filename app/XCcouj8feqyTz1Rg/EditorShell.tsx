@@ -458,6 +458,7 @@ function Editor({
   // 編集対象ブランチ。master / draft-slot-1 のいずれか。
   const targetBranch = currentSlot?.branch ?? 'master';
   const isDraft = currentSlot?.key === 'draft';
+  const previewPath = `${currentPath}?editorBranch=${encodeURIComponent(targetBranch)}`;
 
   const save = async () => {
     if (pending.size === 0) return;
@@ -562,7 +563,7 @@ function Editor({
 
       <iframe
         key={iframeKey}
-        src={currentPath}
+        src={previewPath}
         className="flex-1 w-full border-0"
         title="ページプレビュー"
       />

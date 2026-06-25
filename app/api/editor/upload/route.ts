@@ -40,6 +40,13 @@ function detectImageExt(buffer: Buffer): 'jpg' | 'png' | 'webp' | null {
   return null;
 }
 
+function resolveTargetBranch(input: FormDataEntryValue | null): { branch: string } | { error: string } {
+  if (input === null) return { branch: BRANCH };
+  if (typeof input !== 'string') return { error: 'Invalid branch' };
+  if (/^(master|draft-slot-1)$/.test(input)) return { branch: input };
+  return { error: 'Invalid branch' };
+}
+
 export async function POST(req: Request) {
   if (!verifySameOrigin(req)) {
     return Response.json({ error: 'Invalid request origin' }, { status: 403 });
@@ -62,9 +69,13 @@ export async function POST(req: Request) {
 
   const file = form.get('file');
   const eid = (form.get('eid') as string | null)?.trim() ?? '';
+  const branchResult = resolveTargetBranch(form.get('branch'));
 
   if (!(file instanceof File)) {
     return Response.json({ error: 'File is required' }, { status: 400 });
+  }
+  if ('error' in branchResult) {
+    return Response.json({ error: branchResult.error }, { status: 400 });
   }
   if (!/^[a-zA-Z0-9_-]{1,80}$/.test(eid)) {
     return Response.json({ error: 'Invalid eid' }, { status: 400 });
@@ -95,7 +106,7 @@ export async function POST(req: Request) {
       path: repoPath,
       message: `Visual editor: upload image (${filename})`,
       content: buffer.toString('base64'),
-      branch: BRANCH,
+      branch: branchResult.branch,
     });
   } catch (e) {
     console.error('upload error', e);

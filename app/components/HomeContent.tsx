@@ -125,7 +125,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">七五三</p>
                 {/* EDITABLE:price-shichigosan:start */}
-                <EditableText eid="price-shichigosan" tag="p" className="text-amber-700 font-bold text-sm">{"¥24,800〜"}</EditableText>
+                <EditableText eid="price-shichigosan" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-shichigosan:end */}
               </div>
             </Link>
@@ -138,7 +138,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">ハーフバースデー</p>
                 {/* EDITABLE:price-half-birthday:start */}
-                <EditableText eid="price-half-birthday" tag="p" className="text-amber-700 font-bold text-sm">{"¥29,800〜"}</EditableText>
+                <EditableText eid="price-half-birthday" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-half-birthday:end */}
               </div>
             </Link>
@@ -151,7 +151,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">お宮参り</p>
                 {/* EDITABLE:price-omiyamairi:start */}
-                <EditableText eid="price-omiyamairi" tag="p" className="text-amber-700 font-bold text-sm">{"¥19,800〜"}</EditableText>
+                <EditableText eid="price-omiyamairi" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-omiyamairi:end */}
               </div>
             </Link>
@@ -164,7 +164,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">バースデー</p>
                 {/* EDITABLE:price-birthday:start */}
-                <EditableText eid="price-birthday" tag="p" className="text-amber-700 font-bold text-sm">{"¥29,800〜"}</EditableText>
+                <EditableText eid="price-birthday" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-birthday:end */}
               </div>
             </Link>
@@ -177,7 +177,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">卒入学</p>
                 {/* EDITABLE:price-nyuugaku:start */}
-                <EditableText eid="price-nyuugaku" tag="p" className="text-amber-700 font-bold text-sm">{"¥24,800〜"}</EditableText>
+                <EditableText eid="price-nyuugaku" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-nyuugaku:end */}
               </div>
             </Link>
@@ -190,7 +190,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">マタニティフォト</p>
                 {/* EDITABLE:price-maternity:start */}
-                <EditableText eid="price-maternity" tag="p" className="text-amber-700 font-bold text-sm">{"¥15,000〜"}</EditableText>
+                <EditableText eid="price-maternity" tag="p" className="text-amber-700 font-bold text-sm">{"¥19,800〜"}</EditableText>
                 {/* EDITABLE:price-maternity:end */}
               </div>
             </Link>
@@ -203,7 +203,7 @@ export default function HomeContent() {
               <div className="p-4 bg-white">
                 <p className="font-bold text-stone-800 text-sm mb-1">ニューボーンフォト</p>
                 {/* EDITABLE:price-newborn:start */}
-                <EditableText eid="price-newborn" tag="p" className="text-amber-700 font-bold text-sm">{"¥19,800〜"}</EditableText>
+                <EditableText eid="price-newborn" tag="p" className="text-amber-700 font-bold text-sm">{"¥25,000〜"}</EditableText>
                 {/* EDITABLE:price-newborn:end */}
               </div>
             </Link>

@@ -73,6 +73,9 @@ export default function ColumnContent() {
               {/* EDITABLE:sg-plan0-price:start */}
               <EditableText eid="sg-plan0-price" tag="p" className="text-xl font-bold text-amber-700 mt-2">{"¥25,000〜"}</EditableText>
               {/* EDITABLE:sg-plan0-price:end */}
+              <p className="text-xs text-stone-500 mt-2">
+                ヘアメイク・衣装レンタルする場合は別途オプションで＋5,000円になります。
+              </p>
             </div>
             <div className="bg-white rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1">

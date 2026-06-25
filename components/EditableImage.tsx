@@ -32,7 +32,19 @@ export default function EditableImage({
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const image = (
+  const isLocalPreview = currentSrc.startsWith('blob:');
+  const image = isLocalPreview ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={currentSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      className={className}
+      style={fill ? { position: 'absolute', inset: 0, width: '100%', height: '100%' } : undefined}
+      data-eid={eid}
+    />
+  ) : (
     <Image
       src={currentSrc}
       alt={alt}
@@ -54,21 +66,25 @@ export default function EditableImage({
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    const previewUrl = URL.createObjectURL(file);
     try {
       const form = new FormData();
       form.append('file', file);
       form.append('eid', eid);
+      const branch = new URLSearchParams(window.location.search).get('editorBranch');
+      if (branch) form.append('branch', branch);
       const res = await fetch('/api/editor/upload', {
         method: 'POST',
         body: form,
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
+        URL.revokeObjectURL(previewUrl);
         alert(data.error ?? 'Upload failed');
         return;
       }
       const data = (await res.json()) as { path: string };
-      setCurrentSrc(data.path);
+      setCurrentSrc(branch === 'draft-slot-1' ? previewUrl : data.path);
       addChange(eid, { type: 'image', value: data.path });
       if (typeof window !== 'undefined' && window.parent !== window) {
         window.parent.postMessage(
@@ -76,6 +92,10 @@ export default function EditableImage({
           window.location.origin,
         );
       }
+      if (branch !== 'draft-slot-1') URL.revokeObjectURL(previewUrl);
+    } catch {
+      URL.revokeObjectURL(previewUrl);
+      alert('Upload failed');
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = '';

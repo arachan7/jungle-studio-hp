@@ -39,11 +39,17 @@ export async function POST(req: Request) {
 
   if (!ok) {
     const ip = getClientIp(req);
-    const allowed = await checkRateLimit(
-      `editor_auth_fail:${ip}`,
-      MAX_FAILED_ATTEMPTS,
-      LOCK_WINDOW_SECONDS,
-    );
+    let allowed = false;
+    try {
+      allowed = await checkRateLimit(
+        `editor_auth_fail:${ip}`,
+        MAX_FAILED_ATTEMPTS,
+        LOCK_WINDOW_SECONDS,
+      );
+    } catch (e) {
+      console.error('editor auth rate limit error', e);
+      return Response.json({ error: 'Too many login attempts' }, { status: 429 });
+    }
     if (!allowed) {
       return Response.json({ error: 'Too many login attempts' }, { status: 429 });
     }
