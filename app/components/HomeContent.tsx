@@ -312,6 +312,31 @@ export default function HomeContent() {
               </a>
             </div>
           </div>
+          <div id="parking" className="mt-8 bg-white rounded-2xl p-8 border border-stone-200 scroll-mt-20">
+            <p className="text-amber-700 tracking-widest text-xs mb-3">PARKING</p>
+            <h3 className="text-xl font-bold text-stone-800 mb-4" style={{ fontFamily: 'serif' }}>
+              駐車場に関して
+            </h3>
+            <div className="space-y-3 text-sm text-stone-700 leading-relaxed">
+              <p className="font-bold text-stone-800">駐車場住所</p>
+              <p>
+                恩名駐車場<br />
+                神奈川県厚木市恩名1丁目10-19 Skマンション　区画9
+              </p>
+              <p>スタジオから徒歩５分前後の場所にございます。</p>
+              <p className="text-xs text-stone-500">
+                ※長さ4.8m未満、幅1.8m未満の車両が目安駐車可能です。
+              </p>
+              <a
+                href="https://maps.app.goo.gl/kSb4eh3prCwTwjwE9?g_st=ic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-amber-700 hover:bg-amber-800 text-white text-sm font-bold px-5 py-2.5 transition-colors"
+              >
+                Googleマップで駐車場を開く
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

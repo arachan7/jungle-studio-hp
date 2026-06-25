@@ -8,7 +8,7 @@ const contentSecurityPolicy = [
   "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com",
   "font-src 'self' data:",
   "connect-src 'self' https: ws: wss:",
-  "frame-src 'self'",
+  "frame-src 'self' https://www.google.com",
   "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",

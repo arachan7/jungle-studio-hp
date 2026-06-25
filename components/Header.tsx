@@ -181,6 +181,11 @@ export default function Header() {
                   {/* EDITABLE:header-nav-access:end */}
                 </Link>
               </li>
+              <li>
+                <Link href="/#parking" className="block text-stone-700 hover:text-amber-700 transition-colors py-2.5 text-sm tracking-wide" onClick={close}>
+                  駐車場に関して
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
